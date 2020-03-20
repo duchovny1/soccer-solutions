@@ -2,9 +2,9 @@
 {
     using System.Linq;
 
-    using SoccerSolutionsApp.Data.Common.Models;
-
     using Microsoft.EntityFrameworkCore;
+
+    using SoccerSolutionsApp.Data.Common.Models;
 
     internal static class EntityIndexesConfiguration
     {

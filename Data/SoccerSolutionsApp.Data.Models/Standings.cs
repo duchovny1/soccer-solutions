@@ -1,6 +1,8 @@
 ﻿namespace SoccerSolutionsApp.Data.Models
 {
-    public class Standings
+    using SoccerSolutionsApp.Data.Common.Models;
+
+    public class Standings : BaseDeletableModel<int>
     {
     }
 }

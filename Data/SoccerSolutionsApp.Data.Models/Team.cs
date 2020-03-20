@@ -2,7 +2,9 @@
 {
     using System.Collections.Generic;
 
-    public class Team
+    using SoccerSolutionsApp.Data.Common.Models;
+
+    public class Team : BaseDeletableModel<int>
     {
         public Team()
         {
@@ -10,9 +12,13 @@
             this.TeamLeagues = new HashSet<TeamLeagues>();
         }
 
-        public int Id { get; set; }
-
         public string Name { get; set; }
+
+        public byte[] Logo { get; set; }
+
+        public int CountryId { get; set; }
+
+        public Country Country { get; set; }
 
         public ICollection<TeamPlayers> TeamPlayers { get; set; }
 

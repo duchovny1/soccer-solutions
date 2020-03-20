@@ -1,11 +1,9 @@
 ﻿namespace SoccerSolutionsApp.Data.Models
 {
-    using System;
+    using SoccerSolutionsApp.Data.Common.Models;
 
-    public class Country
+    public class Country : BaseDeletableModel<int>
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
     }
 }

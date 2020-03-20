@@ -6,11 +6,10 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using SoccerSolutionsApp.Data.Common.Models;
-    using SoccerSolutionsApp.Data.Models;
-
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
+    using SoccerSolutionsApp.Data.Common.Models;
+    using SoccerSolutionsApp.Data.Models;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
@@ -25,6 +24,20 @@
         }
 
         public DbSet<Setting> Settings { get; set; }
+
+        public DbSet<Country> Country { get; set; }
+
+        public DbSet<League> League { get; set; }
+
+        public DbSet<Player> Player { get; set; }
+
+        public DbSet<Season> Season { get; set; }
+
+        public DbSet<Team> Team { get; set; }
+
+        public DbSet<TeamLeagues> TeamLeagues { get; set; }
+
+        public DbSet<TeamPlayers> TeamPlayers { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

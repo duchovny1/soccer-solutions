@@ -2,17 +2,19 @@
 {
     using System.Collections.Generic;
 
-    public class Player
+    using SoccerSolutionsApp.Data.Common.Models;
+
+    public class Player : BaseDeletableModel<int>
     {
         public Player()
         {
             this.TeamsPlayer = new HashSet<TeamPlayers>();
         }
 
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
-        public ICollection<TeamPlayers> TeamsPlayer { get; set; }
+        public int Age { get; set; }
+
+        public virtual ICollection<TeamPlayers> TeamsPlayer { get; set; }
     }
 }

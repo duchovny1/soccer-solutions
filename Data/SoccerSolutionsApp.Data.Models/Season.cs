@@ -2,7 +2,9 @@
 {
     using System;
 
-    public class Season
+    using SoccerSolutionsApp.Data.Common.Models;
+
+    public class Season : BaseDeletableModel<int>
     {
         public DateTime StartYear { get; set; }
 

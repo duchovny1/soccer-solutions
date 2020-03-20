@@ -25,19 +25,21 @@
 
         public DbSet<Setting> Settings { get; set; }
 
-        public DbSet<Country> Country { get; set; }
+        public DbSet<Country> Countries { get; set; }
 
-        public DbSet<League> League { get; set; }
+        public DbSet<League> Leagues { get; set; }
 
-        public DbSet<Player> Player { get; set; }
+        public DbSet<Player> Players { get; set; }
 
-        public DbSet<Season> Season { get; set; }
+        public DbSet<Season> Seasons { get; set; }
 
-        public DbSet<Team> Team { get; set; }
+        public DbSet<Team> Teams { get; set; }
 
         public DbSet<TeamLeagues> TeamLeagues { get; set; }
 
         public DbSet<TeamPlayers> TeamPlayers { get; set; }
+
+        public DbSet<Еvent> Events { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

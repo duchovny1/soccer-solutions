@@ -11,6 +11,8 @@
             this.TeamLeagues = new HashSet<TeamLeagues>();
         }
 
+        public string Name { get; set; }
+
         public int SeasonId { get; set; }
 
         public virtual Season Season { get; set; }

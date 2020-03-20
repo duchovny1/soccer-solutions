@@ -73,7 +73,7 @@
 
                 if (env.IsDevelopment())
                 {
-                    dbContext.Database.EnsureCreated();
+                   
                 }
 
                 new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();

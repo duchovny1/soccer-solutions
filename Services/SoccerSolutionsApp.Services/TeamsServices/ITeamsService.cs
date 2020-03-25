@@ -5,5 +5,7 @@
     public interface ITeamsService
     {
         public IEnumerable<T> GetAll<T>();
+
+        //public void Create(T entity);
     }
 }

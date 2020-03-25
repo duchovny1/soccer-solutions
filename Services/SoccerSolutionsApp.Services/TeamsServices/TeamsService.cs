@@ -2,8 +2,11 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using SoccerSolutionsApp.Data.Common.Repositories;
     using SoccerSolutionsApp.Data.Models;
+
+    using SoccerSolutionsApp.Services.Mapping;
 
     public class TeamsService : ITeamsService
     {
@@ -16,9 +19,9 @@
 
         public IEnumerable<T> GetAll<T>()
         {
-            //IQueryable<Team> query =
-            //    this.teamRepository.All();
-            return null;
+            IQueryable<Team> query = this.teamRepository.All();
+            return query.To<T>()
+                .ToList();
             //return query.Tйo<T>.ToList();
         }
     }

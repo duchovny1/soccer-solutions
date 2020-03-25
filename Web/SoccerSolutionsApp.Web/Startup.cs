@@ -20,6 +20,8 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using SoccerSolutionsApp.Services.TeamsServices;
+    using SoccerSolutionsApp.Services.Countries;
 
     public class Startup
     {
@@ -59,6 +61,8 @@
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<ITeamsService, TeamsService>();
+            services.AddTransient<ICountriesService, CountriesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\SoccerSolutionsApp.Data.Models\SoccerSolutionsApp.Data.Models.csproj" />
+    <ProjectReference Include="..\SoccerSolutionsApp.Services.Mapping\SoccerSolutionsApp.Services.Mapping.csproj" />
   </ItemGroup>
 
 </Project>

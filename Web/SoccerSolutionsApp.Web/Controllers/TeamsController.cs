@@ -6,6 +6,9 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Rendering;
+    using SoccerSolutionsApp.Data;
+    using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Countries;
     using SoccerSolutionsApp.Services.TeamsServices;
     using SoccerSolutionsApp.Web.ViewModels.Teams;
@@ -14,13 +17,16 @@
     {
         private readonly ITeamsService teamsService;
         private readonly ICountriesService countriesService;
+        private readonly ApplicationDbContext dbContext;
 
         public TeamsController(
             ITeamsService teamsService,
-            ICountriesService countriesService)
+            ICountriesService countriesService,
+            ApplicationDbContext dbContext)
         {
             this.teamsService = teamsService;
             this.countriesService = countriesService;
+            this.dbContext = dbContext;
         }
 
         public IActionResult All()
@@ -38,6 +44,16 @@
             };
 
             return this.View(viewModel);
+        }
+
+        [HttpGet]
+        public JsonResult GetLeagues(int countryId)
+        {
+            var league = this.dbContext.Leagues.Where(x => x.CountryId == countryId).ToList();
+
+            var citylist = new SelectList(this.dbContext.Leagues.Where(c => c.CountryId == countryId).ToList(), "Id", "Name");
+            var list = Json(citylist);
+            return this.Json(citylist);
         }
     }
 }

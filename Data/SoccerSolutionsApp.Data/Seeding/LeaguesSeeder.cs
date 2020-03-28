@@ -36,6 +36,12 @@
                 CountryId = 1,
                 SeasonId = 1,
             });
+            leagues.Add(new League
+            {
+                Name = "Bundesliga",
+                CountryId = 2,
+                SeasonId = 1,
+            });
 
             await dbContext.AddRangeAsync(leagues);
             await dbContext.SaveChangesAsync();

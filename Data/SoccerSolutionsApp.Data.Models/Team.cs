@@ -14,7 +14,7 @@
 
         public string Name { get; set; }
 
-        public byte[] Logo { get; set; }
+        public string Logo { get; set; }
 
         public int CountryId { get; set; }
 

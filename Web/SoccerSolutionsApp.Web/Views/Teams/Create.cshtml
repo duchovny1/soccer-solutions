@@ -18,13 +18,23 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div>
+            <div class="form-group">
+                <label asp-for="Logo" class="control-label"></label>
+                <input asp-for="Logo" class="form-control" />
+                <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="CountryId">Country</label>
-                <select asp-for="CountryId" asp-items="@countries" class="btn btn-secondary dropdown-toggle"></select>
+                <select asp-for="CountryId" asp-items="@countries" id="countryList" class="btn btn-secondary dropdown-toggle">
+                    <option>--Select Country--</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="LeagueId">League</label>
+               <select id="leagueId" class="btn btn-secondary dropdown-toggle"></select>
             </div>
             <hr />
             <input type="submit" value="Create" class="btn btn-secondary dropdown-toggle" />
-
         </form>
     </div>
 </div>
@@ -35,4 +45,29 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script type="text/javascript">
+    //Insert default item "Select" in dropdownlist on load
+    $(document).ready(function () {
+        var items = "<option value='0'>--Select Leagues--</option>";
+        $("#leagueId").html(items);
+    });
+
+    //Bind City dropdownlist
+    $("#countryList").change(function () {
+        var countryId = $("#countryList").val();
+        var url = "/Teams/GetLeagues";
+
+        $.getJSON(url, { countryId: countryId }, function (data) {
+            var item = "";
+            $("#leagueId").empty();
+           
+            $.each(data, function (i, league) {
+                item += '<option value="' + league.value + '">' + league.text + '</option>'
+            });
+            $("#leagueId").html(item);
+        });
+    });
+</script>
 }
+

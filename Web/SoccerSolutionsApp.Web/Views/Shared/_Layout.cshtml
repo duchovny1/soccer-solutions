@@ -1,11 +1,11 @@
-﻿@*@using SoccerSolutionsApp.Common
+﻿@using SoccerSolutionsApp.Common
     <!DOCTYPE html>
     <html>
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>@this.ViewData["Title"] - @GlobalConstants.SystemName</title>
-
+        <script src="@Url.Content("~/Scripts/jquery.min.js")"></script>
         <environment names="Development">
             <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
             <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
@@ -72,11 +72,11 @@
 
         @this.RenderSection("Scripts", required: false)
     </body>
-    </html>*@
+    </html>
 
 
 
-<!doctype html>
+@*@<!doctype html>
 <!--[if lt IE 7]>		<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="zxx"> <![endif]-->
 <!--[if IE 7]>			<html class="no-js lt-ie9 lt-ie8" lang="zxx"> <![endif]-->
 <!--[if IE 8]>			<html class="no-js lt-ie9" lang="zxx"> <![endif]-->
@@ -136,66 +136,7 @@
                             <div id="tg-addnavigationm-mobile" class="tg-addnavigationm-mobile collapse navbar-collapse">
                                 <div class="tg-colhalf pull-right">
                                     <nav class="tg-addnav">
-                                        <ul>
-                                            <li><a href="javascript().html" data-toggle="modal" data-target="#tg-login">login</a></li>
-                                            <li><a href="javascript().html" data-toggle="modal" data-target="#tg-register">Register</a></li>
-                                            <li>
-                                                <div class="tg-cart">
-                                                    <a href="javascript:void(0)" class="dropdown-toggle" id="tg-cartdropdown" data-toggle="dropdown">
-                                                        <i class="fa fa-shopping-cart"></i>
-                                                    </a>
-                                                    <div class="tg-cartcontent dropdown-menu" aria-labelledby="tg-cartdropdown">
-                                                        <ul>
-                                                            <li>
-                                                                <figure>
-                                                                    <a href="#">
-                                                                        <img src="images/thumbnails/img-01.jpg" alt="image description">
-                                                                    </a>
-                                                                </figure>
-                                                                <div class="tg-product-detail">
-                                                                    <h3><a href="#">Smooth 3-Stripes Scarf</a></h3>
-                                                                    <span class="tg-price">Price: $23</span>
-                                                                    <a class="tg-delete" href="#"></a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <figure>
-                                                                    <a href="#">
-                                                                        <img src="images/thumbnails/img-02.jpg" alt="image description">
-                                                                    </a>
-                                                                </figure>
-                                                                <div class="tg-product-detail">
-                                                                    <h3><a href="#">Smooth 3-Stripes Scarf</a></h3>
-                                                                    <span class="tg-price">Price: $23</span>
-                                                                    <a class="tg-delete" href="#"></a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <figure>
-                                                                    <a href="#">
-                                                                        <img src="images/thumbnails/img-03.jpg" alt="image description">
-                                                                    </a>
-                                                                </figure>
-                                                                <div class="tg-product-detail">
-                                                                    <h3><a href="#">Smooth 3-Stripes Scarf</a></h3>
-                                                                    <span class="tg-price">Price: $23</span>
-                                                                    <a class="tg-delete" href="#"></a>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="tg-btnbox">
-                                                                    <strong class="tg-carttotal">Total: $134</strong>
-                                                                    <a class="tg-btn" href="#"><span>checkout</span></a>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <a id="tg-btn-search" href="javascript:void(0)"><i class="fa fa-search"></i></a>
-                                            </li>
-                                        </ul>
+                                        <partial name="_LoginPartial" />
                                     </nav>
                                 </div>
                                 <div class="tg-colhalf">
@@ -311,7 +252,7 @@
     *************************************-->
     @RenderBody();
 
-
+    @RenderSection("Scripts", false);
     <!--************************************
     <!--************************************
         LightBoxes End
@@ -330,4 +271,4 @@
 </body>
 
 
-</html>
+</html>*@

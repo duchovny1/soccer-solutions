@@ -15,5 +15,9 @@
         public int TeamPointsInCurrentLeague { get; set; }
 
         public int GamesPlayed { get; set; }
+
+        public int GoalsScored { get; set; }
+
+        public int GoalsReceived { get; set; }
     }
 }

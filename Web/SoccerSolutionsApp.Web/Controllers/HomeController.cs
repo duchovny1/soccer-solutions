@@ -1,16 +1,16 @@
 ﻿namespace SoccerSolutionsApp.Web.Controllers
 {
     using System.Diagnostics;
-
-    using SoccerSolutionsApp.Web.ViewModels;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
+    using SoccerSolutionsApp.Web.ViewModels;
 
     public class HomeController : BaseController
     {
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return this.View();
+           return this.View();
         }
 
         public IActionResult Privacy()

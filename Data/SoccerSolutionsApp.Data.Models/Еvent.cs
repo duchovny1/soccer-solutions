@@ -1,5 +1,8 @@
 ﻿namespace SoccerSolutionsApp.Data.Models
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
     using SoccerSolutionsApp.Data.Common.Models;
     using SoccerSolutionsApp.Data.Models.Enums;
 
@@ -10,6 +13,8 @@
             // because when we add game, game is not finished
             this.IsFinished = false;
         }
+
+        public DateTime KickOff { get; set; }
 
         public bool IsFinished { get; set; }
 
@@ -26,5 +31,8 @@
         public int AwayTeamGoals { get; set; }
 
         public virtual FullTimeExit FullTimeExit { get; set; }
+
+        [Required]
+        public virtual League League { get; set; }
     }
 }

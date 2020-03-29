@@ -10,6 +10,7 @@
     using Microsoft.EntityFrameworkCore;
     using SoccerSolutionsApp.Data.Common.Models;
     using SoccerSolutionsApp.Data.Models;
+    using SoccerSolutionsApp.Data.Models.Enums;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
@@ -87,6 +88,21 @@
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
+
+            // convert enums to strings in database
+            builder.
+               Entity<Еvent>()
+               .Property(f => f.FullTimeExit)
+               .HasConversion(
+               v => v.ToString(),
+               v => (FullTimeExit)Enum.Parse(typeof(FullTimeExit), v));
+
+            builder.
+               Entity<League>()
+               .Property(f => f.LeagueType)
+               .HasConversion(
+               v => v.ToString(),
+               v => (LeagueType)Enum.Parse(typeof(LeagueType), v));
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

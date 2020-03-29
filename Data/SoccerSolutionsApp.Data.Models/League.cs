@@ -3,6 +3,7 @@
     using System.Collections.Generic;
 
     using SoccerSolutionsApp.Data.Common.Models;
+    using SoccerSolutionsApp.Data.Models.Enums;
 
     public class League : BaseDeletableModel<int>
     {
@@ -22,6 +23,7 @@
         public virtual Country Country { get; set; }
 
         public virtual ICollection<TeamLeagues> TeamLeagues { get; set; }
-       
+
+        public LeagueType LeagueType {get; set;}
     }
 }

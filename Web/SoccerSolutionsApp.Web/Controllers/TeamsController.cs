@@ -45,15 +45,6 @@
 
             return this.View(viewModel);
         }
-
-        [HttpGet]
-        public JsonResult GetLeagues(int countryId)
-        {
-            var league = this.dbContext.Leagues.Where(x => x.CountryId == countryId).ToList();
-
-            var citylist = new SelectList(this.dbContext.Leagues.Where(c => c.CountryId == countryId).ToList(), "Id", "Name");
-            var list = Json(citylist);
-            return this.Json(citylist);
-        }
     }
+
 }

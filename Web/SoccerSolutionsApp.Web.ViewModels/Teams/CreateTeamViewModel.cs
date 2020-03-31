@@ -1,8 +1,9 @@
 ﻿namespace SoccerSolutionsApp.Web.ViewModels.Teams
 {
-    using SoccerSolutionsApp.Data.Models;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
+    using SoccerSolutionsApp.Data.Models;
 
     public class CreateTeamViewModel
     {

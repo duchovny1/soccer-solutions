@@ -6,8 +6,6 @@
 
     public class Season : BaseDeletableModel<int>
     {
-        public DateTime StartYear { get; set; }
-
-        public DateTime EndYear { get; set; }
+        public string StartYear { get; set; }
     }
 }

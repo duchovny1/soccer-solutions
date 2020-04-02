@@ -301,18 +301,28 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("LeagueType")
-                        .IsRequired()
+                    b.Property<string>("Logo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SeasonEnd")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("SeasonId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("SeasonStart")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -370,17 +380,14 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("EndYear")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("StartYear")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("StartYear")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

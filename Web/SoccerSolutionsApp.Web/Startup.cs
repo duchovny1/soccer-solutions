@@ -23,6 +23,8 @@
     using SoccerSolutionsApp.Services.Data.TeamsServices;
     using SoccerSolutionsApp.Services.Data.Countries;
     using SoccerSolutionsApp.Services.Data.Data;
+    using SoccerSolutionsApp.Services.Data.Seasons;
+    using SoccerSolutionsApp.Services.Data.Leagues;
 
     public class Startup
     {
@@ -65,6 +67,8 @@
             services.AddTransient<ITeamsService, TeamsService>();
             services.AddTransient<ICountriesService, CountriesService>();
             services.AddTransient<IDataService, DataService>();
+            services.AddTransient<ISeasonsService, SeasonsService>();
+            services.AddTransient<ILeaguesService, LeaguesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,8 +83,9 @@
 
                 if (env.IsDevelopment())
                 {
-                    dbContext.Database.EnsureDeleted();
-                    dbContext.Database.EnsureCreated();
+                    //dbContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Leagues ON;");
+                    //dbContext.Database.EnsureDeleted();
+                    //dbContext.Database.EnsureCreated();
                 }
 
                 new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();

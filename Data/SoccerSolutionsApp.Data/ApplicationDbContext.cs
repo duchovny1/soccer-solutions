@@ -97,12 +97,12 @@
                v => v.ToString(),
                v => (FullTimeExit)Enum.Parse(typeof(FullTimeExit), v));
 
-            builder.
-               Entity<League>()
-               .Property(f => f.LeagueType)
-               .HasConversion(
-               v => v.ToString(),
-               v => (LeagueType)Enum.Parse(typeof(LeagueType), v));
+            //builder.
+            //   Entity<League>()
+            //   .Property(f => f.LeagueType)
+            //   .HasConversion(
+            //   v => v.ToString(),
+            //   v => (LeagueType)Enum.Parse(typeof(LeagueType), v));
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

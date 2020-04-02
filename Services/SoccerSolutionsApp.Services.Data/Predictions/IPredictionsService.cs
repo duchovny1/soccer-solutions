@@ -1,4 +1,4 @@
-﻿namespace SoccerSolutionsApp.Services.Predictions
+﻿namespace SoccerSolutionsApp.Services.Data.Predictions
 {
     using System.Collections.Generic;
 

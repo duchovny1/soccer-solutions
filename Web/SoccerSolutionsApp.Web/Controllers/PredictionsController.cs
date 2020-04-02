@@ -1,7 +1,7 @@
 ﻿namespace SoccerSolutionsApp.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using SoccerSolutionsApp.Services.Predictions;
+    using SoccerSolutionsApp.Services.Data.Predictions;
     using SoccerSolutionsApp.Web.ViewModels.Predictions;
 
     public class PredictionsController : Controller

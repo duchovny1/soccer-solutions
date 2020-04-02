@@ -27,9 +27,6 @@
                           {
                               new RolesSeeder(),
                               new SettingsSeeder(),
-                              new CountrySeeder(),
-                              new SeasonSeeder(),
-                              new LeaguesSeeder(),
                           };
 
             foreach (var seeder in seeders)

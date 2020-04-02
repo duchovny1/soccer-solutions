@@ -9,5 +9,14 @@
         [Required]
         [MaxLength(40)]
         public string Name { get; set; }
+
+        [Required]
+        [MaxLength(10)]
+        public string Code { get; set; }
+
+        public string Flag { get; set; }
+
+
+
     }
 }

@@ -9,8 +9,8 @@
     using Microsoft.AspNetCore.Mvc.Rendering;
     using SoccerSolutionsApp.Data;
     using SoccerSolutionsApp.Data.Models;
-    using SoccerSolutionsApp.Services.Countries;
-    using SoccerSolutionsApp.Services.TeamsServices;
+    using SoccerSolutionsApp.Services.Data.Countries;
+    using SoccerSolutionsApp.Services.Data.TeamsServices;
     using SoccerSolutionsApp.Web.ViewModels.Teams;
 
     public class TeamsController : Controller

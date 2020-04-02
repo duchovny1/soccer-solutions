@@ -1,4 +1,4 @@
-﻿namespace SoccerSolutionsApp.Services.TeamsServices
+﻿namespace SoccerSolutionsApp.Services.Data.TeamsServices
 {
     using System.Collections.Generic;
 

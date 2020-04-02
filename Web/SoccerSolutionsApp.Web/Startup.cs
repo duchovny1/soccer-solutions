@@ -20,8 +20,9 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using SoccerSolutionsApp.Services.TeamsServices;
-    using SoccerSolutionsApp.Services.Countries;
+    using SoccerSolutionsApp.Services.Data.TeamsServices;
+    using SoccerSolutionsApp.Services.Data.Countries;
+    using SoccerSolutionsApp.Services.Data.Data;
 
     public class Startup
     {
@@ -63,6 +64,7 @@
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ITeamsService, TeamsService>();
             services.AddTransient<ICountriesService, CountriesService>();
+            services.AddTransient<IDataService, DataService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

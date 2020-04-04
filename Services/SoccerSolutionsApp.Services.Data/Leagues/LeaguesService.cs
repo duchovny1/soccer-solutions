@@ -2,6 +2,7 @@
 {
     using System;
     using System.Threading.Tasks;
+
     using Microsoft.EntityFrameworkCore;
     using SoccerSolutionsApp.Data.Common.Repositories;
     using SoccerSolutionsApp.Data.Models;
@@ -29,7 +30,6 @@
                 bool isExist = await this.leagueRepo.All().AnyAsync(x => x.Name == model.Name);
                 var country = await this.countryRepo.All().FirstOrDefaultAsync(x => x.Name.ToLower() == model.Country.ToLower());
                 var season = await this.seasonRepo.All().FirstOrDefaultAsync(x => x.StartYear == model.Season);
-
 
                 if (!isExist && country != null && season != null)
                 {

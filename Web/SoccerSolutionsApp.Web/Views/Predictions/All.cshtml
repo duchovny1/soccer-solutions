@@ -1,0 +1,108 @@
+﻿@model IEnumerable<SoccerSolutionsApp.Web.ViewModels.Predictions.PredictionsListingViewModel>
+
+@{
+    ViewData["Title"] = "All";
+}
+
+<h1>All</h1>
+
+<link href="~/css/predictionlisting.css" rel="stylesheet" asp-append-version="true" />
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventKickOff)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventHomeTeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventAwayTeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventHomeTeamLogo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventAwayTeamLogo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventKickOff)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventHomeTeamName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventAwayTeamName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventHomeTeamLogo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventAwayTeamLogo)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div style="border-bottom: 1px solid #e0e0e0;" class="base-box blog-post">
+    <div class="predtitle">
+        <div>
+            <a href="#"> <h2>Liverpool vs Man City</h2></a>
+            <div class="bp-entry">
+                <div class="prediction" style="overflow: hidden;">
+                    <div class="predictionteams">
+                        <div style="width: 75px;margin-right: 10px; text-align: center; float: left;">
+                            <a href="#">
+                                <img alt="Liverpool" width="75" height="75" src="https://media.api-football.com/teams/40.png" />
+                            </a>
+                            <p style="font-size: 12px; font-weight: bold;">
+                                <a class="clublink" href="#">liverpool</a>
+                            </p>
+                        </div>
+                        <div style="width: 75px;text-align: center; float: left;">
+                            <a href="#">
+                                <img alt="Man city" width="75" height="75" src="https://media.api-football.com/teams/50.png" />
+                            </a>
+                            <p style="font-size: 12px; font-weight: bold;">
+                                <a class="clublink" href="#">man city</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

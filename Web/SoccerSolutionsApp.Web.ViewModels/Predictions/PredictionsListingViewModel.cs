@@ -1,22 +1,24 @@
-﻿namespace SoccerSolutionsApp.Web.ViewModels.Predictions
-{
-    using System.ComponentModel.DataAnnotations;
+﻿using SoccerSolutionsApp.Data.Models;
+using SoccerSolutionsApp.Services.Mapping;
+using System;
 
-    public class PredictionsListingViewModel
+namespace SoccerSolutionsApp.Web.ViewModels.Predictions
+{
+    public class PredictionsListingViewModel : IMapFrom<Prediction>
     {
-        [Required]
-        [MaxLength(20)]
+        public string UserIdentityName { get; set; }
+
         public string Title { get; set; }
 
-        [Required]
-        [MaxLength(2000)]
         public string Content { get; set; }
 
-        // HEAD TO HEAD BUTTON
-        public int? EventId { get; set; }
+        public string GamePrediction { get; set; }
 
-        [Required]
-        public string UserId { get; set; }
+        public DateTime EventKickOff { get; set; }
+
+        public string EventHomeTeamName { get; set; }
+
+        public string EventAwayTeamName { get; set; }
 
         public string EventHomeTeamLogo { get; set; }
 

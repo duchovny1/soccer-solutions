@@ -25,6 +25,7 @@
     using SoccerSolutionsApp.Services.Data.Data;
     using SoccerSolutionsApp.Services.Data.Seasons;
     using SoccerSolutionsApp.Services.Data.Leagues;
+    using SoccerSolutionsApp.Services.Data.Predictions;
 
     public class Startup
     {
@@ -69,6 +70,7 @@
             services.AddTransient<IDataService, DataService>();
             services.AddTransient<ISeasonsService, SeasonsService>();
             services.AddTransient<ILeaguesService, LeaguesService>();
+            services.AddTransient<IPredictionsService, PredictionsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

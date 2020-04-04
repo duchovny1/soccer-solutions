@@ -8,8 +8,10 @@
         <script src="@Url.Content("~/Scripts/jquery.min.js")"></script>
         <environment names="Development">
             <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
+            <link href="~/css/predictionlisting.css" rel="stylesheet" asp-append-version="true" />
             <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
             <link href="../css/multiselect/checkbox.css" rel="stylesheet" />
+
         </environment>
         <environment names="Staging,Production">
             <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
@@ -39,7 +41,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Teams" asp-action="All">Teams</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Predictions" asp-action="All">Teams</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Predictions" asp-action="All">Predictions</a>
                             </li>
                         </ul>
                     </div>

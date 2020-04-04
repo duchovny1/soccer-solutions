@@ -1,11 +1,8 @@
-﻿namespace SoccerSolutionsApp.Data.Models
+﻿namespace SoccerSolutionsApp.Web.ViewModels.Predictions
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
 
-    using SoccerSolutionsApp.Data.Common.Models;
-
-    public class Prediction : BaseModel<int>
+    public class PredictionsInputViewModel
     {
         [Required]
         [MaxLength(20)]
@@ -16,16 +13,16 @@
         public string Content { get; set; }
 
         [Required]
-        [MaxLength(30)]
-        public string GamePrediction { get; set; }
+        public string KickOff { get; set; }
 
+        // HEAD TO HEAD BUTTON
         public int? EventId { get; set; }
-
-        public virtual Еvent Еvent { get; set; }
 
         [Required]
         public string UserId { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public string EventHomeTeamLogo { get; set; }
+
+        public string EventAwayTeamLogo { get; set; }
     }
 }

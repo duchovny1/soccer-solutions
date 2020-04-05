@@ -21,7 +21,7 @@
 
         public int? EventId { get; set; }
 
-        public virtual Еvent Еvent { get; set; }
+        public virtual Fixture Еvent { get; set; }
 
         [Required]
         public string UserId { get; set; }

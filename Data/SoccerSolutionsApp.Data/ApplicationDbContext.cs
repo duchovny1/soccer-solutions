@@ -40,7 +40,7 @@
 
         public DbSet<TeamPlayers> TeamPlayers { get; set; }
 
-        public DbSet<Еvent> Events { get; set; }
+        public DbSet<Fixture> Fixtures { get; set; }
 
         public DbSet<Prediction> Predictions { get; set; }
 
@@ -93,11 +93,19 @@
 
             // convert enums to strings in database
             builder.
-               Entity<Еvent>()
+               Entity<Fixture>()
                .Property(f => f.FullTimeExit)
                .HasConversion(
                v => v.ToString(),
                v => (FullTimeExit)Enum.Parse(typeof(FullTimeExit), v));
+
+            builder
+                .Entity<TeamLeagues>()
+                .Property(e => e.Id)
+                .HasColumnName("id")
+                .HasColumnType("int(11)")
+                .ValueGeneratedOnAdd();
+
 
             //builder.
             //   Entity<League>()

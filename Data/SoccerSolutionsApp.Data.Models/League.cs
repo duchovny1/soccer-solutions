@@ -24,9 +24,9 @@
 
         public virtual Season Season { get; set; }
 
-        public DateTime SeasonStart { get; set; }
+        public DateTime? SeasonStart { get; set; }
 
-        public DateTime SeasonEnd { get; set; }
+        public DateTime? SeasonEnd { get; set; }
 
         public string Logo { get; set; }
 

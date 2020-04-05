@@ -2,17 +2,6 @@
 {
     using System.Reflection;
 
-    using SoccerSolutionsApp.Data;
-    using SoccerSolutionsApp.Data.Common;
-    using SoccerSolutionsApp.Data.Common.Repositories;
-    using SoccerSolutionsApp.Data.Models;
-    using SoccerSolutionsApp.Data.Repositories;
-    using SoccerSolutionsApp.Data.Seeding;
-    using SoccerSolutionsApp.Services.Data;
-    using SoccerSolutionsApp.Services.Mapping;
-    using SoccerSolutionsApp.Services.Messaging;
-    using SoccerSolutionsApp.Web.ViewModels;
-
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -20,12 +9,22 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using SoccerSolutionsApp.Services.Data.TeamsServices;
+    using SoccerSolutionsApp.Data;
+    using SoccerSolutionsApp.Data.Common;
+    using SoccerSolutionsApp.Data.Common.Repositories;
+    using SoccerSolutionsApp.Data.Models;
+    using SoccerSolutionsApp.Data.Repositories;
+    using SoccerSolutionsApp.Data.Seeding;
+    using SoccerSolutionsApp.Services.Data;
     using SoccerSolutionsApp.Services.Data.Countries;
     using SoccerSolutionsApp.Services.Data.Data;
-    using SoccerSolutionsApp.Services.Data.Seasons;
     using SoccerSolutionsApp.Services.Data.Leagues;
     using SoccerSolutionsApp.Services.Data.Predictions;
+    using SoccerSolutionsApp.Services.Data.Seasons;
+    using SoccerSolutionsApp.Services.Data.TeamsServices;
+    using SoccerSolutionsApp.Services.Mapping;
+    using SoccerSolutionsApp.Services.Messaging;
+    using SoccerSolutionsApp.Web.ViewModels;
 
     public class Startup
     {
@@ -85,7 +84,8 @@
 
                 if (env.IsDevelopment())
                 {
-                    //dbContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Leagues ON;");
+                    dbContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[TeamLeagues] ON;");
+                    dbContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TeamPlayers ON;");
                     //dbContext.Database.EnsureDeleted();
                     //dbContext.Database.EnsureCreated();
                 }

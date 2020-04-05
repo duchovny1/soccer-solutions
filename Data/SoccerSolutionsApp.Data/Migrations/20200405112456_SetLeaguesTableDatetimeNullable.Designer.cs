@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SoccerSolutionsApp.Data;
 
 namespace SoccerSolutionsApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200405112456_SetLeaguesTableDatetimeNullable")]
+    partial class SetLeaguesTableDatetimeNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,7 +248,9 @@ namespace SoccerSolutionsApp.Data.Migrations
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Country", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -280,74 +284,12 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Fixture", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AwayTeamId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<TimeSpan>("EventTimeSpan")
-                        .HasColumnType("time");
-
-                    b.Property<string>("FullTimeExit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("GoalsAwayTeam")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GoalsHomeTeam")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HomeTeamId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsFinished")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("KickOff")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("LeagueId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Referee")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Venue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AwayTeamId");
-
-                    b.HasIndex("HomeTeamId");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("LeagueId");
-
-                    b.ToTable("Fixtures");
-                });
-
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.League", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
@@ -398,7 +340,9 @@ namespace SoccerSolutionsApp.Data.Migrations
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Player", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("Age")
                         .HasColumnType("int");
@@ -428,7 +372,9 @@ namespace SoccerSolutionsApp.Data.Migrations
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Prediction", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -458,8 +404,8 @@ namespace SoccerSolutionsApp.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("ЕventId")
-                        .HasColumnType("int");
+                    b.Property<string>("ЕventId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -473,7 +419,9 @@ namespace SoccerSolutionsApp.Data.Migrations
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Season", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -500,7 +448,9 @@ namespace SoccerSolutionsApp.Data.Migrations
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Setting", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -530,10 +480,9 @@ namespace SoccerSolutionsApp.Data.Migrations
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Team", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
@@ -544,13 +493,7 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Founded")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsNational")
                         .HasColumnType("bit");
 
                     b.Property<string>("Logo")
@@ -560,12 +503,6 @@ namespace SoccerSolutionsApp.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VenueCapacity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("VenueName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -581,8 +518,7 @@ namespace SoccerSolutionsApp.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int(11)")
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedOn")
@@ -590,6 +526,15 @@ namespace SoccerSolutionsApp.Data.Migrations
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("GamesPlayed")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GoalsReceived")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GoalsScored")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -601,6 +546,9 @@ namespace SoccerSolutionsApp.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamPointsInCurrentLeague")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -617,7 +565,9 @@ namespace SoccerSolutionsApp.Data.Migrations
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.TeamPlayers", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -646,6 +596,61 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.HasIndex("TeamId");
 
                     b.ToTable("TeamPlayers");
+                });
+
+            modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Еvent", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AwayTeamGoals")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AwayTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FullTimeExit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("HomeTeamGoals")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HomeTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFinished")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("KickOff")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LeagueId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AwayTeamId");
+
+                    b.HasIndex("HomeTeamId");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("LeagueId");
+
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -699,27 +704,6 @@ namespace SoccerSolutionsApp.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Fixture", b =>
-                {
-                    b.HasOne("SoccerSolutionsApp.Data.Models.Team", "AwayTeam")
-                        .WithMany()
-                        .HasForeignKey("AwayTeamId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SoccerSolutionsApp.Data.Models.Team", "HomeTeam")
-                        .WithMany()
-                        .HasForeignKey("HomeTeamId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SoccerSolutionsApp.Data.Models.League", "League")
-                        .WithMany()
-                        .HasForeignKey("LeagueId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.League", b =>
                 {
                     b.HasOne("SoccerSolutionsApp.Data.Models.Country", "Country")
@@ -743,7 +727,7 @@ namespace SoccerSolutionsApp.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SoccerSolutionsApp.Data.Models.Fixture", "Еvent")
+                    b.HasOne("SoccerSolutionsApp.Data.Models.Еvent", "Еvent")
                         .WithMany()
                         .HasForeignKey("ЕventId");
                 });
@@ -783,6 +767,27 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.HasOne("SoccerSolutionsApp.Data.Models.Team", "Team")
                         .WithMany("TeamPlayers")
                         .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Еvent", b =>
+                {
+                    b.HasOne("SoccerSolutionsApp.Data.Models.Team", "AwayTeam")
+                        .WithMany()
+                        .HasForeignKey("AwayTeamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SoccerSolutionsApp.Data.Models.Team", "HomeTeam")
+                        .WithMany()
+                        .HasForeignKey("HomeTeamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SoccerSolutionsApp.Data.Models.League", "League")
+                        .WithMany()
+                        .HasForeignKey("LeagueId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

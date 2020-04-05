@@ -13,6 +13,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20191224074400_InitialCreate.cs" />
     <Compile Remove="Migrations\20191224074400_InitialCreate.Designer.cs" />
+    <Compile Remove="Migrations\20200405142604_ChangeTeamLeaguesTable.cs" />
+    <Compile Remove="Migrations\20200405142604_ChangeTeamLeaguesTable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

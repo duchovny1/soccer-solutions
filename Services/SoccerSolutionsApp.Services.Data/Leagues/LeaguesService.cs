@@ -27,10 +27,15 @@
         {
             foreach (var model in models.Api.Leagues)
             {
-                bool isExist = await this.leagueRepo.All().AnyAsync(x => x.Name == model.Name);
+                bool isExist = await this.leagueRepo.All().AnyAsync(x => x.Name == model.Name
+                                    && x.Season.StartYear == model.Season);
                 var country = await this.countryRepo.All().FirstOrDefaultAsync(x => x.Name.ToLower() == model.Country.ToLower());
                 var season = await this.seasonRepo.All().FirstOrDefaultAsync(x => x.StartYear == model.Season);
 
+                DateTime seasonStart;
+                DateTime seasonEnd;
+
+                bool seasonStartParse = DateTime.TryParse(model.SeasonStart, out seasonStart);
                 if (!isExist && country != null && season != null)
                 {
                     League league = new League()
@@ -39,8 +44,8 @@
                         Type = model.Type,
                         Country = country,
                         Season = season,
-                        SeasonStart = DateTime.Parse(model.SeasonStart),
-                        SeasonEnd = DateTime.Parse(model.SeasonEnd),
+                        SeasonStart = DateTime.TryParse(model.SeasonStart, out seasonStart) ? seasonStart : (DateTime?)null,
+                        SeasonEnd = DateTime.TryParse(model.SeasonEnd, out seasonEnd) ? seasonStart : (DateTime?)null,
                         Logo = model.Logo,
                     };
 

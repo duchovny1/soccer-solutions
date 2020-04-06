@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\SoccerSolutionsApp.Data.Common\SoccerSolutionsApp.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\SoccerSolutionsApp.Data.Models\SoccerSolutionsApp.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Web\SoccerSolutionsApp.Web.ViewModels\SoccerSolutionsApp.Web.ViewModels.csproj" />
     <ProjectReference Include="..\SoccerSolutionsApp.Services.Mapping\SoccerSolutionsApp.Services.Mapping.csproj" />
   </ItemGroup>
 

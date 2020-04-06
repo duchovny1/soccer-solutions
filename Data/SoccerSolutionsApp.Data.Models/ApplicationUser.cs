@@ -16,6 +16,7 @@ namespace SoccerSolutionsApp.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+            this.Predictions = new HashSet<Prediction>();
         }
 
         //public string Username { get; set; }
@@ -35,5 +36,7 @@ namespace SoccerSolutionsApp.Data.Models
         public virtual ICollection<IdentityUserClaim<string>> Claims { get; set; }
 
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
+
+        public virtual ICollection<Prediction> Predictions { get; set; }
     }
 }

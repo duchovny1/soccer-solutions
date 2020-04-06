@@ -3,9 +3,10 @@
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
-
+    
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
+    using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
     using RestSharp;
     using RestSharp.Authenticators;
@@ -26,20 +27,31 @@
         private readonly ISeasonsService seasonsService;
         private readonly ILeaguesService leaguesService;
         private readonly ITeamsService teamsService;
-
+        private readonly IConfiguration configuration;
+ 
         public DataController(
             ApplicationDbContext db,
             ICountriesService countriesService,
             ISeasonsService seasonsService,
             ILeaguesService leaguesService,
-            ITeamsService teamsService)
+            ITeamsService teamsService,
+            IConfiguration configuration)
         {
             this.db = db;
             this.countriesService = countriesService;
             this.seasonsService = seasonsService;
             this.leaguesService = leaguesService;
             this.teamsService = teamsService;
+            this.configuration = configuration;
         }
+
+        public string ApiHostHeader => this.configuration.GetValue<string>("x-rapidapi:Host");
+
+        public string ApiHostHeaderValue => this.configuration.GetValue<string>("x-rapidapi:HostValue");
+
+        public string ApiKeyHeader => this.configuration.GetValue<string>("x-rapidapi:KeyHeader");
+
+        public string ApiKeyHeaderValue => this.configuration.GetValue<string>("x-rapidapi:KeyHeaderValue");
 
         [HttpGet("getleagues")]
         public ActionResult<SelectList> GetLeagues(int countryId)
@@ -55,12 +67,11 @@
         [HttpGet("postcountries")]
         public async Task<IActionResult> Countries()
         {
-
             var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/countries");
 
             var request = new RestRequest(Method.GET);
-            request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
-            request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
+            request.AddHeader(this.ApiHostHeader, this.ApiHostHeaderValue);
+            request.AddHeader(this.ApiKeyHeader, this.ApiKeyHeaderValue);
             IRestResponse response = await client.ExecuteAsync(request);
             string content = response.Content;
             if (response.IsSuccessful)

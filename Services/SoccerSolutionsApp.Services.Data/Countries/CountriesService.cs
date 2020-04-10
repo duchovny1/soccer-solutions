@@ -18,7 +18,7 @@
             this.countriesRepository = countriesRepository;
         }
 
-        public async Task CreateAsync(ImportApi models)
+        public async Task CreateAsync(ImportCountriesApi models)
         {
             foreach (var model in models.Api.Countries)
             {

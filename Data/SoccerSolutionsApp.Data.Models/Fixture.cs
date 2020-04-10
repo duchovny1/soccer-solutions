@@ -11,7 +11,6 @@
         public Fixture()
         {
             // because when we add game, game is not finished
-            this.IsFinished = false;
         }
 
         public DateTime KickOff { get; set; }
@@ -22,7 +21,13 @@
 
         public string Referee { get; set; }
 
-        public bool IsFinished { get; set; }
+        public string Round { get; set; }
+
+        public Status Status { get; set; }
+
+        public string StatusShort { get; set; }
+
+        public int Elapsed { get; set; }
 
         [Required]
         public int HomeTeamId { get; set; }
@@ -45,6 +50,16 @@
         public virtual FullTimeExit FullTimeExit { get; set; }
 
         [Required]
+        public int LeagueId { get; set; }
+
         public virtual League League { get; set; }
+
+        public string Halftime { get; set; }
+
+        public string Fulltime { get; set; }
+
+        public string Extratime { get; set; }
+
+        public string Penalty { get; set; }
     }
 }

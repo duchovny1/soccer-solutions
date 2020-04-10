@@ -35,9 +35,9 @@
             return this.RedirectToAction(nameof(this.All));
         }
 
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            var predictions = this.predictionsService.GetAll<PredictionsListingViewModel>();
+            var predictions = await this.predictionsService.GetAll<PredictionsListingViewModel>();
 
             return this.View(predictions);
         }

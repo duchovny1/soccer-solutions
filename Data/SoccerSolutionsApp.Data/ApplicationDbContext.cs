@@ -103,7 +103,6 @@
                 .Entity<TeamLeagues>()
                 .Property(e => e.Id)
                 .HasColumnName("id")
-                .HasColumnType("int(11)")
                 .ValueGeneratedOnAdd();
 
 

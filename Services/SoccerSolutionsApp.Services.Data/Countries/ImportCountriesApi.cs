@@ -4,11 +4,7 @@
 
     public class ImportCountriesApi
     {
-        [JsonProperty("results")]
-        public int Results { get; set; }
-
-
-        [JsonProperty("countries")]
-        public ImportCountriesServiceModel[] Countries { get; set; }
+        [JsonProperty("api")]
+        public ImportCountriesApiModel Api { get; set; }
     }
 }

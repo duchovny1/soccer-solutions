@@ -84,10 +84,8 @@
 
                 if (env.IsDevelopment())
                 {
-                    dbContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[TeamLeagues] ON;");
-                    dbContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.TeamPlayers ON;");
-                    //dbContext.Database.EnsureDeleted();
-                    //dbContext.Database.EnsureCreated();
+                    dbContext.Database.EnsureDeleted();
+                    dbContext.Database.EnsureCreated();
                 }
 
                 new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();

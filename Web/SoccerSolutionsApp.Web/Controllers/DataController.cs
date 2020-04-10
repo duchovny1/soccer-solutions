@@ -13,6 +13,7 @@
     using SoccerSolutionsApp.Data;
     using SoccerSolutionsApp.Services.Data.Countries;
     using SoccerSolutionsApp.Services.Data.Data;
+    using SoccerSolutionsApp.Services.Data.Fixtures;
     using SoccerSolutionsApp.Services.Data.Leagues;
     using SoccerSolutionsApp.Services.Data.Seasons;
     using SoccerSolutionsApp.Services.Data.Teams;
@@ -76,7 +77,7 @@
             string content = response.Content;
             if (response.IsSuccessful)
             {
-                var countries = JsonConvert.DeserializeObject<ImportApi>(content);
+                var countries = JsonConvert.DeserializeObject<ImportCountriesApi>(content);
                 await this.countriesService.CreateAsync(countries);
 
                 return this.Ok();
@@ -131,7 +132,7 @@
             return this.BadRequest();
         }
 
-        [HttpGet("{leagueId}")]
+        [HttpGet("{postteams}/{leagueId}")]
         public async Task<IActionResult> GetTeams(int leagueId)
         {
             var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/teams/league/{leagueId}");
@@ -147,6 +148,27 @@
             {
                 var teams = JsonConvert.DeserializeObject<ImportTeamsApi>(content);
                 await this.teamsService.CreateAsync(teams, leagueId);
+
+                return this.Ok();
+            }
+
+            return this.BadRequest();
+        }
+
+        [HttpGet("{postfixtures}/{leagueId}/{round}")]
+        public async Task<IActionResult> GetFixture(int leagueId, string round)
+        {
+            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{leagueId}/{round}");
+
+            var request = new RestRequest(Method.GET);
+            request.AddHeader(this.ApiHostHeader, this.ApiHostHeaderValue);
+            request.AddHeader(this.ApiKeyHeader, this.ApiKeyHeaderValue);
+            IRestResponse response = await client.ExecuteAsync(request);
+            string content = response.Content;
+            if (response.IsSuccessful)
+            {
+                var countries = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
+                await this.countriesService.CreateAsync(countries);
 
                 return this.Ok();
             }

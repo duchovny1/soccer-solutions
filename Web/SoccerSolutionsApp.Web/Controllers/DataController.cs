@@ -3,13 +3,14 @@
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
-    
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
     using RestSharp;
     using RestSharp.Authenticators;
+    using SoccerSolutionsApp.Common;
     using SoccerSolutionsApp.Data;
     using SoccerSolutionsApp.Services.Data.Countries;
     using SoccerSolutionsApp.Services.Data.Data;
@@ -21,6 +22,7 @@
 
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
     public class DataController : ControllerBase
     {
         private readonly ApplicationDbContext db;
@@ -58,6 +60,7 @@
         public string ApiKeyHeaderValue => this.configuration.GetValue<string>("x-rapidapi:KeyHeaderValue");
 
         [HttpGet("getleagues")]
+        // it may need to be with attribute allow anonymous
         public ActionResult<SelectList> GetLeagues(int countryId)
         {
             // its used by cascading drop down menu in the view
@@ -74,8 +77,8 @@
             var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/countries");
 
             var request = new RestRequest(Method.GET);
-            request.AddHeader(this.ApiHostHeader, this.ApiHostHeaderValue);
-            request.AddHeader(this.ApiKeyHeader, this.ApiKeyHeaderValue);
+            request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
+            request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
             IRestResponse response = await client.ExecuteAsync(request);
             string content = response.Content;
             if (response.IsSuccessful)
@@ -112,7 +115,7 @@
             return this.BadRequest();
         }
 
-        [HttpGet("{countryName}/{season}")]
+        [HttpGet("postleagues/{countryName}/{season}")]
         public async Task<IActionResult> LeaguesByCountryAndYear(string countryName, int season)
         {
             var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/leagues/country/{countryName}/{season}");
@@ -135,7 +138,7 @@
             return this.BadRequest();
         }
 
-        [HttpGet("{postteams}/{leagueId}")]
+        [HttpGet("postteams/{leagueId}")]
         public async Task<IActionResult> GetTeams(int leagueId)
         {
             var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/teams/league/{leagueId}");
@@ -158,7 +161,7 @@
             return this.BadRequest();
         }
 
-        [HttpGet("{postfixtures}/{leagueId}/{round}")]
+        [HttpGet("postfixtures/{leagueId}/{round}")]
         public async Task<IActionResult> GetFixture(int leagueId, string round)
         {
             var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{leagueId}/{round}");

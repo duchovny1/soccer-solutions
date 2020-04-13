@@ -9,7 +9,7 @@
     using SoccerSolutionsApp.Common;
     using SoccerSolutionsApp.Data.Models;
 
-    public class UsersToRoles
+    public class UsersToRoles : ISeeder
     {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {

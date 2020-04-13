@@ -30,10 +30,9 @@ namespace SoccerSolutionsApp.Services.Data.Seasons
 
                     await this.seasonsRepo.AddAsync(season);
                 }
-
-
-                await this.seasonsRepo.SaveChangesAsync();
             }
+
+            await this.seasonsRepo.SaveChangesAsync();
         }
     }
 }

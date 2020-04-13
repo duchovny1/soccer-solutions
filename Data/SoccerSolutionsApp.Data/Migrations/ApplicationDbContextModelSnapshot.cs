@@ -246,7 +246,9 @@ namespace SoccerSolutionsApp.Data.Migrations
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Country", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -500,7 +502,9 @@ namespace SoccerSolutionsApp.Data.Migrations
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Season", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -606,11 +610,11 @@ namespace SoccerSolutionsApp.Data.Migrations
 
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.TeamLeagues", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("LeagueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
@@ -621,20 +625,12 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("LeagueId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
+                    b.HasKey("LeagueId", "TeamId");
 
                     b.HasIndex("IsDeleted");
-
-                    b.HasIndex("LeagueId");
 
                     b.HasIndex("TeamId");
 

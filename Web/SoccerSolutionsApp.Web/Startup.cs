@@ -18,6 +18,7 @@
     using SoccerSolutionsApp.Services.Data;
     using SoccerSolutionsApp.Services.Data.Countries;
     using SoccerSolutionsApp.Services.Data.Data;
+    using SoccerSolutionsApp.Services.Data.Fixtures;
     using SoccerSolutionsApp.Services.Data.Leagues;
     using SoccerSolutionsApp.Services.Data.Predictions;
     using SoccerSolutionsApp.Services.Data.Seasons;
@@ -71,6 +72,7 @@
             services.AddTransient<ISeasonsService, SeasonsService>();
             services.AddTransient<ILeaguesService, LeaguesService>();
             services.AddTransient<IPredictionsService, PredictionsService>();
+            services.AddTransient<IFixturesService, FixturesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,11 +87,11 @@
 
                 if (env.IsDevelopment())
                 {
-                    dbContext.Database.EnsureDeleted();
-                    dbContext.Database.EnsureCreated();
+                    //dbContext.Database.EnsureDeleted();
+                    //dbContext.Database.EnsureCreated();
                 }
 
-                new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+                //new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }
 
             if (env.IsDevelopment())

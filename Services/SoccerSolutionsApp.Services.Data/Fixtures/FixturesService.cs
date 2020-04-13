@@ -10,20 +10,33 @@
     public class FixturesService : IFixturesService
     {
         private readonly IDeletableEntityRepository<Fixture> fixturesRepository;
+        private readonly IDeletableEntityRepository<League> leaguesRepository;
+        private readonly IDeletableEntityRepository<Team> teamsRepository;
 
-        public FixturesService(IDeletableEntityRepository<Fixture> fixturesRepository)
+        public FixturesService(
+            IDeletableEntityRepository<Fixture> fixturesRepository,
+            IDeletableEntityRepository<League> leaguesRepository,
+            IDeletableEntityRepository<Team> teamsRepository)
         {
             this.fixturesRepository = fixturesRepository;
+            this.leaguesRepository = leaguesRepository;
+            this.teamsRepository = teamsRepository;
         }
 
         public async Task CreateAsync(ImportFixturesApi model)
         {
             foreach (var fixture in model.Api.Fixtures)
             {
+                var isExists = await this.fixturesRepository.All().AnyAsync(x => x.Id == fixture.FixtureId);
 
-                var league = this.fixturesRepository.All().FirstOrDefaultAsync(x => x.LeagueId == fixture.LeagueId);
-                var homeTeam = this.fixturesRepository.All().FirstOrDefaultAsync(x => x.Id == fixture.HomeTeamId);
-                var awayTeam = this.fixturesRepository.All().FirstOrDefaultAsync(x => x.Id == fixture.AwayTeamId);
+                if (isExists)
+                {
+                    continue;
+                }
+
+                var league = await this.leaguesRepository.All().FirstOrDefaultAsync(x => x.Id == fixture.LeagueId);
+                var homeTeam = await this.teamsRepository.All().FirstOrDefaultAsync(x => x.Id == fixture.HomeTeamId);
+                var awayTeam = await this.teamsRepository.All().FirstOrDefaultAsync(x => x.Id == fixture.AwayTeamId);
 
                 Status status = fixture.Status == "Match Finished" ? (Status)1 : 0;
 
@@ -48,7 +61,6 @@
                         Extratime = fixture.Score.Extratime,
                         Penalty = fixture.Score.Penalty,
                     };
-
 
                     await this.fixturesRepository.AddAsync(fixtureForDatabase);
                 }

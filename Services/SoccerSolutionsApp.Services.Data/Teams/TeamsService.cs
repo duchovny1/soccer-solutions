@@ -32,34 +32,62 @@
         public async Task CreateAsync(ImportTeamsApi models, int leagueId)
         {
             League league = await this.leagueRepository.All().FirstOrDefaultAsync(x => x.Id == leagueId);
-            Country country = await this.countryRepository.All().FirstOrDefaultAsync(x => x.Name == models.Api.Teams[0].Country);
-            int teamLeaguesCount = await this.teamLeaguesRepository.All().CountAsync();
-
-            if (league != null && country != null)
+            if (league != null)
             {
                 foreach (var model in models.Api.Teams)
                 {
-                    Team team = new Team()
-                    {
-                        Id = model.TeamId,
-                        Name = model.Name,
-                        Code = model.Code,
-                        Logo = model.Logo,
-                        IsNational = model.IsNational,
-                        Founded = model.Founded,
-                        VenueName = model.VenueName,
-                        VenueCapacity = model.VenueCapacity,
-                    };
+                    Team teamToCheck = await this.teamRepository.All().FirstOrDefaultAsync(x => x.Id == model.TeamId);
 
-                    TeamLeagues teamsLeague = new TeamLeagues
+                    // if the teams already exists
+                    if (teamToCheck != null)
                     {
-                        Id = ++teamLeaguesCount,
-                        TeamId = team.Id,
-                        LeagueId = leagueId,
-                    };
+                        int teamId = teamToCheck.Id;
 
-                    await this.teamRepository.AddAsync(team);
-                    await this.teamLeaguesRepository.AddAsync(teamsLeague);
+                        // checking if the current team is being add in the mapping table
+                        TeamLeagues teamLeague = await this.teamLeaguesRepository
+                             .All().FirstOrDefaultAsync(x => x.TeamId == teamId && x.LeagueId == leagueId);
+
+                        // if its being added, doin nothing
+                        if (teamLeague != null)
+                        {
+                            continue;
+                        }
+                        // if its not, create new mapping table
+                        else
+                        {
+                            TeamLeagues teamsLeague = new TeamLeagues
+                            {
+                                TeamId = teamId,
+                                LeagueId = leagueId,
+                            };
+
+                            await this.teamLeaguesRepository.AddAsync(teamsLeague);
+                        }
+                    }
+                    // if the team does not exists
+                    else
+                    {
+                        Team team = new Team()
+                        {
+                            Id = model.TeamId,
+                            Name = model.Name,
+                            Code = model.Code,
+                            Logo = model.Logo,
+                            IsNational = model.IsNational,
+                            Founded = model.Founded,
+                            VenueName = model.VenueName,
+                            VenueCapacity = model.VenueCapacity,
+                        };
+
+                        TeamLeagues teamsLeague = new TeamLeagues
+                        {
+                            TeamId = team.Id,
+                            LeagueId = leagueId,
+                        };
+
+                        await this.teamRepository.AddAsync(team);
+                        await this.teamLeaguesRepository.AddAsync(teamsLeague);
+                    }
                 }
 
                 await this.teamRepository.SaveChangesAsync();

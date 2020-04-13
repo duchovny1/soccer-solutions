@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
     using SoccerSolutionsApp.Data.Common.Models;
     using SoccerSolutionsApp.Data.Models.Enums;
 
@@ -35,6 +36,5 @@
         public virtual Country Country { get; set; }
 
         public virtual ICollection<TeamLeagues> TeamLeagues { get; set; }
-
     }
 }

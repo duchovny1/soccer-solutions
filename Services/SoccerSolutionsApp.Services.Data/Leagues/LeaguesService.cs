@@ -27,6 +27,11 @@
         {
             foreach (var model in models.Api.Leagues)
             {
+                if (model.Season != "2018" && model.Season != "2019")
+                {
+                    continue;
+                }
+
                 bool isExist = await this.leagueRepo.All().AnyAsync(x => x.Name == model.Name
                                     && x.Season.StartYear == model.Season);
                 var country = await this.countryRepo.All().FirstOrDefaultAsync(x => x.Name.ToLower() == model.Country.ToLower());
@@ -40,6 +45,7 @@
                 {
                     League league = new League()
                     {
+                        Id = model.LeagueId,
                         Name = model.Name,
                         Type = model.Type,
                         Country = country,
@@ -51,9 +57,10 @@
 
                     await this.leagueRepo.AddAsync(league);
                 }
-
-                await this.leagueRepo.SaveChangesAsync();
             }
+
+            await this.leagueRepo.SaveChangesAsync();
+
         }
     }
 }

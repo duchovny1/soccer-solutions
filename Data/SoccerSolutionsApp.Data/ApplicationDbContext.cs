@@ -101,11 +101,7 @@
 
             builder
                 .Entity<TeamLeagues>()
-                .Property(e => e.Id)
-                .HasColumnName("id")
-                .ValueGeneratedOnAdd();
-
-
+                .HasKey(pk => new { pk.LeagueId, pk.TeamId });
             //builder.
             //   Entity<League>()
             //   .Property(f => f.LeagueType)

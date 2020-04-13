@@ -19,6 +19,10 @@
         [MaxLength(30)]
         public string GamePrediction { get; set; }
 
+        public string HomeTeamLogo { get; set; }
+
+        public string AwayTeamLogo { get; set; }
+
         public int? EventId { get; set; }
 
         public virtual Fixture Еvent { get; set; }

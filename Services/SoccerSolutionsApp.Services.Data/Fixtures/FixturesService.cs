@@ -25,7 +25,7 @@
                 var homeTeam = this.fixturesRepository.All().FirstOrDefaultAsync(x => x.Id == fixture.HomeTeamId);
                 var awayTeam = this.fixturesRepository.All().FirstOrDefaultAsync(x => x.Id == fixture.AwayTeamId);
 
-                Status status = fixture.Status == "Match Finished" ? (Status)1 : (Status)0;
+                Status status = fixture.Status == "Match Finished" ? (Status)1 : 0;
 
                 if (league != null && homeTeam != null && awayTeam != null)
                 {

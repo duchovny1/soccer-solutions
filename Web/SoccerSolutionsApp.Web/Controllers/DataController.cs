@@ -29,14 +29,16 @@
         private readonly ILeaguesService leaguesService;
         private readonly ITeamsService teamsService;
         private readonly IConfiguration configuration;
- 
+        private readonly IFixturesService fixturesService;
+
         public DataController(
             ApplicationDbContext db,
             ICountriesService countriesService,
             ISeasonsService seasonsService,
             ILeaguesService leaguesService,
             ITeamsService teamsService,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IFixturesService fixturesService)
         {
             this.db = db;
             this.countriesService = countriesService;
@@ -44,6 +46,7 @@
             this.leaguesService = leaguesService;
             this.teamsService = teamsService;
             this.configuration = configuration;
+            this.fixturesService = fixturesService;
         }
 
         public string ApiHostHeader => this.configuration.GetValue<string>("x-rapidapi:Host");
@@ -167,8 +170,8 @@
             string content = response.Content;
             if (response.IsSuccessful)
             {
-                var countries = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
-                await this.countriesService.CreateAsync(countries);
+                var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
+                await this.fixturesService.CreateAsync(fixtures);
 
                 return this.Ok();
             }

@@ -51,8 +51,4 @@
     <ProjectReference Include="..\SoccerSolutionsApp.Data.Models\SoccerSolutionsApp.Data.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>

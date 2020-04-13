@@ -25,24 +25,27 @@
 
         public async Task CreateAsync(PredictionsInputViewModel model)
         {
-            var fixture = this.fixturesRepository.All().FirstOrDefaultAsync(x => x.Id == model.EventId);
+            //var fixture = this.fixturesRepository.All().FirstOrDefaultAsync(x => x.Id == model.EventId);
 
-            if (fixture != null)
-            {
+            //if (fixture != null)
+            //{
                 Prediction prediction = new Prediction()
                 {
+                    Title = model.Title,
                     Content = model.Content,
                     EventId = model.EventId,
-                    GamePrediction = model.Prediction
+                    GamePrediction = model.Prediction,
+                    HomeTeamLogo = model.HomeTeamLogo,
+                    AwayTeamLogo = model.AwayTeamLogo,
                 };
 
                 await this.predictionsRepository.AddAsync(prediction);
                 await this.predictionsRepository.SaveChangesAsync();
-            }
-            else
-            {
-                throw new InvalidOperationException("The game you're trying to put predictions, it does not exist");
-            }
+           // }
+            //else
+            //{
+                //throw new InvalidOperationException("The game you're trying to put predictions, it does not exist");
+            //}
         }
 
         public async Task<IEnumerable<T>> GetAll<T>()

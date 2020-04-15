@@ -161,15 +161,87 @@
             return this.BadRequest();
         }
 
-        [HttpGet("postfixtures/{leagueId}/{round}")]
-        public async Task<IActionResult> GetFixture(int leagueId, string round)
+        [HttpGet("postfixtures/{leagueId}")]
+        public IActionResult GetFixture(int leagueId)
         {
-            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{leagueId}/{round}");
+            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{leagueId}");
+
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
+            request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
+            IRestResponse response = client.Execute(request);
+            string content = response.Content;
+            if (response.IsSuccessful)
+            {
+                var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
+                this.fixturesService.CreateAsync(fixtures);
+
+                return this.Ok();
+            }
+
+            return this.BadRequest();
+        }
+
+        [HttpGet("postallfixtures")]
+        public async Task<IActionResult> GetAllFixtures()
+        {
+            var leagueIds = this.leaguesService.GetAllLeaguesId();
+
+            foreach (var leagueId in leagueIds)
+            {
+                var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{leagueId}");
+
+                var request = new RestRequest(Method.GET);
+                request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
+                request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
+
+                IRestResponse response = await client.ExecuteAsync(request);
+                string content = response.Content;
+                if (response.IsSuccessful)
+                {
+                    var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
+                    await this.fixturesService.CreateAsync(fixtures);
+
+                    continue;
+                }
+
+                return this.BadRequest();
+            }
+
+            return this.Ok("everything went well!");
+        }
+
+        [HttpGet("postnextfixtures/{leagueId}")]
+        public async Task<IActionResult> GetNextFixture(int leagueId)
+        {
+            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/524/next/{leagueId}");
 
             var request = new RestRequest(Method.GET);
             request.AddHeader(this.ApiHostHeader, this.ApiHostHeaderValue);
             request.AddHeader(this.ApiKeyHeader, this.ApiKeyHeaderValue);
             IRestResponse response = await client.ExecuteAsync(request);
+            string content = response.Content;
+            if (response.IsSuccessful)
+            {
+                var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
+                await this.fixturesService.CreateAsync(fixtures);
+
+                return this.Ok();
+            }
+
+            return this.BadRequest();
+        }
+
+        [HttpGet("posth2h/{team1id}/{team2id}")]
+        public async Task<IActionResult> GetHeadToHead(int team1id, int team2id)
+        {
+            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/fixtures/h2h/{team1id}/{team2id}");
+
+            var request = new RestRequest(Method.GET);
+            request.AddHeader(this.ApiHostHeader, this.ApiHostHeaderValue);
+            request.AddHeader(this.ApiKeyHeader, this.ApiKeyHeaderValue);
+            IRestResponse response = await client.ExecuteAsync(request);
+
             string content = response.Content;
             if (response.IsSuccessful)
             {

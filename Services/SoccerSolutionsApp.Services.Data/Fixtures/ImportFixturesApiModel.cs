@@ -26,18 +26,14 @@
 
         public string Referee { get; set; }
 
-        [JsonProperty("homeTeam.team_id")]
-        public int HomeTeamId { get; set; }
+        public ImportHomeTeamModel HomeTeam { get; set; }
 
-        [JsonProperty("awayTeam.team_id")]
-        public int AwayTeamId { get; set; }
+        public ImportAwayTeamModel AwayTeam { get; set; }
 
-        public int GoalsHomeTeam { get; set; }
+        public int? GoalsHomeTeam { get; set; }
 
-        public int GoalsAwayTeam { get; set; }
+        public int? GoalsAwayTeam { get; set; }
 
         public ImportScoreApiModel Score { get; set; }
-
-
     }
 }

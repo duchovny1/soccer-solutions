@@ -34,9 +34,19 @@
                     continue;
                 }
 
+                int? homeTeamId = fixture.HomeTeam.TeamId;
+                int? awayTeamId = fixture.AwayTeam.TeamId;
+                int? goalsHomeTeam = fixture.GoalsHomeTeam;
+                int? goalsAwayTeam = fixture.GoalsAwayTeam;
+
+                if (homeTeamId == null || awayTeamId == null || goalsHomeTeam == null || goalsAwayTeam == null)
+                {
+                    continue;
+                }
+
                 var league = await this.leaguesRepository.All().FirstOrDefaultAsync(x => x.Id == fixture.LeagueId);
-                var homeTeam = await this.teamsRepository.All().FirstOrDefaultAsync(x => x.Id == fixture.HomeTeamId);
-                var awayTeam = await this.teamsRepository.All().FirstOrDefaultAsync(x => x.Id == fixture.AwayTeamId);
+                var homeTeam = await this.teamsRepository.All().FirstOrDefaultAsync(x => x.Id == homeTeamId);
+                var awayTeam = await this.teamsRepository.All().FirstOrDefaultAsync(x => x.Id == awayTeamId);
 
                 Status status = fixture.Status == "Match Finished" ? (Status)1 : 0;
 
@@ -52,14 +62,15 @@
                         Elapsed = fixture.Elapsed,
                         Venue = fixture.Venue,
                         Referee = fixture.Referee,
-                        HomeTeamId = fixture.HomeTeamId,
-                        AwayTeamId = fixture.AwayTeamId,
-                        GoalsHomeTeam = fixture.GoalsHomeTeam,
-                        GoalsAwayTeam = fixture.GoalsAwayTeam,
+                        HomeTeamId = (int)homeTeamId,
+                        AwayTeamId = (int)awayTeamId,
+                        GoalsHomeTeam = (int)goalsHomeTeam,
+                        GoalsAwayTeam = (int)goalsAwayTeam,
                         Halftime = fixture.Score.HalfTime,
                         Fulltime = fixture.Score.FullTime,
                         Extratime = fixture.Score.Extratime,
                         Penalty = fixture.Score.Penalty,
+                        LeagueId = league.Id,
                     };
 
                     await this.fixturesRepository.AddAsync(fixtureForDatabase);

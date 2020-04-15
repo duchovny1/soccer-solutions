@@ -32,7 +32,10 @@
         public async Task CreateAsync(ImportTeamsApi models, int leagueId)
         {
             League league = await this.leagueRepository.All().FirstOrDefaultAsync(x => x.Id == leagueId);
-            if (league != null)
+            Country country = await this.countryRepository.All().FirstOrDefaultAsync(x => x.Name == models.Api.Teams[0].Country);
+
+
+            if (league != null && country != null)
             {
                 foreach (var model in models.Api.Teams)
                 {
@@ -52,6 +55,7 @@
                         {
                             continue;
                         }
+
                         // if its not, create new mapping table
                         else
                         {
@@ -77,6 +81,7 @@
                             Founded = model.Founded,
                             VenueName = model.VenueName,
                             VenueCapacity = model.VenueCapacity,
+                            CountryId = country.Id,
                         };
 
                         TeamLeagues teamsLeague = new TeamLeagues

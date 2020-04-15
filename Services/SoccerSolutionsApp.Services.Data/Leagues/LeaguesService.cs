@@ -1,6 +1,8 @@
 ﻿namespace SoccerSolutionsApp.Services.Data.Leagues
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
@@ -61,6 +63,13 @@
 
             await this.leagueRepo.SaveChangesAsync();
 
+        }
+
+        public IEnumerable<int> GetAllLeaguesId()
+        {
+            var leaguesIds = this.leagueRepo.All().Select(x => x.Id).ToArray();
+
+            return leaguesIds;
         }
     }
 }

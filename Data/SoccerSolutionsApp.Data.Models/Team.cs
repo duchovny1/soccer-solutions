@@ -20,11 +20,11 @@
 
         public bool IsNational { get; set; }
 
-        public int Founded { get; set; }
+        public int? Founded { get; set; }
 
         public string VenueName { get; set; }
 
-        public int VenueCapacity { get; set; }
+        public int? VenueCapacity { get; set; }
 
         public int CountryId { get; set; }
 

@@ -1,10 +1,25 @@
-﻿@using SoccerSolutionsApp.Common;
+﻿@model IEnumerable<SoccerSolutionsApp.Web.ViewModels.Main.LeaguesListingViewModel>
 
-@{ 
+@using SoccerSolutionsApp.Common;
+
+@{
     this.ViewData["Title"] = "Home page";
-} 
+}
 
 
 <div class="text-center">
     <h1 class="display-4">Welcome to @GlobalConstants.SystemName</h1>
+    <i class="fa-flag-usa"></i>
+    <i class=""></i>
+    <i class="fa fa-twitter"></i>
+</div>
+
+<div class="col-xs-12 col-md-8 col-md-offset-2">
+
+    @foreach (var league in Model)
+    {
+        <i class="fa fa-twitter"></i>
+        <a href="#" class="list-group-item list-group-item-action"><span><i class="fa fa-twitter">@league.CountryName</i> - @league.Name</span></a>
+    }
+
 </div>

@@ -17,13 +17,13 @@
         [JsonProperty("is_national")]
         public bool IsNational { get; set; }
 
-        public int Founded { get; set; }
+        public int? Founded { get; set; }
 
         [JsonProperty("venue_name")]
         public string VenueName { get; set; }
 
         [JsonProperty("venue_capacity")]
-        public int VenueCapacity { get; set; }
+        public int? VenueCapacity { get; set; }
 
         public string Country { get; set; }
 

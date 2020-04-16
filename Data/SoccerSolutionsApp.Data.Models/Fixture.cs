@@ -8,11 +8,6 @@
 
     public class Fixture : BaseDeletableModel<int>
     {
-        public Fixture()
-        {
-            // because when we add game, game is not finished
-        }
-
         public DateTime KickOff { get; set; }
 
         public TimeSpan EventTimeSpan { get; set; }
@@ -34,18 +29,18 @@
 
         public virtual Team HomeTeam { get; set; }
 
-        [Required]
+
         [Range(0, 30)]
-        public int GoalsHomeTeam { get; set; }
+        public int? GoalsHomeTeam { get; set; }
 
         [Required]
         public int AwayTeamId { get; set; }
 
         public virtual Team AwayTeam { get; set; }
 
-        [Required]
+
         [Range(0, 30)]
-        public int GoalsAwayTeam { get; set; }
+        public int? GoalsAwayTeam { get; set; }
 
         public virtual FullTimeExit FullTimeExit { get; set; }
 

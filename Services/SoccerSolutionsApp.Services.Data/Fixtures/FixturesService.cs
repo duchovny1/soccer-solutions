@@ -27,7 +27,7 @@
         {
             foreach (var fixture in model.Api.Fixtures)
             {
-                var isExists = await this.fixturesRepository.All().AnyAsync(x => x.Id == fixture.FixtureId);
+                var isExists = this.fixturesRepository.All().Any(x => x.Id == fixture.FixtureId);
 
                 if (isExists)
                 {
@@ -39,16 +39,22 @@
                 int? goalsHomeTeam = fixture.GoalsHomeTeam;
                 int? goalsAwayTeam = fixture.GoalsAwayTeam;
 
-                if (homeTeamId == null || awayTeamId == null || goalsHomeTeam == null || goalsAwayTeam == null)
+                if (homeTeamId == null || awayTeamId == null)
                 {
                     continue;
                 }
 
-                var league = await this.leaguesRepository.All().FirstOrDefaultAsync(x => x.Id == fixture.LeagueId);
-                var homeTeam = await this.teamsRepository.All().FirstOrDefaultAsync(x => x.Id == homeTeamId);
-                var awayTeam = await this.teamsRepository.All().FirstOrDefaultAsync(x => x.Id == awayTeamId);
+                var league = this.leaguesRepository.All().FirstOrDefault(x => x.Id == fixture.LeagueId);
+                var homeTeam = this.teamsRepository.All().FirstOrDefault(x => x.Id == homeTeamId);
+                var awayTeam = this.teamsRepository.All().FirstOrDefault(x => x.Id == awayTeamId);
 
-                Status status = fixture.Status == "Match Finished" ? (Status)1 : 0;
+                Status status = fixture.Status switch
+                {
+                    "Match Finished" => Status.MatchFinished,
+                    "Not Started" => Status.NotStarted,
+                    "Match Postponed" => Status.Postponed,
+                    _ => throw new System.NotImplementedException(),
+                };
 
                 if (league != null && homeTeam != null && awayTeam != null)
                 {
@@ -64,14 +70,34 @@
                         Referee = fixture.Referee,
                         HomeTeamId = (int)homeTeamId,
                         AwayTeamId = (int)awayTeamId,
-                        GoalsHomeTeam = (int)goalsHomeTeam,
-                        GoalsAwayTeam = (int)goalsAwayTeam,
+                        GoalsHomeTeam = goalsHomeTeam,
+                        GoalsAwayTeam = goalsAwayTeam,
                         Halftime = fixture.Score.HalfTime,
                         Fulltime = fixture.Score.FullTime,
                         Extratime = fixture.Score.Extratime,
                         Penalty = fixture.Score.Penalty,
                         LeagueId = league.Id,
                     };
+
+                    if (status == Status.MatchFinished && goalsHomeTeam != null && goalsAwayTeam != null)
+                    {
+                        FullTimeExit fullTimeExit;
+                        int? result = goalsHomeTeam - goalsAwayTeam;
+                        if (result > 0)
+                        {
+                            fullTimeExit = FullTimeExit.HomeWin;
+                        }
+                        else if (result < 0)
+                        {
+                            fullTimeExit = FullTimeExit.AwayWin;
+                        }
+                        else
+                        {
+                            fullTimeExit = FullTimeExit.Draw;
+                        }
+
+                        fixtureForDatabase.FullTimeExit = fullTimeExit;
+                    }
 
                     await this.fixturesRepository.AddAsync(fixtureForDatabase);
                 }

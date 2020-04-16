@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SoccerSolutionsApp.Data;
 
 namespace SoccerSolutionsApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200415170029_MakeGoalsInFixtureNullable")]
+    partial class MakeGoalsInFixtureNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -575,7 +577,7 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("Founded")
+                    b.Property<int>("Founded")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -593,7 +595,7 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("VenueCapacity")
+                    b.Property<int>("VenueCapacity")
                         .HasColumnType("int");
 
                     b.Property<string>("VenueName")

@@ -4,5 +4,6 @@
     {
         NotStarted = 0,
         MatchFinished = 1,
+        Postponed = 2,
     }
 }

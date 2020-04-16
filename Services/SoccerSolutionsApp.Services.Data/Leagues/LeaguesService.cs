@@ -8,6 +8,7 @@
     using Microsoft.EntityFrameworkCore;
     using SoccerSolutionsApp.Data.Common.Repositories;
     using SoccerSolutionsApp.Data.Models;
+    using SoccerSolutionsApp.Services.Mapping;
 
     public class LeaguesService : ILeaguesService
     {
@@ -63,6 +64,13 @@
 
             await this.leagueRepo.SaveChangesAsync();
 
+        }
+
+        public IEnumerable<T> GetAll<T>()
+        {
+            IQueryable<League> leagues = this.leagueRepo.All();
+
+            return leagues.To<T>().ToList();
         }
 
         public IEnumerable<int> GetAllLeaguesId()

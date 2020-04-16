@@ -211,14 +211,14 @@
             return this.Ok("everything went well!");
         }
 
-        [HttpGet("postnextfixtures/{leagueId}")]
-        public async Task<IActionResult> GetNextFixture(int leagueId)
+        [HttpGet("postnextfixtures/{leagueId}/{number:int=10}")]
+        public async Task<IActionResult> GetNextFixture(int leagueId, int number = 10)
         {
-            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/524/next/{leagueId}");
+            var client = new RestClient($" https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{leagueId}/next/{number}");
 
             var request = new RestRequest(Method.GET);
-            request.AddHeader(this.ApiHostHeader, this.ApiHostHeaderValue);
-            request.AddHeader(this.ApiKeyHeader, this.ApiKeyHeaderValue);
+            request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
+            request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
             IRestResponse response = await client.ExecuteAsync(request);
             string content = response.Content;
             if (response.IsSuccessful)

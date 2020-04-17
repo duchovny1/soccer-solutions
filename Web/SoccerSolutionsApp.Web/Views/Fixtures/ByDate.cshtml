@@ -1,0 +1,59 @@
+﻿@model IEnumerable<SoccerSolutionsApp.Web.ViewModels.Fixtures.FixtureViewModel>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.KickOff)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HomeTeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AwayTeamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StatusShort)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fulltime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.KickOff)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HomeTeamName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AwayTeamName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StatusShort)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fulltime)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

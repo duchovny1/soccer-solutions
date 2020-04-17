@@ -68,7 +68,7 @@
 
         public IEnumerable<T> GetAll<T>()
         {
-            IQueryable<League> leagues = this.leagueRepo.All();
+            IQueryable<League> leagues = this.leagueRepo.All().Where(x => x.Season.StartYear == "2019");
 
             return leagues.To<T>().ToList();
         }

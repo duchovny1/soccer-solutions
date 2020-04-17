@@ -1,100 +1,76 @@
 ﻿@using SoccerSolutionsApp.Common
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>@this.ViewData["Title"] - @GlobalConstants.SystemName</title>
-        <script src="@Url.Content("~/Scripts/jquery.min.js")"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@this.ViewData["Title"] - @GlobalConstants.SystemName</title>
+    <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+    <link href="~/lib/jquery-ui/themes/le-frog/jquery-ui.css" rel="stylesheet" />
+    <link href="~/lib/fontawesome/css/all.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/addons/flag.min.css" rel="stylesheet" />
+    <link href="~/font-awesome/css/fontawesome.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
 
-
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous" asp-append-version="true">
-        <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
-        <link href="~/font-awesome/css/all.css" rel="stylesheet" />
-        <link href="~/font-awesome/css/fontawesome.css" rel="stylesheet" />
-        <link href="~/font-awesome/css/brands.css" rel="stylesheet" />
-        <link href="~/font-awesome/css/regular.css" rel="stylesheet" />
-        <link href="~/font-awesome/css/solid.css" rel="stylesheet" />
-        <link href="~/font-awesome/css/svg-with-js.css" rel="stylesheet" />
-        <link href="~/font-awesome/css/v4-shims.css" rel="stylesheet" />
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
-        <link href="~/css/predictionlisting.css" rel="stylesheet" asp-append-version="true" />
-        <script src="~/lib/jquery/dist/jquery.js" asp-append version="true"></script>
-        <link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
-        <link href="~/lib/twitter-bootstrap/css/bootstrap-reboot.css" rel="stylesheet" asp-append-version="true" />
-        <link href="~/lib/twitter-bootstrap/css/bootstrap-grid.css" rel="stylesheet" asp-append-version="true" />
-        <environment names="Development">
-        </environment>
-        <environment names="Staging,Production">
-            <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
-            <link href="~/css/predictionlisting.css" rel="stylesheet" asp-append-version="true" />
-
-        </environment>
-    </head>
-    <body>
-        <header>
-            <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-                <div class="container">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@GlobalConstants.SystemName</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                        <partial name="_LoginPartial" />
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Main</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Settings" asp-action="Index">Teams</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Teams" asp-action="All">Tournaments</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Predictions" asp-action="All">Predictions</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Predictions" asp-action="All">Fixtures</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
-
-        <div class="container">
-            <partial name="_CookieConsentPartial" />
-            <main role="main" class="pb-3">
-                @this.RenderBody()
-            </main>
-        </div>
-
-        <footer class="border-top footer text-muted">
+</head>
+<body>
+    <header>
+        
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@GlobalConstants.SystemName</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Main</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Settings" asp-action="Index">Teams</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Teams" asp-action="All">Tournaments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Predictions" asp-action="All">Predictions</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Predictions" asp-action="All">Fixtures</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </footer>
+        </nav>
+    </header>
 
-        <environment names="Development">
-            <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
-            <script src="~/lib/jquery-validation/dist/jquery.validate.js" asp-append-version="true"></script>
-            <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
-            <script src="~/js/site.js" asp-append-version="true"></script>
-        </environment>
-        <environment names="Staging,Production">
-            <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
-            <script src="~/lib/jquery-validation/dist/jquery.validate.min.js" asp-append-version="true"></script>
-            <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js" asp-append-version="true"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
-            <script src="~/js/site.min.js" asp-append-version="true"></script>
-        </environment>
+    <div class="container">
+        <partial name="_CookieConsentPartial" />
+        <main role="main" class="pb-3">
+            @this.RenderBody()
+        </main>
+       
+    </div>
 
-        @this.RenderSection("Scripts", required: false)
-    </body>
-    </html>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; @DateTime.Now.Year - @GlobalConstants.SystemName - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+
+    @this.RenderSection("Scripts", required: false)
+</body>
+</html>
+
 
 
 

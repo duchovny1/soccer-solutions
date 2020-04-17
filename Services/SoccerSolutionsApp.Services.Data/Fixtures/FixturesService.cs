@@ -1,11 +1,14 @@
 ﻿namespace SoccerSolutionsApp.Services.Data.Fixtures
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using SoccerSolutionsApp.Data.Common.Repositories;
     using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Data.Models.Enums;
+    using SoccerSolutionsApp.Services.Mapping;
+    using SoccerSolutionsApp.Web.ViewModels.Fixtures;
 
     public class FixturesService : IFixturesService
     {
@@ -104,6 +107,13 @@
             }
 
             await this.fixturesRepository.SaveChangesAsync();
+        }
+
+        public IEnumerable<FixtureViewModel> GetFixturesByDate(FixturesByDateInputModel model)
+        {
+            var fixtures = this.fixturesRepository.All().Where(x => x.KickOff == model.Date);
+
+            return fixtures.To<FixtureViewModel>().ToList();
         }
     }
 }

@@ -9,17 +9,26 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome to @GlobalConstants.SystemName</h1>
-    <i class="fa-flag-usa"></i>
-    <i class=""></i>
-    <i class="fa fa-twitter"></i>
+
 </div>
 
-<div class="col-xs-12 col-md-8 col-md-offset-2">
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 ">
 
-    @foreach (var league in Model)
-    {
-        <i class="fa fa-twitter"></i>
-        <a href="#" class="list-group-item list-group-item-action"><span><i class="fa fa-twitter">@league.CountryName</i> - @league.Name</span></a>
-    }
-
+            @foreach (var league in Model)
+            {
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="@league.CountryName.ToLower() flag"></i>
+                    <span>@league.CountryName - @league.Name</span>
+                    <i class="fas fa-arrow-alt-circle-right float-right"></i>
+                    @* 
+                        MUST PUT AJAX ON CLICK ON THE BAR WITH GAMES
+                        MUST PUT ANCHOR TAG ON ICON
+                        *@
+                </a>
+            }
+        </div>
+            <partial name="_CalendarDataPicker.cshtml" />
+    </div>
 </div>

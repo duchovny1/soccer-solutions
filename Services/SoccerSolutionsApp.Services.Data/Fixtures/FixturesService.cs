@@ -1,5 +1,6 @@
 ﻿namespace SoccerSolutionsApp.Services.Data.Fixtures
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -9,21 +10,25 @@
     using SoccerSolutionsApp.Data.Models.Enums;
     using SoccerSolutionsApp.Services.Mapping;
     using SoccerSolutionsApp.Web.ViewModels.Fixtures;
+    using SoccerSolutionsApp.Web.ViewModels.Main;
 
     public class FixturesService : IFixturesService
     {
         private readonly IDeletableEntityRepository<Fixture> fixturesRepository;
         private readonly IDeletableEntityRepository<League> leaguesRepository;
         private readonly IDeletableEntityRepository<Team> teamsRepository;
+        private readonly IDeletableEntityRepository<TeamLeagues> teamLeaguesRepository;
 
         public FixturesService(
             IDeletableEntityRepository<Fixture> fixturesRepository,
             IDeletableEntityRepository<League> leaguesRepository,
-            IDeletableEntityRepository<Team> teamsRepository)
+            IDeletableEntityRepository<Team> teamsRepository,
+            IDeletableEntityRepository<TeamLeagues> teamLeaguesRepository)
         {
             this.fixturesRepository = fixturesRepository;
             this.leaguesRepository = leaguesRepository;
             this.teamsRepository = teamsRepository;
+            this.teamLeaguesRepository = teamLeaguesRepository;
         }
 
         public async Task CreateAsync(ImportFixturesApi model)
@@ -114,6 +119,25 @@
             var fixtures = this.fixturesRepository.All().Where(x => x.KickOff == model.Date);
 
             return fixtures.To<FixtureViewModel>().ToList();
+        }
+
+        public async Task<IEnumerable<FixturesListingViewModel>> GetNextFixturesByIdAsync(int leagueId)
+        {
+            // im taking next game in the league and take its game week(round)
+            // then im taking all fixtures that are in the same game week(round)
+            Fixture nextGame = await this.fixturesRepository.All()
+                              .FirstOrDefaultAsync(x => x.LeagueId == leagueId && x.KickOff > DateTime.UtcNow);
+
+            if (nextGame == null)
+            {
+                return null;
+            }
+
+            string round = nextGame.Round;
+
+            IQueryable<Fixture> nextFixtures = this.fixturesRepository.All().Where(x => x.LeagueId == leagueId && x.Round == round);
+
+            return await nextFixtures.To<FixturesListingViewModel>().ToListAsync();
         }
     }
 }

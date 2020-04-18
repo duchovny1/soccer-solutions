@@ -15,20 +15,39 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 ">
-
-            @foreach (var league in Model)
-            {
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="@league.CountryName.ToLower() flag"></i>
-                    <span>@league.CountryName - @league.Name</span>
-                    <i class="fas fa-arrow-alt-circle-right float-right"></i>
-                    @* 
+            <table class="table">
+                @foreach (var league in Model)
+                {
+                    <thead style="border-bottom-style: solid;">
+                        <tr class="col" asp-controller="Leagues" asp-action="ById" asp-route-id="@league.Id">
+                            <th>
+                                <i class="@league.CountryName.ToLower() flag"></i>
+                                <span>@league.CountryName - @league.Name</span>
+                                <a asp-controller="Leagues" asp-action="ById"><i class="fas fa-arrow-alt-circle-right float-right" style="color:#000000"></i></a>
+                                @*
                         MUST PUT AJAX ON CLICK ON THE BAR WITH GAMES
                         MUST PUT ANCHOR TAG ON ICON
-                        *@
-                </a>
-            }
+                                *@
+                            </th>
+                        </tr>
+                    </thead>
+                    if (league.NextFixturesForLeague != null)
+                    {
+                        <tbody>
+                            @foreach (var fixtures in league.NextFixturesForLeague)
+                            {
+                                <tr class="row justify-content-center">
+                                    <td align="center">
+                                        @fixtures.HomeTeamName - @fixtures.StatusShort.ToUpper() - @fixtures.AwayTeamName
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+
+                }
+            </table>
         </div>
-            <partial name="_CalendarDataPicker.cshtml" />
+        <partial name="_CalendarDataPicker.cshtml" model="new SoccerSolutionsApp.Web.ViewModels.Fixtures.FixturesByDateInputModel()" />
     </div>
 </div>

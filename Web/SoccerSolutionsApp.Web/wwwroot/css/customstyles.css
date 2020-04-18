@@ -1,5 +1,14 @@
 ﻿th:hover{
-    background-color: #f5f5f5;
+    background-color: #ffffff;
     cursor: pointer;
 }
 
+tr.leaguesmain:hover{
+    background-color:#ffffff
+}
+
+
+td.middle:hover {
+    background-color: #808080;
+    cursor: pointer;
+}

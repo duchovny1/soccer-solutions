@@ -1,14 +1,17 @@
-﻿th:hover{
-    background-color: #ffffff;
-    cursor: pointer;
-}
-
-tr.leaguesmain:hover{
-    background-color:#ffffff
-}
-
+﻿
 
 td.middle:hover {
     background-color: #808080;
     cursor: pointer;
+}
+
+td.middle1:hover {
+    background-color: #c0bcbc;
+    cursor: pointer;
+}
+
+
+
+a.teamListing {
+    color: #212529;
 }

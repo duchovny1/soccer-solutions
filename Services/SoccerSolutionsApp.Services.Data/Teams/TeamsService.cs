@@ -8,6 +8,8 @@
     using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Data.Teams;
     using SoccerSolutionsApp.Services.Mapping;
+    using SoccerSolutionsApp.Web.ViewModels.Fixtures;
+    using SoccerSolutionsApp.Web.ViewModels.Teams;
 
     public class TeamsService : ITeamsService
     {
@@ -106,7 +108,11 @@
 
             return query.To<T>()
                 .ToList();
-            //return query.Tйo<T>.ToList();
+
         }
+
+        public async Task<T> GetTeamByIdAsync<T>(int id)
+              => await this.teamRepository.All().Where(x => x.Id == id)
+                                          .To<T>().FirstOrDefaultAsync();
     }
 }

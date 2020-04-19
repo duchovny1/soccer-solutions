@@ -10,6 +10,7 @@
     using SoccerSolutionsApp.Data;
     using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Data.Countries;
+    using SoccerSolutionsApp.Services.Data.Fixtures;
     using SoccerSolutionsApp.Services.Data.TeamsServices;
     using SoccerSolutionsApp.Web.ViewModels.Teams;
 
@@ -18,15 +19,18 @@
         private readonly ITeamsService teamsService;
         private readonly ICountriesService countriesService;
         private readonly ApplicationDbContext dbContext;
+        private readonly IFixturesService fixturesService;
 
         public TeamsController(
             ITeamsService teamsService,
             ICountriesService countriesService,
-            ApplicationDbContext dbContext)
+            ApplicationDbContext dbContext,
+            IFixturesService fixturesService)
         {
             this.teamsService = teamsService;
             this.countriesService = countriesService;
             this.dbContext = dbContext;
+            this.fixturesService = fixturesService;
         }
 
         public IActionResult All()
@@ -44,6 +48,16 @@
             };
 
             return this.View(viewModel);
+        }
+
+        public async Task<IActionResult> ById(int teamId)
+        {
+            var teamViewModel = await this.teamsService.GetTeamByIdAsync<TeamInfoViewModel>(teamId);
+
+            teamViewModel.PastFixtures = await this.fixturesService.GetPastFixturesForTeamById(teamId, 8);
+            teamViewModel.NextFixtures = await this.fixturesService.GetNexTFixturesForTeamByIdAsync(teamId, 8);
+
+            return this.View(teamViewModel);
         }
     }
 

@@ -35,7 +35,6 @@
                 model.NextFixturesForLeague = await this.fixturesService.GetNextFixturesByIdAsync(model.Id);
             }
 
-
             int pages = await this.leaguesService.CountAsync();
 
             viewModel.PagesCount = (int)Math.Ceiling((double)pages / LeaguesPerPage);

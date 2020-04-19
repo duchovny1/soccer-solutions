@@ -1,0 +1,80 @@
+﻿@model SoccerSolutionsApp.Web.ViewModels.Teams.TeamInfoViewModel
+
+<div style="background-color:#808080">
+    <h4>@Model.Name.ToUpper() FC</h4>
+    <hr />
+</div>
+
+
+<div class="container">
+     <span class="row offset-3">INFO</span>
+    <div class="row offset-3" style="width:50%">
+        <dl class="col">
+            <dd>
+                <img src="@Model.Logo" alt="..." class="img-thumbnail">
+            <dd>
+        </dl>
+        <dl class="col">
+            
+            <dt class="">
+                @Html.DisplayNameFor(model => model.Founded)  @Model.Founded
+            </dt>
+            <dd class="">
+                @Model.Founded
+            </dd>
+            <dt class="">
+                @Html.DisplayNameFor(model => model.VenueName)
+            </dt>
+            <dd class="">
+                @Model.VenueName
+            </dd>
+            <dt class="">
+                @Html.DisplayNameFor(model => model.VenueCapacity)
+            </dt>
+            <dd class="">
+                @Model.VenueCapacity
+            </dd>
+        </dl>
+    </div>
+    
+</div>
+
+@*THIS THING FROM HERE TO ABOVE NEEDS TO BE IN PARTIAL VIEW !*@
+
+
+<h6 class="row-cols-3 offset-3" >
+    <a asp-controller="Teams" asp-action="AllGames" asp-route-teamId="@Model.Id" style="color:#f03d3d">
+        MATCHES
+        <i class="fas fa-arrow-alt-circle-right"></i>
+    </a>
+</h6>
+
+<div class="container row-8">
+    <div class="row offset-3" style="height:10%">
+        <table class="table table-striped">
+            <thead></thead>
+            <tbody>
+                @for (int i = 0; i < 8; i++)
+                {
+                    <tr class="d-sm-flex">
+                        <th scope="col"></th>
+                        <td class="col-1">SUN</td>
+                        <td class="col-1">27/07/07</td>
+                        <td class="col-1">UCL</td>
+                        <td class="col-3" style="float:right">
+                            MAN UNITED
+                        </td>
+                        <td class="col-2" >
+                            2 : 1
+                        </td>
+                        <td class="col-3" style="float:left">
+                            Liverpool
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

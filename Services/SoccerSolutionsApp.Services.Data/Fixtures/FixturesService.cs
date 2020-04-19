@@ -139,5 +139,20 @@
 
             return await nextFixtures.To<FixturesListingViewModel>().ToListAsync();
         }
+
+        public async Task<IEnumerable<PastFixturesViewModel>> GetPastFixturesForTeamById(int teamId, int take)
+            => await this.fixturesRepository.All().Where(x => x.Status == Status.MatchFinished)
+                .OrderByDescending(x => x.KickOff)
+                .Take(take)
+                .To<PastFixturesViewModel>()
+                .ToListAsync();
+
+        public async Task<IEnumerable<NextFixturesViewModel>> GetNexTFixturesForTeamByIdAsync(int teamId, int take)
+            => await this.fixturesRepository.All().Where(x => x.Status != Status.MatchFinished)
+                .OrderBy(x => x.KickOff)
+                .Take(take)
+                .To<NextFixturesViewModel>()
+                .ToListAsync();
+
     }
 }

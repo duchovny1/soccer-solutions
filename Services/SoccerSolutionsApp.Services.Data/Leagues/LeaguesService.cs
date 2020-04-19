@@ -12,6 +12,7 @@
 
     public class LeaguesService : ILeaguesService
     {
+
         private readonly IDeletableEntityRepository<League> leagueRepo;
         private readonly IDeletableEntityRepository<Country> countryRepo;
         private readonly IDeletableEntityRepository<Season> seasonRepo;
@@ -66,13 +67,19 @@
 
         }
 
-        public IEnumerable<T> GetAll<T>()
+        public IEnumerable<T> GetAll<T>(int take, int skip = 0)
         {
             IQueryable<League> leagues = this.leagueRepo.All()
-                         .Where(x => x.Season.StartYear == "2019");
+                         .Where(x => x.Season.StartYear == "2019")
+                         .Skip(skip)
+                         .Take(take);
 
             return leagues.To<T>().ToList();
         }
+
+        public async Task<int> CountAsync()
+            => await this.leagueRepo.All()
+                  .Where(x => x.Season.StartYear == "2019").CountAsync();
 
         public IEnumerable<int> GetAllLeaguesId()
         {

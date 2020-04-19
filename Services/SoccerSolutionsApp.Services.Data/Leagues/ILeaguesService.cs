@@ -10,6 +10,8 @@
 
         IEnumerable<int> GetAllLeaguesId();
 
-        IEnumerable<T> GetAll<T>();
+        Task<int> CountAsync();
+
+        IEnumerable<T> GetAll<T>(int take, int skip = 0);
     }
 }

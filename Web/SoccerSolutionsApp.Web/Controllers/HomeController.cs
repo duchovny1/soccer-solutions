@@ -1,5 +1,7 @@
 ﻿namespace SoccerSolutionsApp.Web.Controllers
 {
+    using System;
+    using System.Collections;
     using System.Diagnostics;
     using System.Threading.Tasks;
 
@@ -11,6 +13,7 @@
 
     public class HomeController : BaseController
     {
+        private const int LeaguesPerPage = 25;
         private readonly ILeaguesService leaguesService;
         private readonly IFixturesService fixturesService;
 
@@ -22,15 +25,21 @@
             this.fixturesService = fixturesService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            var viewModel = this.leaguesService.GetAll<LeaguesListingViewModel>();
+            var viewModel = new MainPageLeaguesListingViewModel();
+            viewModel.Leagues = this.leaguesService.GetAll<LeaguesListingViewModel>(LeaguesPerPage, (page - 1) * LeaguesPerPage);
 
-            foreach (var model in viewModel)
+            foreach (var model in viewModel.Leagues)
             {
                 model.NextFixturesForLeague = await this.fixturesService.GetNextFixturesByIdAsync(model.Id);
             }
-            
+
+
+            int pages = await this.leaguesService.CountAsync();
+
+            viewModel.PagesCount = (int)Math.Ceiling((double)pages / LeaguesPerPage);
+            viewModel.CurrentPage = page;
             return this.View(viewModel);
         }
 

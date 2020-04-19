@@ -16,6 +16,8 @@
         // league name
         public string Name { get; set; }
 
+        public int PagesCount { get; set; }
+
         public IEnumerable<FixturesListingViewModel> NextFixturesForLeague { get; set; }
     }
 }

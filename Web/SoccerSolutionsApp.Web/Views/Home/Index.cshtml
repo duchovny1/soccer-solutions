@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SoccerSolutionsApp.Web.ViewModels.Main.LeaguesListingViewModel>
+﻿@model SoccerSolutionsApp.Web.ViewModels.Main.MainPageLeaguesListingViewModel
 
 @using SoccerSolutionsApp.Common;
 
@@ -20,42 +20,50 @@
     </div>
     <div class="row">
         <div class="col-md-8 ">
-            <a href="#" style="float:left; color:#000000; margin-top:5px;"><i class="fas fa-angle-double-left"></i>  Previous</a>
-            <a href="#" style="float:right; color:#000000; ">Next  <i class="fas fa-angle-double-right"></i></a>
+            <nav>
 
 
-
-            @foreach (var league in Model)
-            {
-                <table class="table">
+                @if (Model.CurrentPage > 1)
+                {
+                    <a style="float:left; color:#000000; margin-top:5px;" asp-controller="Home" asp-action="Index" asp-route-page="@(Model.CurrentPage - 1)"><i class="fas fa-angle-double-left"></i> Previous</a>
+                }
+                @if (Model.CurrentPage < Model.PagesCount)
+                {
+                    <a style="float:right; color:#000000;" asp-controller="Home" asp-action="Index" asp-route-page="@(Model.CurrentPage + 1)">Next  <i class="fas fa-angle-double-right"></i></a>
+                }
+            </nav>
+            <table class="table">
+                @foreach (var league in Model.Leagues)
+                {
                     <thead class="thead-dark" style="border-bottom-style: solid;">
                         <tr class="leaguesmain" asp-controller="Leagues" asp-action="ById" asp-route-id="@league.Id" onclick="showFixtures(@league.Id)">
                             <th scope="row">
                                 <i class="@league.CountryName.ToLower() flag"></i>
                                 <span>@league.CountryName - @league.Name</span>
-                                <a asp-controller="Leagues" asp-action="ById"><i class="fas fa-arrow-alt-circle-right float-right" style="color:#000000"></i></a>
+                                <a asp-controller="Leagues" asp-action="ById"><i class="fas fa-arrow-alt-circle-right float-right" style="color:#ffffff"></i></a>
                                 @*
                                 *@
                             </th>
                         </tr>
                     </thead>
-                    if (league.NextFixturesForLeague != null)
+                    @if (league.NextFixturesForLeague != null)
                     {
-                    <tbody class="table table-striped">
-                        @foreach (var fixtures in league.NextFixturesForLeague)
-                        {
-                            <tr class=" @league.Id row-cols-1" style="display:none; border-bottom-style:groove; border-bottom-color: #f03d3d;">
-                                <th scope="col"></th>
-                                <td style="width:40%; text-align:right">@fixtures.HomeTeamName</td>
-                                <td class="middle" style="width:20%; text-align:center;">@fixtures.StatusShort.ToUpper()</td>
-                                <td style="width:40%; text-align:left">@fixtures.AwayTeamName</td>
-                            </tr>
-                        }
-                    </tbody>
+                        <tbody class="table table-striped">
+                            @foreach (var fixtures in league.NextFixturesForLeague)
+                            {
+                                <tr class=" @league.Id row-cols-1" style="display:none; border-bottom-style:groove; border-bottom-color: #f03d3d;">
+                                    <th scope="col"></th>
+                                    <td style="width:40%; text-align:right">@fixtures.HomeTeamName</td>
+                                    <td class="middle" style="width:20%; text-align:center;">@fixtures.StatusShort.ToUpper()</td>
+                                    <td style="width:40%; text-align:left">@fixtures.AwayTeamName</td>
+                                </tr>
+                            }
+                        </tbody>
                     }
 
-                </table>
-            }
+
+                }
+            </table>
         </div>
         <partial name="_CalendarDataPicker.cshtml" model="new SoccerSolutionsApp.Web.ViewModels.Fixtures.FixturesByDateInputModel()" />
     </div>

@@ -29,6 +29,8 @@
 
         public DateTime? SeasonEnd { get; set; }
 
+        public string LeagueShort { get; set; }
+
         public string Logo { get; set; }
 
         public int CountryId { get; set; }

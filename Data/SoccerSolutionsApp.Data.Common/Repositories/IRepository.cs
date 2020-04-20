@@ -13,6 +13,10 @@
 
         Task AddAsync(TEntity entity);
 
+        void Add(TEntity entity);
+
+        int SaveChanges();
+
         void Update(TEntity entity);
 
         void Delete(TEntity entity);

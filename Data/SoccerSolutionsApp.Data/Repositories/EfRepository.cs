@@ -27,6 +27,8 @@
 
         public virtual Task AddAsync(TEntity entity) => this.DbSet.AddAsync(entity).AsTask();
 
+        public virtual void Add(TEntity entity) => this.DbSet.Add(entity);
+
         public virtual void Update(TEntity entity)
         {
             var entry = this.Context.Entry(entity);
@@ -39,6 +41,8 @@
         }
 
         public virtual void Delete(TEntity entity) => this.DbSet.Remove(entity);
+
+        public int SaveChanges() => this.Context.SaveChanges();
 
         public Task<int> SaveChangesAsync() => this.Context.SaveChangesAsync();
 

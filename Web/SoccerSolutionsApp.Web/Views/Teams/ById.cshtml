@@ -7,7 +7,7 @@
 
 
 <div class="container">
-     <span class="row offset-3">INFO</span>
+    <span class="row offset-3">INFO</span>
     <div class="row offset-3" style="width:50%">
         <dl class="col">
             <dd>
@@ -15,7 +15,7 @@
             <dd>
         </dl>
         <dl class="col">
-            
+
             <dt class="">
                 @Html.DisplayNameFor(model => model.Founded)  @Model.Founded
             </dt>
@@ -36,13 +36,13 @@
             </dd>
         </dl>
     </div>
-    
+
 </div>
 
 @*THIS THING FROM HERE TO ABOVE NEEDS TO BE IN PARTIAL VIEW !*@
 
 
-<h6 class="row-cols-3 offset-3" >
+<h6 class="row-cols-3 offset-3">
     <a asp-controller="Teams" asp-action="AllGames" asp-route-teamId="@Model.Id" style="color:#f03d3d">
         MATCHES
         <i class="fas fa-arrow-alt-circle-right"></i>
@@ -54,21 +54,55 @@
         <table class="table table-striped">
             <thead></thead>
             <tbody>
-                @for (int i = 0; i < 8; i++)
+                @foreach (var item in Model.PastFixtures)
                 {
                     <tr class="d-sm-flex">
                         <th scope="col"></th>
-                        <td class="col-1">SUN</td>
-                        <td class="col-1">27/07/07</td>
-                        <td class="col-1">UCL</td>
+                        <td class="col-1">@item.DayShort</td>
+                        <td class="col-1">@item.Date.ToString("dd/mm/yy")</td>
+                        @if (item.LeagueLeagueShort != null)
+                        {
+                            <td class="col-1">@item.LeagueLeagueShort</td>
+                        }
+                        else
+                        {
+                            <td class="col-1"></td>
+                        }
+
                         <td class="col-3" style="float:right">
-                            MAN UNITED
+                            @item.HomeTeamName
                         </td>
-                        <td class="col-2" >
-                            2 : 1
+                        <td class="col-2">
+                            @item.FullTimeForView
                         </td>
                         <td class="col-3" style="float:left">
-                            Liverpool
+                            @item.AwayTeamName
+                        </td>
+
+                    </tr>
+                }
+                @foreach (var item in Model.NextFixtures)
+                {
+                    <tr class="d-sm-flex">
+                        <th scope="col"></th>
+                        <td class="col-1">@item.DayShort</td>
+                        <td class="col-1">@item.Date.ToString("dd/mm/yy")</td>
+                        @if (item.LeagueLeagueShort != null)
+                        {
+                            <td class="col-1">@item.LeagueLeagueShort</td>
+                        }
+                        else
+                        {
+                            <td class="col-1"></td>
+                        }
+                        <td class="col-3" style="float:right">
+                            @item.HomeTeamName
+                        </td>
+                        <td class="col-2">
+                            @item.FullTimeForView
+                        </td>
+                        <td class="col-3" style="float:left">
+                            @item.AwayTeamName
                         </td>
 
                     </tr>

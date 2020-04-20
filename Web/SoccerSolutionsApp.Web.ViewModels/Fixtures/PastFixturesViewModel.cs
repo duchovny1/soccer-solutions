@@ -17,7 +17,12 @@
 
         public string AwayTeamName { get; set; }
 
-        public string LeagueShort { get; set; }
+        public string LeagueLeagueShort { get; set; }
 
+        public string FullTime { get; set; }
+
+        public string FullTimeForView => string.Join(" ", this.FullTime.ToCharArray());
+
+        public string DayShort => this.Date.DayOfWeek.ToString().Substring(0, 3);
     }
 }

@@ -139,7 +139,7 @@
         }
 
         [HttpGet("postteams/{leagueId}")]
-        public async Task<IActionResult> GetTeams(int leagueId)
+        public IActionResult GetTeams(int leagueId)
         {
             var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/teams/league/{leagueId}");
 
@@ -147,13 +147,13 @@
             request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
             request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
 
-            IRestResponse response = await client.ExecuteAsync(request);
+            IRestResponse response = client.Execute(request);
             string content = response.Content;
 
             if (response.IsSuccessful)
             {
                 var teams = JsonConvert.DeserializeObject<ImportTeamsApi>(content);
-                await this.teamsService.CreateAsync(teams, leagueId);
+                this.teamsService.CreateAsync(teams, leagueId);
 
                 return this.Ok();
             }
@@ -200,7 +200,7 @@
                 if (response.IsSuccessful)
                 {
                     var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
-                    await this.fixturesService.CreateAsync(fixtures);
+                    this.fixturesService.CreateAsync(fixtures);
 
                     continue;
                 }
@@ -212,19 +212,19 @@
         }
 
         [HttpGet("postnextfixtures/{leagueId}/{number:int=10}")]
-        public async Task<IActionResult> GetNextFixture(int leagueId, int number = 10)
+        public IActionResult GetNextFixture(int leagueId, int number = 10)
         {
             var client = new RestClient($" https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{leagueId}/next/{number}");
 
             var request = new RestRequest(Method.GET);
             request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
             request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
-            IRestResponse response = await client.ExecuteAsync(request);
+            IRestResponse response = client.Execute(request);
             string content = response.Content;
             if (response.IsSuccessful)
             {
                 var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
-                await this.fixturesService.CreateAsync(fixtures);
+                this.fixturesService.CreateAsync(fixtures);
 
                 return this.Ok();
             }
@@ -246,7 +246,7 @@
             if (response.IsSuccessful)
             {
                 var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
-                await this.fixturesService.CreateAsync(fixtures);
+                 this.fixturesService.CreateAsync(fixtures);
 
                 return this.Ok();
             }

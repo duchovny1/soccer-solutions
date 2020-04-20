@@ -36,7 +36,7 @@
                 @foreach (var league in Model.Leagues)
                 {
                     <thead class="thead-dark" style="border-bottom-style: solid;">
-                        <tr class="leaguesmain" asp-controller="Leagues" asp-action="ById" asp-route-id="@league.Id" onclick="showFixtures(@league.Id)">
+                        <tr class="leaguesmain" style="cursor:pointer;" asp-controller="Leagues" asp-action="ById" asp-route-id="@league.Id" onclick="showFixtures(@league.Id)">
                             <th scope="row">
                                 <i class="@league.CountryName.ToLower() flag"></i>
                                 <span>@league.CountryName - @league.Name</span>

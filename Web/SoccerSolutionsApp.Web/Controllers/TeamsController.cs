@@ -54,10 +54,20 @@
         {
             var teamViewModel = await this.teamsService.GetTeamByIdAsync<TeamInfoViewModel>(teamId);
 
-            teamViewModel.PastFixtures = await this.fixturesService.GetPastFixturesForTeamById(teamId, 8);
-            teamViewModel.NextFixtures = await this.fixturesService.GetNexTFixturesForTeamByIdAsync(teamId, 8);
+            teamViewModel.PastFixtures = await this.fixturesService.GetPastFixturesForTeamByIdAsync(teamId);
+            teamViewModel.NextFixtures = await this.fixturesService.GetNexTFixturesForTeamByIdAsync(teamId, 4);
 
             return this.View(teamViewModel);
+        }
+
+        public async Task<IActionResult> AllGames(int teamId)
+        {
+            var viewModel = new TeamFixturesViewModel();
+
+            viewModel.PastFixtures = await this.fixturesService.GetPastFixturesForTeamByIdAsync(teamId);
+            viewModel.NextFixtures = await this.fixturesService.GetNexTFixturesForTeamByIdAsync(teamId);
+
+            return this.View();
         }
     }
 

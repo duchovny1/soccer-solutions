@@ -31,7 +31,7 @@
             this.teamLeaguesRepository = teamLeaguesRepository;
         }
 
-        public async Task CreateAsync(ImportFixturesApi model)
+        public void CreateAsync(ImportFixturesApi model)
         {
             foreach (var fixture in model.Api.Fixtures)
             {
@@ -107,11 +107,10 @@
                         fixtureForDatabase.FullTimeExit = fullTimeExit;
                     }
 
-                    await this.fixturesRepository.AddAsync(fixtureForDatabase);
+                    this.fixturesRepository.AddAsync(fixtureForDatabase);
+                    this.fixturesRepository.SaveChanges();
                 }
             }
-
-            await this.fixturesRepository.SaveChangesAsync();
         }
 
         public IEnumerable<FixtureViewModel> GetFixturesByDate(FixturesByDateInputModel model)
@@ -121,12 +120,12 @@
             return fixtures.To<FixtureViewModel>().ToList();
         }
 
-        public async Task<IEnumerable<FixturesListingViewModel>> GetNextFixturesByIdAsync(int leagueId)
+        public async Task<IEnumerable<FixturesListingViewModel>> GetNextFixturesByLeagueIdAsync(int leagueId)
         {
             // im taking next game in the league and take its game week(round)
             // then im taking all fixtures that are in the same game week(round)
             Fixture nextGame = await this.fixturesRepository.All()
-                              .FirstOrDefaultAsync(x => x.LeagueId == leagueId && x.KickOff > DateTime.UtcNow);
+                              .FirstOrDefaultAsync(x => x.LeagueId == leagueId && x.KickOff >= DateTime.Today);
 
             if (nextGame == null)
             {
@@ -135,24 +134,39 @@
 
             string round = nextGame.Round;
 
-            IQueryable<Fixture> nextFixtures = this.fixturesRepository.All().Where(x => x.LeagueId == leagueId && x.Round == round);
+            IQueryable<Fixture> nextFixtures = this.fixturesRepository.All()
+                .Where(x => x.LeagueId == leagueId)
+                .Where(x => x.Round == round && x.Status != Status.MatchFinished)
+                .Where(x => x.KickOff >= DateTime.Today)
+                .OrderBy(x => x.KickOff);
 
             return await nextFixtures.To<FixturesListingViewModel>().ToListAsync();
         }
 
-        public async Task<IEnumerable<PastFixturesViewModel>> GetPastFixturesForTeamById(int teamId, int take)
-            => await this.fixturesRepository.All().Where(x => x.Status == Status.MatchFinished)
+        public async Task<IEnumerable<PastFixturesViewModel>> GetPastFixturesForTeamByIdAsync(int teamId)
+            => await this.fixturesRepository.All().Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
+                .Where(x => x.Status == Status.MatchFinished)
                 .OrderByDescending(x => x.KickOff)
-                .Take(take)
                 .To<PastFixturesViewModel>()
                 .ToListAsync();
 
-        public async Task<IEnumerable<NextFixturesViewModel>> GetNexTFixturesForTeamByIdAsync(int teamId, int take)
-            => await this.fixturesRepository.All().Where(x => x.Status != Status.MatchFinished)
-                .OrderBy(x => x.KickOff)
-                .Take(take)
-                .To<NextFixturesViewModel>()
-                .ToListAsync();
+        public async Task<IEnumerable<NextFixturesViewModel>> GetNexTFixturesForTeamByIdAsync(int teamId, int? take = null)
+        {
+            var fixtures = this.fixturesRepository.All()
+                   .Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
+                   .Where(x => x.Status != Status.MatchFinished);
 
+            if (take.HasValue)
+            {
+                fixtures =
+                    fixtures.OrderBy(x => x.KickOff).Take((int)take);
+            }
+            else
+            {
+                fixtures = fixtures.OrderBy(x => x.KickOff);
+            }
+
+            return await fixtures.To<NextFixturesViewModel>().ToListAsync();
+        }
     }
 }

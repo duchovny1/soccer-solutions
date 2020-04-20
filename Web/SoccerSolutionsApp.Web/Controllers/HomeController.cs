@@ -32,7 +32,7 @@
 
             foreach (var model in viewModel.Leagues)
             {
-                model.NextFixturesForLeague = await this.fixturesService.GetNextFixturesByIdAsync(model.Id);
+                model.NextFixturesForLeague = await this.fixturesService.GetNextFixturesByLeagueIdAsync(model.Id);
             }
 
             int pages = await this.leaguesService.CountAsync();

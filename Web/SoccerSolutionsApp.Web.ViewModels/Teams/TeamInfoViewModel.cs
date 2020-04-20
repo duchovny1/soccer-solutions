@@ -1,9 +1,10 @@
 ﻿namespace SoccerSolutionsApp.Web.ViewModels.Teams
 {
+    using System.Collections.Generic;
+
     using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Mapping;
     using SoccerSolutionsApp.Web.ViewModels.Fixtures;
-    using System.Collections.Generic;
 
     public class TeamInfoViewModel : IMapFrom<Team>
     {
@@ -23,6 +24,8 @@
 
         public IEnumerable<NextFixturesViewModel> NextFixtures { get; set; }
 
+        public int CurrentPage { get; set; }
 
+        public int PagesCount { get; set; }
     }
 }

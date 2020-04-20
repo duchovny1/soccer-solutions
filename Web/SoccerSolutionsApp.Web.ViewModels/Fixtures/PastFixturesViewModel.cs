@@ -7,7 +7,7 @@
 
     public class PastFixturesViewModel : IMapFrom<Fixture>
     {
-        public DateTime Date { get; set; }
+        public DateTime KickOff { get; set; }
 
         public int HomeTeamId { get; set; }
 
@@ -23,6 +23,6 @@
 
         public string FullTimeForView => string.Join(" ", this.FullTime.ToCharArray());
 
-        public string DayShort => this.Date.DayOfWeek.ToString().Substring(0, 3);
+        public string DayShort => this.KickOff.DayOfWeek.ToString().Substring(0, 3).ToUpper();
     }
 }

@@ -14,6 +14,8 @@
 
     public class FixturesService : IFixturesService
     {
+        
+
         private readonly IDeletableEntityRepository<Fixture> fixturesRepository;
         private readonly IDeletableEntityRepository<League> leaguesRepository;
         private readonly IDeletableEntityRepository<Team> teamsRepository;
@@ -143,12 +145,22 @@
             return await nextFixtures.To<FixturesListingViewModel>().ToListAsync();
         }
 
-        public async Task<IEnumerable<PastFixturesViewModel>> GetPastFixturesForTeamByIdAsync(int teamId)
-            => await this.fixturesRepository.All().Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
+        public async Task<IEnumerable<PastFixturesViewModel>> GetPastFixturesForTeamByIdAsync(int teamId, int? take = null, int skip = 0)
+        {
+            var query = this.fixturesRepository.All().Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
                 .Where(x => x.Status == Status.MatchFinished)
-                .OrderByDescending(x => x.KickOff)
-                .To<PastFixturesViewModel>()
-                .ToListAsync();
+                .Skip(skip);
+
+            if (take.HasValue)
+            {
+                query = query.Take((int)take);
+            }
+
+            return await query
+                 .OrderBy(x => x.KickOff)
+                 .To<PastFixturesViewModel>()
+                 .ToListAsync();
+        }
 
         public async Task<IEnumerable<NextFixturesViewModel>> GetNexTFixturesForTeamByIdAsync(int teamId, int? take = null)
         {
@@ -168,5 +180,11 @@
 
             return await fixtures.To<NextFixturesViewModel>().ToListAsync();
         }
+
+        public async Task<int> CountPastFixturesAsync(int teamId)
+            => await this.fixturesRepository.All()
+                  .Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
+                  .Where(x => x.Status == Status.MatchFinished).CountAsync();
     }
+
 }

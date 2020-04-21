@@ -1,5 +1,6 @@
 ﻿namespace SoccerSolutionsApp.Web.Controllers
 {
+    using System;
     using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
@@ -19,12 +20,16 @@
     using SoccerSolutionsApp.Services.Data.Seasons;
     using SoccerSolutionsApp.Services.Data.Teams;
     using SoccerSolutionsApp.Services.Data.TeamsServices;
+    using SoccerSolutionsApp.Web.ViewModels.Teams;
 
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+    [Authorize]
     public class DataController : ControllerBase
     {
+        private const int FixturesPerPage = 20;
+        private const int NextFixturePerPage = 4;
+
         private readonly ApplicationDbContext db;
         private readonly ICountriesService countriesService;
         private readonly ISeasonsService seasonsService;
@@ -59,18 +64,31 @@
 
         public string ApiKeyHeaderValue => this.configuration.GetValue<string>("x-rapidapi:KeyHeaderValue");
 
+        
         [HttpGet("getleagues")]
         // it may need to be with attribute allow anonymous
         public ActionResult<SelectList> GetLeagues(int countryId)
         {
             // its used by cascading drop down menu in the view
-            var leagues = new SelectList(this.db.Leagues.Where(c => c.CountryId == countryId).ToList(), "Id", "Name");
+            var leagues = new SelectList(this.db.Leagues.Where(c => c.CountryId == countryId && c.Season.StartYear == "2019").ToList(), "Id", "Name");
 
             return leagues;
         }
 
+        
+        [HttpGet("getfixtures")]
+        public ActionResult<SelectList> GetFixtures(int leagueId)
+        {
+            var fixturesForNextNthDays = this.fixturesService.GetNextFixturesByLeagueIdAndDaysAsync(leagueId, 7);
+            var fixtures = new SelectList(fixturesForNextNthDays.ToList(), "Id", "Name");
+
+            return fixtures;
+        }
+
+
         // getting data from external Api
 
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("postcountries")]
         public async Task<IActionResult> Countries()
         {
@@ -92,6 +110,7 @@
             return this.BadRequest();
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("postseasons")]
         public async Task<IActionResult> Seasons()
         {
@@ -115,6 +134,7 @@
             return this.BadRequest();
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("postleagues/{countryName}/{season}")]
         public async Task<IActionResult> LeaguesByCountryAndYear(string countryName, int season)
         {
@@ -138,6 +158,7 @@
             return this.BadRequest();
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("postteams/{leagueId}")]
         public IActionResult GetTeams(int leagueId)
         {
@@ -161,6 +182,7 @@
             return this.BadRequest();
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("postfixtures/{leagueId}")]
         public IActionResult GetFixture(int leagueId)
         {
@@ -182,6 +204,7 @@
             return this.BadRequest();
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("postallfixtures")]
         public async Task<IActionResult> GetAllFixtures()
         {
@@ -211,6 +234,7 @@
             return this.Ok("everything went well!");
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("postnextfixtures/{leagueId}/{number:int=10}")]
         public IActionResult GetNextFixture(int leagueId, int number = 10)
         {
@@ -232,6 +256,7 @@
             return this.BadRequest();
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("posth2h/{team1id}/{team2id}")]
         public async Task<IActionResult> GetHeadToHead(int team1id, int team2id)
         {
@@ -252,6 +277,21 @@
             }
 
             return this.BadRequest();
+        }
+
+        public async Task<IActionResult> ListingGamesById(int teamId, int page)
+        {
+            var teamViewModel = await this.teamsService.GetTeamByIdAsync<TeamInfoViewModel>(teamId);
+
+            int pages = await this.fixturesService.CountPastFixturesAsync(teamId);
+
+            teamViewModel.PagesCount = (int)Math.Ceiling((double)pages / FixturesPerPage);
+            teamViewModel.CurrentPage = page;
+
+            teamViewModel.PastFixtures = await this.fixturesService.GetPastFixturesForTeamByIdAsync(teamId, FixturesPerPage - NextFixturePerPage, (page - 1) * FixturesPerPage);
+            teamViewModel.NextFixtures = await this.fixturesService.GetNexTFixturesForTeamByIdAsync(teamId, NextFixturePerPage);
+
+            return this.Ok(teamViewModel);
         }
     }
 }

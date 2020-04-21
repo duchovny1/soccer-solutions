@@ -22,6 +22,6 @@
 
         public IEnumerable<League> Leagues { get; set; }
 
-        public string? Logo { get; set; }
+        public string Logo { get; set; }
     }
 }

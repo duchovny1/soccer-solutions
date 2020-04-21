@@ -29,7 +29,6 @@
 
         public virtual Team HomeTeam { get; set; }
 
-
         [Range(0, 30)]
         public int? GoalsHomeTeam { get; set; }
 

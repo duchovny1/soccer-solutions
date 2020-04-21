@@ -23,7 +23,7 @@
             this.fixturesRepository = fixturesRepository;
         }
 
-        public async Task CreateAsync(PredictionsInputViewModel model)
+        public async Task CreateAsync(CreatePredictionInputViewModel model)
         {
             //var fixture = this.fixturesRepository.All().FirstOrDefaultAsync(x => x.Id == model.EventId);
 
@@ -31,12 +31,12 @@
             //{
                 Prediction prediction = new Prediction()
                 {
-                    Title = model.Title,
-                    Content = model.Content,
-                    EventId = model.EventId,
-                    GamePrediction = model.Prediction,
-                    HomeTeamLogo = model.HomeTeamLogo,
-                    AwayTeamLogo = model.AwayTeamLogo,
+                    //Title = model.Title,
+                    //Content = model.Content,
+                    //EventId = model.EventId,
+                    //GamePrediction = model.Prediction,
+                    //HomeTeamLogo = model.HomeTeamLogo,
+                    //AwayTeamLogo = model.AwayTeamLogo,
                 };
 
                 await this.predictionsRepository.AddAsync(prediction);

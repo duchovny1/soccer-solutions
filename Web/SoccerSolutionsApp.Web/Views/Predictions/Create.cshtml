@@ -1,50 +1,34 @@
-﻿@model SoccerSolutionsApp.Web.ViewModels.Predictions.PredictionsInputViewModel
+﻿@model SoccerSolutionsApp.Web.ViewModels.Predictions.CreatePredictionInputViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    var countries = Model.Countries.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 }
 
-<h1>Create</h1>
+<h1>Create prediction</h1>
 
-<h4>PredictionsInputViewModel</h4>
+<h4></h4>
 <hr />
 
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <textarea asp-for="Title" class="form-control"></textarea>
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="CountryId">Country</label>
+                <select asp-for="CountryId" asp-items="@countries" id="countryList" class="form-control btn btn-secondary dropdown-toggle">
+                    <option>--Select Country--</option>
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <textarea asp-for="Content" class="form-control"></textarea>
-                <span asp-validation-for="Content" class="text-danger"></span>
+                <label asp-for="LeagueId">League </label>
+                <select id="leagueId" class="selectpicker form-control btn btn-secondary dropdown-toggle">
+                    <option>--Select League--</option>
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="Prediction" class="control-label"></label>
-                <input asp-for="Prediction" class="form-control" />
-                <span asp-validation-for="Prediction" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HomeTeamLogo" class="control-label"></label>
-                <input asp-for="HomeTeamLogo" class="form-control" />
-                <span asp-validation-for="HomeTeamLogo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AwayTeamLogo" class="control-label"></label>
-                <input asp-for="AwayTeamLogo" class="form-control" />
-                <span asp-validation-for="AwayTeamLogo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EventId" class="control-label"></label>
-                <input asp-for="EventId" class="form-control" />
-                <span asp-validation-for="EventId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="FixtureId">Fixtures</label>
+                <select id="fixturesId" class="selectpicker form-control btn btn-secondary dropdown-toggle">
+                    <option>--Select Event--</option>
+                </select>
             </div>
         </form>
     </div>
@@ -56,4 +40,49 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        //Insert default item "Select" in dropdownlist on load
+        $(document).ready(function () {
+            var items = "<option value='0'>--Select League--</option>";
+            $("#leagueId").html(items);
+        });
+
+        //Bind League dropdownlist
+        $("#countryList").change(function () {
+            var countryId = $("#countryList").val();
+            var url = "/api/data/getleagues";
+
+
+            $.getJSON(url, { countryId: countryId }, function (data) {
+                var item = "";
+                $("#leagueId").empty();
+                item += "<option value='0'>--Select League--</option>"
+                $.each(data, function (i, league) {
+                    item += '<option value="' + league.value + '">' + league.text + '</option>'
+                });
+                $("#leagueId").html(item);
+            })
+        });
+
+        $("#leagueId").change(function () {
+            var leagueId = $("#leagueId").val();
+            var url = "/api/data/getfixtures";
+            let line = 
+
+
+            $.getJSON(url, { leagueId: leagueId }, function (data) {
+                console.log(data)
+                var item = "";
+                $("#fixturesId").empty();
+                console.log(data);
+                $.each(data, function (i, f) {
+                    item += '<option value="' + f.value + '">' + f.text + '</option>'
+                });
+                $("#fixturesId").html(item);
+            });
+        });
+    </script>
+
+   
 }

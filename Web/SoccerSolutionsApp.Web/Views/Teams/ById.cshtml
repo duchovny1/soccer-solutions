@@ -42,6 +42,7 @@
 @*THIS THING FROM HERE TO ABOVE NEEDS TO BE IN PARTIAL VIEW !*@
 
 
+
 <h6 class="row-cols-3 offset-3">
     <a asp-controller="Teams" asp-action="AllGames" asp-route-teamId="@Model.Id" style="color:#f03d3d">
         MATCHES
@@ -125,3 +126,29 @@
         </table>
     </div>
 </div>
+
+
+<script>
+    $().ready(function(){
+   $("a").click(function(){
+      $.ajax({
+         type: "get",
+          url: '@Url.Action("ListingGamesById", "Data")',
+          data: { teamId: @Model.Id, page: @(Model.CurrentPage - 1) },
+         contentType: "application/json",
+         dataType: "html",
+         success: function (response) {
+             $('.container row-8').html(response);
+         },
+         failure: function (response) {
+             alert(response.responseText);
+             console.log(response)
+         },
+         error: function (response) {
+           alert(response.responseText);
+          }
+        
+      });
+   });
+})
+</script>

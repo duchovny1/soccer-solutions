@@ -8,6 +8,6 @@
     {
         Task<IEnumerable<T>> GetAll<T>();
 
-        Task CreateAsync(PredictionsInputViewModel model);
+        Task CreateAsync(CreatePredictionInputViewModel model);
     }
 }

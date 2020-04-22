@@ -5,31 +5,38 @@
 
     using SoccerSolutionsApp.Data.Common.Models;
 
-    public class Prediction : BaseModel<int>
+    public class Prediction : IAuditInfo, IDeletableEntity
     {
-        [Required]
-        [MaxLength(20)]
-        public string Title { get; set; }
+        [Key]
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(2000)]
         public string Content { get; set; }
 
+        public int FixtureId { get; set; }
+
+        public virtual Fixture Fixture { get; set; }
+
         [Required]
         [MaxLength(30)]
         public string GamePrediction { get; set; }
 
-        public string HomeTeamLogo { get; set; }
+        public bool IsMatchFinished { get; set; }
 
-        public string AwayTeamLogo { get; set; }
-
-        public int? EventId { get; set; }
-
-        public virtual Fixture Еvent { get; set; }
+        public bool? IsPredictionTrue { get; set; }
 
         [Required]
         public string UserId { get; set; }
 
         public ApplicationUser User { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedOn { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime? ModifiedOn { get; set; }
     }
 }

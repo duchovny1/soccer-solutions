@@ -3,7 +3,9 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Data.Countries;
     using SoccerSolutionsApp.Services.Data.Fixtures;
     using SoccerSolutionsApp.Services.Data.Leagues;
@@ -17,17 +19,20 @@
         private readonly ICountriesService countriesService;
         private readonly ILeaguesService leaguesService;
         private readonly IFixturesService fixturesService;
+        private readonly UserManager<ApplicationUser> userManager;
 
         public PredictionsController(
             IPredictionsService predictionsService,
             ICountriesService countriesService,
             ILeaguesService leaguesService,
-            IFixturesService fixturesService)
+            IFixturesService fixturesService,
+            UserManager<ApplicationUser> userManager)
         {
             this.predictionsService = predictionsService;
             this.countriesService = countriesService;
             this.leaguesService = leaguesService;
             this.fixturesService = fixturesService;
+            this.userManager = userManager;
         }
 
         [Authorize]
@@ -47,11 +52,14 @@
         [HttpPost]
         public async Task<IActionResult> Create(CreatePredictionInputViewModel model)
         {
-            if (this.ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
-                await this.predictionsService.CreateAsync(model);
-                return this.View();
+                return this.RedirectToAction(nameof(this.All));
             }
+
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            await this.predictionsService.CreateAsync(model, user.Id);
 
             return this.RedirectToAction(nameof(this.All));
         }

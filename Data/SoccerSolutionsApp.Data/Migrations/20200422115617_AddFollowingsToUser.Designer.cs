@@ -10,8 +10,8 @@ using SoccerSolutionsApp.Data;
 namespace SoccerSolutionsApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200420071152_AddColumnLeaguesShortInLeagues")]
-    partial class AddColumnLeaguesShortInLeagues
+    [Migration("20200422115617_AddFollowingsToUser")]
+    partial class AddFollowingsToUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -174,6 +174,9 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -231,6 +234,8 @@ namespace SoccerSolutionsApp.Data.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("IsDeleted");
 
@@ -456,10 +461,9 @@ namespace SoccerSolutionsApp.Data.Migrations
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Prediction", b =>
                 {
                     b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("AwayTeamLogo")
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -469,7 +473,10 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("EventId")
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FixtureId")
                         .HasColumnType("int");
 
                     b.Property<string>("GamePrediction")
@@ -477,29 +484,23 @@ namespace SoccerSolutionsApp.Data.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.Property<string>("HomeTeamLogo")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("ЕventId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("FixtureId");
 
-                    b.HasIndex("ЕventId");
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Predictions");
                 });
@@ -727,6 +728,13 @@ namespace SoccerSolutionsApp.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SoccerSolutionsApp.Data.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("SoccerSolutionsApp.Data.Models.ApplicationUser", null)
+                        .WithMany("Followings")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Fixture", b =>
                 {
                     b.HasOne("SoccerSolutionsApp.Data.Models.Team", "AwayTeam")
@@ -765,15 +773,17 @@ namespace SoccerSolutionsApp.Data.Migrations
 
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Prediction", b =>
                 {
+                    b.HasOne("SoccerSolutionsApp.Data.Models.Fixture", "Fixture")
+                        .WithMany()
+                        .HasForeignKey("FixtureId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("SoccerSolutionsApp.Data.Models.ApplicationUser", "User")
                         .WithMany("Predictions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("SoccerSolutionsApp.Data.Models.Fixture", "Еvent")
-                        .WithMany()
-                        .HasForeignKey("ЕventId");
                 });
 
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Team", b =>

@@ -6,7 +6,6 @@
 
 <h1>All</h1>
 
-<link href="~/css/predictionlisting.css" rel="stylesheet" asp-append-version="true" />
 
 
 <p>
@@ -18,48 +17,29 @@
     {
         <div class="container">
 
-        <div class="navbar-light bg-light border" style="margin:10px;">
-            <a class="navbar-brand" href="#">@item.EventHomeTeamName vs @item.EventAwayTeamName</a>
+            <div class="navbar-light bg-light border">
+                <a class="navbar-brand" href="#">@item.Title</a>
+                <a class="float-right">  follow</a> <a asp-area="Identity" asp-controller="User" asp-action="ById" asp-route-userName="@item.UserUsername">by @item.UserUsername  </a>
+            </div>
+            <div class="media mt-1 ">
+                <figure>
+                    <img class="mr-3" src="@item.FixtureHomeTeamLogo" alt="@item.FixtureHomeTeamName">
+                    <figcaption class="figure-caption text-center" style="color:black">@item.FixtureHomeTeamName</figcaption>
+                </figure>
+                <figure>
+                    <img class="mr-3" src="@item.FixtureAwayTeamLogo" alt="@item.FixtureAwayTeamName">
+                    <figcaption class="figure-caption text-center" style="color:black" >@item.FixtureAwayTeamName</figcaption>
+                </figure>
+                <div class="media-body text-break">
+                    @item.ShortContent <a href="#" class="btn btn-warning">Read More</a>
+                </div>  
+                <div class="media-body">
+                    <p style="margin-bottom:0; float:right;">Prediction:</p>
+                    <br />
+                    <p style="margin-top:0; float:right;">@item.GamePrediction</p>
+                </div>
+            </div>
+            <hr />
         </div>
-        <div class="" style="overflow: hidden;">
-            <div class="">
-                <div class="col-sm-3">
-                    <div class="float-left">
-                        <a href="#">
-                            <img alt="@item.EventHomeTeamName" width="75" height="75" src="https://media.api-football.com/teams/40.png" />
-                        </a>
-                        <p class="text-center" style="font-size: 12px; font-weight: bold;"><a style="color:black;" href="#">Liverpool</a></p>
-                    </div>
-                    <div class="float-left">
-                        <a href="#">
-                            <img alt="@item.EventAwayTeamName" width="75" height="75" src="https://media.api-football.com/teams/50.png" />
-                        </a>
-                        <p class="text-center" style="font-size: 12px; font-weight: bold;"><a style="color:black;" href="#">Man City</a></p>
-                    </div>
-
-                </div>
-            </div>
-            <div class="" style="width: 400px; float: left; font-size: 15px; margin-left: 24px;">
-                <div class="">
-                    <p>
-                        @item.Content<a class="btn btn-info" href="#">Read more</a>
-                    </p>
-                </div>
-            </div>
-            <div class="" style="width: 400px; float: left; font-size: 15px; margin-left: 24px;">
-                <div class="">
-                    <p>
-                        Prediction:
-                        @item.GamePrediction
-                    </p>
-
-                    <a></a>
-                </div>
-            </div>
-            <div>
-
-            </div>
-        </div>
-    </div>
     }
 </div>

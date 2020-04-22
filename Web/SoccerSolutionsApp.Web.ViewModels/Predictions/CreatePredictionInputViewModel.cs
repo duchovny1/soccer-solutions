@@ -31,7 +31,6 @@
         public string Content { get; set; }
 
         [Required]
-        [MaxLength(30)]
         public string Prediction { get; set; }
       
         // HEAD TO HEAD BUTTON

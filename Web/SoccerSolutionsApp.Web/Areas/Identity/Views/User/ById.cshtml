@@ -1,0 +1,13 @@
+﻿@model SoccerSolutionsApp.Web.ViewModels.User.UserInfoViewModel
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>View</h1>
+
+<h1>@Model.UserUsername</h1>>
+
+@foreach (var item in Model.UserPredictions)
+{
+    <h4>@item.Title - @item.GamePrediction</h4>
+}

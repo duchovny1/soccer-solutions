@@ -31,17 +31,17 @@
             this.teamLeaguesRepository = teamLeaguesRepository;
         }
 
-        public async Task CreateAsync(ImportTeamsApi models, int leagueId)
+        public void CreateAsync(ImportTeamsApi models, int leagueId)
         {
-            League league = await this.leagueRepository.All().FirstOrDefaultAsync(x => x.Id == leagueId);
-            Country country = await this.countryRepository.All().FirstOrDefaultAsync(x => x.Name == models.Api.Teams[0].Country);
+            League league = this.leagueRepository.All().FirstOrDefault(x => x.Id == leagueId);
+            Country country = this.countryRepository.All().FirstOrDefault(x => x.Name == models.Api.Teams[0].Country);
 
 
             if (league != null && country != null)
             {
                 foreach (var model in models.Api.Teams)
                 {
-                    Team teamToCheck = await this.teamRepository.All().FirstOrDefaultAsync(x => x.Id == model.TeamId);
+                    Team teamToCheck = this.teamRepository.All().FirstOrDefault(x => x.Id == model.TeamId);
 
                     // if the teams already exists
                     if (teamToCheck != null)
@@ -49,8 +49,8 @@
                         int teamId = teamToCheck.Id;
 
                         // checking if the current team is being add in the mapping table
-                        TeamLeagues teamLeague = await this.teamLeaguesRepository
-                             .All().FirstOrDefaultAsync(x => x.TeamId == teamId && x.LeagueId == leagueId);
+                        TeamLeagues teamLeague = this.teamLeaguesRepository
+                             .All().FirstOrDefault(x => x.TeamId == teamId && x.LeagueId == leagueId);
 
                         // if its being added, doin nothing
                         if (teamLeague != null)
@@ -67,7 +67,7 @@
                                 LeagueId = leagueId,
                             };
 
-                            await this.teamLeaguesRepository.AddAsync(teamsLeague);
+                            this.teamLeaguesRepository.Add(teamsLeague);
                         }
                     }
                     // if the team does not exists
@@ -92,13 +92,13 @@
                             LeagueId = leagueId,
                         };
 
-                        await this.teamRepository.AddAsync(team);
-                        await this.teamLeaguesRepository.AddAsync(teamsLeague);
+                         this.teamRepository.Add(team);
+                         this.teamLeaguesRepository.Add(teamsLeague);
                     }
                 }
 
-                await this.teamRepository.SaveChangesAsync();
-                await this.teamLeaguesRepository.SaveChangesAsync();
+                 this.teamRepository.SaveChanges();
+                 this.teamLeaguesRepository.SaveChanges();
             }
         }
 

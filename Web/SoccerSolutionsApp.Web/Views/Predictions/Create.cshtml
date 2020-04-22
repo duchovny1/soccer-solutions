@@ -12,24 +12,51 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CountryId">Country</label>
                 <select asp-for="CountryId" asp-items="@countries" id="countryList" class="form-control btn btn-secondary dropdown-toggle">
                     <option>--Select Country--</option>
                 </select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LeagueId">League </label>
-                <select id="leagueId" class="selectpicker form-control btn btn-secondary dropdown-toggle">
+                <select asp-for="LeagueId" id="leagueId" class="selectpicker form-control btn btn-secondary dropdown-toggle">
                     <option>--Select League--</option>
                 </select>
+                <span asp-validation-for="LeagueId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FixtureId">Fixtures</label>
-                <select id="fixturesId" class="selectpicker form-control btn btn-secondary dropdown-toggle">
+                <select asp-for="FixtureId"id="fixturesId" class="selectpicker form-control btn btn-secondary dropdown-toggle">
                     <option>--Select Event--</option>
                 </select>
+                <span asp-validation-for="FixtureId" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label">Content</label>
+                <textarea asp-for="Content" class="form-control"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Prediction" class="control-label">Prediction</label>
+                <select asp-for="Prediction" asp-vali class="selectpicker form-control btn btn-secondary dropdown-toggle">
+                    <option>--Choose Prediction--</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>Over 2.5</option>
+                    <option>Under 2.5</option>
+                    <option>Both Teams To Score</option>
+                    <option>Both Teams Not To Score</option>
+                    <option>1X</option>
+                    <option>2X</option>
+                    <option>12</option>
+                </select>
+                <span asp-validation-for="Prediction" class="text-danger"></span>
+            </div>
+            <hr />
+            <input type="submit" value="Create" class="btn btn-secondary dropdown-toggle" />
         </form>
     </div>
 </div>
@@ -68,8 +95,6 @@
         $("#leagueId").change(function () {
             var leagueId = $("#leagueId").val();
             var url = "/api/data/getfixtures";
-            let line = 
-
 
             $.getJSON(url, { leagueId: leagueId }, function (data) {
                 console.log(data)
@@ -82,6 +107,8 @@
                 $("#fixturesId").html(item);
             });
         });
+
+
     </script>
 
    

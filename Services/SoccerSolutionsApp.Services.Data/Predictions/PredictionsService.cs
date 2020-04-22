@@ -9,11 +9,13 @@
     using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Mapping;
     using SoccerSolutionsApp.Web.ViewModels.Predictions;
+    using SoccerSolutionsApp.Web.ViewModels.User;
 
     public class PredictionsService : IPredictionsService
     {
         private readonly IRepository<Prediction> predictionsRepository;
         private readonly IDeletableEntityRepository<Fixture> fixturesRepository;
+       
 
         public PredictionsService(
             IRepository<Prediction> predictionsRepository,
@@ -23,29 +25,20 @@
             this.fixturesRepository = fixturesRepository;
         }
 
-        public async Task CreateAsync(CreatePredictionInputViewModel model)
+        public async Task CreateAsync(CreatePredictionInputViewModel model, string userId)
         {
-            //var fixture = this.fixturesRepository.All().FirstOrDefaultAsync(x => x.Id == model.EventId);
 
-            //if (fixture != null)
-            //{
-                Prediction prediction = new Prediction()
-                {
-                    //Title = model.Title,
-                    //Content = model.Content,
-                    //EventId = model.EventId,
-                    //GamePrediction = model.Prediction,
-                    //HomeTeamLogo = model.HomeTeamLogo,
-                    //AwayTeamLogo = model.AwayTeamLogo,
-                };
+            Prediction prediction = new Prediction()
+            {
+                FixtureId = model.FixtureId,
+                Content = model.Content,
+                GamePrediction = model.Prediction,
+                UserId = userId,
+                IsMatchFinished = false,
+            };
 
-                await this.predictionsRepository.AddAsync(prediction);
-                await this.predictionsRepository.SaveChangesAsync();
-           // }
-            //else
-            //{
-                //throw new InvalidOperationException("The game you're trying to put predictions, it does not exist");
-            //}
+            await this.predictionsRepository.AddAsync(prediction);
+            await this.predictionsRepository.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<T>> GetAll<T>()
@@ -55,5 +48,10 @@
 
             return predictions;
         }
+
+        public async Task<IEnumerable<UserPredictionsViewModel>> GetUserPredictions(ApplicationUser user)
+         => await this.predictionsRepository.All().Where(x => x.User == user).OrderBy(x => x.CreatedOn).
+                To<UserPredictionsViewModel>().ToListAsync();
+
     }
 }

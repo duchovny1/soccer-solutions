@@ -36,5 +36,24 @@
 
             return this.Json(userToFollowId);
         }
+
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> UnfollowUser(string userToFollowId)
+        {
+            var currentUserId = this.userManager.GetUserId(this.User);
+
+            if (userToFollowId == null || currentUserId == null || currentUserId == userToFollowId)
+            {
+                return this.BadRequest();
+            }
+
+            await this.usersService.UnfollowUserAsync(userToFollowId, currentUserId);
+
+            return this.Json(userToFollowId);
+        }
+
+
     }
 }

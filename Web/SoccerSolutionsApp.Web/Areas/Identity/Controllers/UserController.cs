@@ -1,6 +1,7 @@
 ﻿namespace SoccerSolutionsApp.Web.Areas.Identity.Controllers
 {
     using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using SoccerSolutionsApp.Data.Models;
@@ -38,6 +39,5 @@
             return this.View(viewModel);
         }
 
-       
     }
 }

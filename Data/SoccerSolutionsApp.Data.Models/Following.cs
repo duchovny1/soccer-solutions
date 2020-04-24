@@ -1,8 +1,9 @@
-﻿using SoccerSolutionsApp.Data.Common.Models;
-using System;
-
-namespace SoccerSolutionsApp.Data.Models
+﻿namespace SoccerSolutionsApp.Data.Models
 {
+    using System;
+
+    using SoccerSolutionsApp.Data.Common.Models;
+
     public class Following : IAuditInfo, IDeletableEntity
     {
         public string UserFollowingId { get; set; }

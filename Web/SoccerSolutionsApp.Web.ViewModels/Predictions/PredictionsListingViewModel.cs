@@ -1,6 +1,7 @@
 ﻿namespace SoccerSolutionsApp.Web.ViewModels.Predictions
 {
     using System;
+    using System.Collections.Generic;
 
     using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Mapping;
@@ -28,5 +29,6 @@
         public string FixtureHomeTeamLogo { get; set; }
 
         public string FixtureAwayTeamLogo { get; set; }
+
     }
 }

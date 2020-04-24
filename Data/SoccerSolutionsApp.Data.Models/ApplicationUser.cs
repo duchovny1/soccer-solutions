@@ -36,7 +36,7 @@ namespace SoccerSolutionsApp.Data.Models
 
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
 
-        public virtual ICollection<Following> Followings { get; set; }
+        public virtual IEnumerable<Following> Followings { get; set; }
 
         public virtual ICollection<Following> Followers { get; set; }
 

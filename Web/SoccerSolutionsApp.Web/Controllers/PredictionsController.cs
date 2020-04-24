@@ -1,5 +1,6 @@
 ﻿namespace SoccerSolutionsApp.Web.Controllers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@
     using SoccerSolutionsApp.Services.Data.Fixtures;
     using SoccerSolutionsApp.Services.Data.Leagues;
     using SoccerSolutionsApp.Services.Data.Predictions;
+    using SoccerSolutionsApp.Services.Data.Users;
     using SoccerSolutionsApp.Web.ViewModels.Predictions;
     using SoccerSolutionsApp.Web.ViewModels.Teams;
 
@@ -19,19 +21,23 @@
         private readonly ICountriesService countriesService;
         private readonly ILeaguesService leaguesService;
         private readonly IFixturesService fixturesService;
+        private readonly IUsersService usersService;
         private readonly UserManager<ApplicationUser> userManager;
 
         public PredictionsController(
+            UserManager<ApplicationUser> userManager,
             IPredictionsService predictionsService,
             ICountriesService countriesService,
             ILeaguesService leaguesService,
             IFixturesService fixturesService,
-            UserManager<ApplicationUser> userManager)
+            IUsersService usersService
+            )
         {
             this.predictionsService = predictionsService;
             this.countriesService = countriesService;
             this.leaguesService = leaguesService;
             this.fixturesService = fixturesService;
+            this.usersService = usersService;
             this.userManager = userManager;
         }
 
@@ -66,8 +72,23 @@
 
         public async Task<IActionResult> All()
         {
-            var predictions = await this.predictionsService.GetAll<PredictionsListingViewModel>();
-            return this.View(predictions);
+            var userId = this.userManager.GetUserId(this.User);
+
+            var model = new PredictionsListingAndFollowingsViewModel()
+            {
+                Predictions = await this.predictionsService.GetAll<PredictionsListingViewModel>(),
+            };
+
+            if (userId == null)
+            {
+                model.CurrentUserFollowings = new HashSet<string>();
+            }
+            else
+            {
+                model.CurrentUserFollowings = await this.usersService.GetCurrentUserFollowings(userId);
+            }
+
+            return this.View(model);
         }
     }
 }

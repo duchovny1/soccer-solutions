@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SoccerSolutionsApp.Web.ViewModels.Predictions.PredictionsListingViewModel>
+﻿@model SoccerSolutionsApp.Web.ViewModels.Predictions.PredictionsListingAndFollowingsViewModel
 
 
 @{
@@ -15,15 +15,20 @@
 </p>
 
 <div class="container">
-    @foreach (var item in Model)
+    @foreach (var item in Model.Predictions)
     {
-      
-
         <div class="container">
 
             <div class="navbar-light bg-light border">
                 <a class="navbar-brand" href="#">@item.Title</a>
-                <a id="follow" class="float-right mr-1"><i id="followicon" onclick="followUser('@item.UserId');" class="fas fa-user-check" style="color:#0026ff">follow</i></a>
+                @if (!Model.CurrentUserFollowings.Contains(item.UserUsername))
+                {
+                    <a class="float-right mr-1"><i id="@item.UserId" onclick="followUser('@item.UserId');" class="fas fa-user-check" style="color:#0026ff">follow</i></a>
+                }
+                else
+                {
+                    <a class="float-right mr-1"><i id="@item.UserId" onclick="unfollowUser('@item.UserId');" class="fas fa-check-double" style="color:#0026ff">unfollow</i></a>
+                }
                 <a class="float-right mr-1" asp-area="Identity" asp-controller="User" asp-action="ById" asp-route-userName="@item.UserUsername" style="color:#000000">by @item.UserUsername  </a>
             </div>
             <div class="media mt-1 ">
@@ -52,21 +57,46 @@
 
 <script>
     function followUser(userToFollowId) {
-        
+
         $.ajax({
             url: `/Followings/FollowUser/`,
             type: "POST",
             data: {
                 'userToFollowId': `${userToFollowId}`
             },
-            
+
 
             success: function () {
-                
-                $("#followicon").removeClass('fas fa-user-check').addClass('fas fa-check-double');
-                $("#followicon").css("color", "color:#10e311").text("");
+
+                $("#" + userToFollowId)
+                    .attr('onlick', `unfollowUser('${userToFollowId}');`)
+                    .attr('id', `${userToFollowId}`)
+                    .attr('class', 'fas fa-check-double')
+                    .attr('style', 'color:#0bb72e');
             }
-            
+
+        });
+    }
+
+    function unfollowUser(userToUnfollowId) {
+
+        $.ajax({
+            url: `/Followings/UnfollowUser/`,
+            type: "POST",
+            data: {
+                'userToFollowId': `${userToUnfollowId}`
+            },
+
+
+            success: function () {
+                $("#" + userToUnfollowId)
+                    .attr('onlick', `followUser('${userToUnfollowId}');`)
+                    .attr('id', `${userToUnfollowId}`)
+                    .attr('class', 'fas fa-user-check')
+                    .attr('style', 'color:#0026ff');
+                
+            }
+
         });
     }
 </script>

@@ -23,4 +23,8 @@
     <ProjectReference Include="..\..\Services\SoccerSolutionsApp.Services.Mapping\SoccerSolutionsApp.Services.Mapping.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Followings\" />
+  </ItemGroup>
+
 </Project>

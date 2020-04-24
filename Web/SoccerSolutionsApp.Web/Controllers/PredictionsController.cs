@@ -67,7 +67,6 @@
         public async Task<IActionResult> All()
         {
             var predictions = await this.predictionsService.GetAll<PredictionsListingViewModel>();
-
             return this.View(predictions);
         }
     }

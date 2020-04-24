@@ -1,11 +1,14 @@
-﻿using SoccerSolutionsApp.Data.Models;
-using SoccerSolutionsApp.Services.Mapping;
-using System;
-
-namespace SoccerSolutionsApp.Web.ViewModels.Predictions
+﻿namespace SoccerSolutionsApp.Web.ViewModels.Predictions
 {
+    using System;
+
+    using SoccerSolutionsApp.Data.Models;
+    using SoccerSolutionsApp.Services.Mapping;
+
     public class PredictionsListingViewModel : IMapFrom<Prediction>
     {
+        public string UserId { get; set; }
+
         public string UserUsername { get; set; }
 
         public string Title => this.FixtureHomeTeamName + " - " + this.FixtureAwayTeamName;

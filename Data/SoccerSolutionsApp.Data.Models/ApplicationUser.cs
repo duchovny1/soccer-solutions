@@ -4,9 +4,8 @@ namespace SoccerSolutionsApp.Data.Models
     using System;
     using System.Collections.Generic;
 
-    using SoccerSolutionsApp.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+    using SoccerSolutionsApp.Data.Common.Models;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
     {
@@ -16,11 +15,10 @@ namespace SoccerSolutionsApp.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
-            this.Followings = new HashSet<ApplicationUser>();
+            this.Followers = new HashSet<Following>();
+            this.Followings = new HashSet<Following>();
             this.Predictions = new HashSet<Prediction>();
         }
-
-        //public string Username { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }
@@ -38,7 +36,9 @@ namespace SoccerSolutionsApp.Data.Models
 
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
 
-        public virtual ICollection<ApplicationUser> Followings { get; set; }
+        public virtual ICollection<Following> Followings { get; set; }
+
+        public virtual ICollection<Following> Followers { get; set; }
 
         public virtual ICollection<Prediction> Predictions { get; set; }
     }

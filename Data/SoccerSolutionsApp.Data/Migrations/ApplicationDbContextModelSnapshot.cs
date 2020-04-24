@@ -172,9 +172,6 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -232,8 +229,6 @@ namespace SoccerSolutionsApp.Data.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("IsDeleted");
 
@@ -370,6 +365,33 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.HasIndex("LeagueId");
 
                     b.ToTable("Fixtures");
+                });
+
+            modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Following", b =>
+                {
+                    b.Property<string>("UserFollowingId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserToFollowId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserFollowingId", "UserToFollowId");
+
+                    b.HasIndex("UserToFollowId");
+
+                    b.ToTable("Followings");
                 });
 
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.League", b =>
@@ -620,10 +642,10 @@ namespace SoccerSolutionsApp.Data.Migrations
 
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.TeamLeagues", b =>
                 {
-                    b.Property<int>("LeagueId")
+                    b.Property<int>("TeamId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TeamId")
+                    b.Property<int>("LeagueId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
@@ -638,11 +660,11 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("LeagueId", "TeamId");
+                    b.HasKey("TeamId", "LeagueId");
 
                     b.HasIndex("IsDeleted");
 
-                    b.HasIndex("TeamId");
+                    b.HasIndex("LeagueId");
 
                     b.ToTable("TeamLeagues");
                 });
@@ -732,13 +754,6 @@ namespace SoccerSolutionsApp.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SoccerSolutionsApp.Data.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("SoccerSolutionsApp.Data.Models.ApplicationUser", null)
-                        .WithMany("Followings")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Fixture", b =>
                 {
                     b.HasOne("SoccerSolutionsApp.Data.Models.Team", "AwayTeam")
@@ -756,6 +771,21 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.HasOne("SoccerSolutionsApp.Data.Models.League", "League")
                         .WithMany()
                         .HasForeignKey("LeagueId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Following", b =>
+                {
+                    b.HasOne("SoccerSolutionsApp.Data.Models.ApplicationUser", "UserFollowing")
+                        .WithMany("Followings")
+                        .HasForeignKey("UserFollowingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SoccerSolutionsApp.Data.Models.ApplicationUser", "UserToFollow")
+                        .WithMany("Followers")
+                        .HasForeignKey("UserToFollowId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

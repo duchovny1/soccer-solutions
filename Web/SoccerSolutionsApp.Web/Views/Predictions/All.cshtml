@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<SoccerSolutionsApp.Web.ViewModels.Predictions.PredictionsListingViewModel>
 
+
 @{
+
     ViewData["Title"] = "All";
 }
 
@@ -15,11 +17,14 @@
 <div class="container">
     @foreach (var item in Model)
     {
+      
+
         <div class="container">
 
             <div class="navbar-light bg-light border">
                 <a class="navbar-brand" href="#">@item.Title</a>
-                <a class="float-right">  follow</a> <a asp-area="Identity" asp-controller="User" asp-action="ById" asp-route-userName="@item.UserUsername">by @item.UserUsername  </a>
+                <a id="follow" class="float-right mr-1"><i id="followicon" onclick="followUser('@item.UserId');" class="fas fa-user-check" style="color:#0026ff">follow</i></a>
+                <a class="float-right mr-1" asp-area="Identity" asp-controller="User" asp-action="ById" asp-route-userName="@item.UserUsername" style="color:#000000">by @item.UserUsername  </a>
             </div>
             <div class="media mt-1 ">
                 <figure>
@@ -28,11 +33,11 @@
                 </figure>
                 <figure>
                     <img class="mr-3" src="@item.FixtureAwayTeamLogo" alt="@item.FixtureAwayTeamName">
-                    <figcaption class="figure-caption text-center" style="color:black" >@item.FixtureAwayTeamName</figcaption>
+                    <figcaption class="figure-caption text-center" style="color:black">@item.FixtureAwayTeamName</figcaption>
                 </figure>
                 <div class="media-body text-break">
                     @item.ShortContent <a href="#" class="btn btn-warning">Read More</a>
-                </div>  
+                </div>
                 <div class="media-body">
                     <p style="margin-bottom:0; float:right;">Prediction:</p>
                     <br />
@@ -42,4 +47,26 @@
             <hr />
         </div>
     }
+
 </div>
+
+<script>
+    function followUser(userToFollowId) {
+        
+        $.ajax({
+            url: `/Followings/FollowUser/`,
+            type: "POST",
+            data: {
+                'userToFollowId': `${userToFollowId}`
+            },
+            
+
+            success: function () {
+                
+                $("#followicon").removeClass('fas fa-user-check').addClass('fas fa-check-double');
+                $("#followicon").css("color", "color:#10e311").text("");
+            }
+            
+        });
+    }
+</script>

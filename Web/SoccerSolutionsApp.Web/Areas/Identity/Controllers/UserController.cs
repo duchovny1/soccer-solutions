@@ -1,11 +1,11 @@
 ﻿namespace SoccerSolutionsApp.Web.Areas.Identity.Controllers
 {
     using System.Threading.Tasks;
-
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Data.Predictions;
+    using SoccerSolutionsApp.Services.Data.Users;
     using SoccerSolutionsApp.Web.ViewModels.User;
 
     [Area("Identity")]
@@ -13,13 +13,16 @@
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IPredictionsService predictionsService;
+        private readonly IUsersService usersService;
 
         public UserController(
             UserManager<ApplicationUser> userManager,
-            IPredictionsService predictionsService)
+            IPredictionsService predictionsService,
+            IUsersService usersService)
         {
             this.userManager = userManager;
             this.predictionsService = predictionsService;
+            this.usersService = usersService;
         }
 
         public async Task<IActionResult> ById(string userName)
@@ -34,5 +37,7 @@
 
             return this.View(viewModel);
         }
+
+       
     }
 }

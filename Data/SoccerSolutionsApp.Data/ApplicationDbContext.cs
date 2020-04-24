@@ -42,6 +42,8 @@
 
         public DbSet<Fixture> Fixtures { get; set; }
 
+        public DbSet<Following> Followings { get; set; }
+
         public DbSet<Prediction> Predictions { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
@@ -99,15 +101,25 @@
                v => v.ToString(),
                v => (FullTimeExit)Enum.Parse(typeof(FullTimeExit), v));
 
-            builder
-                .Entity<TeamLeagues>()
-                .HasKey(pk => new { pk.LeagueId, pk.TeamId });
-            //builder.
-            //   Entity<League>()
-            //   .Property(f => f.LeagueType)
-            //   .HasConversion(
-            //   v => v.ToString(),
-            //   v => (LeagueType)Enum.Parse(typeof(LeagueType), v));
+
+            builder.Entity<TeamLeagues>()
+                .HasKey(pk => new { pk.TeamId, pk.LeagueId });
+
+            builder.Entity<Following>()
+              .HasKey(pk => new { pk.UserFollowingId, pk.UserToFollowId });
+
+            builder.Entity<Following>()
+                .HasOne(f => f.UserFollowing)
+                .WithMany(f => f.Followings)
+                .HasForeignKey(f => f.UserFollowingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Following>()
+                .HasOne(f => f.UserToFollow)
+                .WithMany(f => f.Followers)
+                .HasForeignKey(f => f.UserToFollowId)
+                .OnDelete(DeleteBehavior.Restrict);
+
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

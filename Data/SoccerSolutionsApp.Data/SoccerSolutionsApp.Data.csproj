@@ -17,6 +17,8 @@
     <Compile Remove="Migrations\20200405142604_ChangeTeamLeaguesTable.Designer.cs" />
     <Compile Remove="Migrations\20200422105948_predictiontablechangekey.cs" />
     <Compile Remove="Migrations\20200422105948_predictiontablechangekey.Designer.cs" />
+    <Compile Remove="Migrations\20200422163241_MakeTableFollowingMapping.cs" />
+    <Compile Remove="Migrations\20200422163241_MakeTableFollowingMapping.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

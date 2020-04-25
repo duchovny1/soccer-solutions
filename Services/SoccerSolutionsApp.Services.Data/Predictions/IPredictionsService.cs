@@ -12,6 +12,8 @@
 
         Task CreateAsync(CreatePredictionInputViewModel model, string userId);
 
-        Task<IEnumerable<UserPredictionsViewModel>> GetUserPredictions(ApplicationUser user);
+        Task<IEnumerable<UserPredictionsViewModel>> GetUserPredictions(string userId);
+
+        Task<IEnumerable<PredictionsListingViewModel>> GetFollowingsPredictions(string userId);
     }
 }

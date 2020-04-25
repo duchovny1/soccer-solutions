@@ -33,7 +33,7 @@
             var viewModel = new UserInfoViewModel
             {
                 UserUsername = user.UserName,
-                UserPredictions = await this.predictionsService.GetUserPredictions(user),
+                UserPredictions = await this.predictionsService.GetUserPredictions(user.Id),
             };
 
             return this.View(viewModel);

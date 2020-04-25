@@ -10,8 +10,15 @@
 
 
 
+
 <p>
-    <a asp-action="Create">Create New</a>
+    @if (this.User.Identity.IsAuthenticated)
+    {
+        <a asp-action="Create">Create New</a>
+    }
+
+    <a asp-controller="Predictions" asp-action="All" class="btn btn-warning">All</a>
+    <a asp-controller="Predictions" asp-action="GetFollowingsPredictions" class="btn btn-warning">Your followings</a>
 </p>
 
 <div class="container">
@@ -27,7 +34,7 @@
                 }
                 else
                 {
-                    <a class="float-right mr-1"><i id="@item.UserId" onclick="unfollowUser('@item.UserId');" class="fas fa-check-double" style="color:#0026ff">unfollow</i></a>
+                    <a class="float-right mr-1"><i id="@item.UserId" class="fas fa-check-double" style="color:#3fbe08"></i></a>
                 }
                 <a class="float-right mr-1" asp-area="Identity" asp-controller="User" asp-action="ById" asp-route-userName="@item.UserUsername" style="color:#000000">by @item.UserUsername  </a>
             </div>
@@ -68,35 +75,32 @@
 
             success: function () {
 
-                $("#" + userToFollowId)
-                    .attr('onlick', `unfollowUser('${userToFollowId}');`)
-                    .attr('id', `${userToFollowId}`)
-                    .attr('class', 'fas fa-check-double')
-                    .attr('style', 'color:#0bb72e');
+                let line = "<i onclick=\"unfollowUser('@@item.UserId')\" class=\"fas fa-check-double\" \"style=color:#0026ff>unfollow</i>\";
+                $("#follow").html(line);
+                $("#follow").attr("id", "unfollow");
             }
 
         });
     }
 
-    function unfollowUser(userToUnfollowId) {
+    //function unfollowUser(userToUnfollowId) {
 
-        $.ajax({
-            url: `/Followings/UnfollowUser/`,
-            type: "POST",
-            data: {
-                'userToFollowId': `${userToUnfollowId}`
-            },
+    //    $.ajax({
+    //        url: `/Followings/UnfollowUser/`,
+    //        type: "POST",
+    //        data: {
+    //            'userToFollowId': `${userToUnfollowId}`
+    //        },
 
 
-            success: function () {
-                $("#" + userToUnfollowId)
-                    .attr('onlick', `followUser('${userToUnfollowId}');`)
-                    .attr('id', `${userToUnfollowId}`)
-                    .attr('class', 'fas fa-user-check')
-                    .attr('style', 'color:#0026ff');
-                
-            }
+    //        success: function () {
+    //            console.log(5)
+    //            let line = "<i onclick=\"\"followUser('@@item.UserId');\"\"class=\"\"fas fa-user-check\"\"style=\"\"color:#0026ff>follow</i>\"";
+    //            $("#unfollow").html(line);
+    //            $("#unfollow").attr("id", "follow");
 
-        });
-    }
+    //        }
+
+        //});
+    //}
 </script>

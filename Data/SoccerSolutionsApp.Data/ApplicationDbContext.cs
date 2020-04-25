@@ -120,6 +120,11 @@
                 .HasForeignKey(f => f.UserToFollowId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Prediction>()
+                .HasOne(x => x.User)
+                .WithMany(y => y.Predictions)
+                .HasForeignKey(x => x.UserId);
+
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

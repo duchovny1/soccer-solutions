@@ -60,7 +60,6 @@
                 await this.followingsRepository.SaveChangesAsync();
             }
         }
-
         public async Task<IEnumerable<string>> GetCurrentUserFollowings(string userId)
         {
             // userId is a currentUser . getting people he follow

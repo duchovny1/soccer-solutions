@@ -15,14 +15,19 @@
     {
         private readonly IRepository<Prediction> predictionsRepository;
         private readonly IDeletableEntityRepository<Fixture> fixturesRepository;
-       
+        private readonly IDeletableEntityRepository<Following> followingsRepository;
+        private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
 
         public PredictionsService(
             IRepository<Prediction> predictionsRepository,
-            IDeletableEntityRepository<Fixture> fixturesRepository)
+            IDeletableEntityRepository<Fixture> fixturesRepository,
+            IDeletableEntityRepository<Following> followingsRepository,
+            IDeletableEntityRepository<ApplicationUser> userRepository)
         {
             this.predictionsRepository = predictionsRepository;
             this.fixturesRepository = fixturesRepository;
+            this.followingsRepository = followingsRepository;
+            this.userRepository = userRepository;
         }
 
         public async Task CreateAsync(CreatePredictionInputViewModel model, string userId)
@@ -42,16 +47,33 @@
         }
 
         public async Task<IEnumerable<T>> GetAll<T>()
-        {
-            var predictions = await this.predictionsRepository.All()
-                .OrderBy(x => x.CreatedOn).To<T>().ToListAsync();
+            => await this.predictionsRepository.All()
+               .OrderBy(x => x.CreatedOn).To<T>().ToListAsync();
 
-            return predictions;
-        }
-
-        public async Task<IEnumerable<UserPredictionsViewModel>> GetUserPredictions(ApplicationUser user)
-         => await this.predictionsRepository.All().Where(x => x.User == user).OrderBy(x => x.CreatedOn).
+        public async Task<IEnumerable<UserPredictionsViewModel>> GetUserPredictions(string userId)
+         => await this.predictionsRepository.All().Where(x => x.UserId == userId).OrderBy(x => x.CreatedOn).
                 To<UserPredictionsViewModel>().ToListAsync();
 
+        public async Task<IEnumerable<PredictionsListingViewModel>> GetFollowingsPredictions(string userId)
+        {
+            // get all users that current user is following
+
+            var users = this.followingsRepository.All()
+                .Where(x => x.UserFollowingId == userId)
+                .Select(x => x.UserToFollowId);
+
+            var allPredictions = new List<PredictionsListingViewModel>();
+
+            foreach (var id in users)
+            {
+                var predictionsForSingleUser = await this.predictionsRepository.All().Where(x => x.UserId == id)
+                    .To<PredictionsListingViewModel>().ToListAsync();
+
+                 allPredictions.AddRange(predictionsForSingleUser);
+            }
+
+             return allPredictions.AsQueryable().OrderByDescending(x => x.FixtureKickOff).ToList();
+        }
+       
     }
 }

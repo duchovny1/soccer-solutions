@@ -90,5 +90,26 @@
 
             return this.View(model);
         }
+
+        public async Task<IActionResult> GetFollowingsPredictions()
+        {
+            var userId = this.userManager.GetUserId(this.User);
+
+            var model = new PredictionsListingAndFollowingsViewModel()
+            {
+                Predictions = await this.predictionsService.GetFollowingsPredictions(userId),
+            };
+
+            if (userId == null)
+            {
+                model.CurrentUserFollowings = new HashSet<string>();
+            }
+            else
+            {
+                model.CurrentUserFollowings = await this.usersService.GetCurrentUserFollowings(userId);
+            }
+
+            return this.View("All", model);
+        }
     }
 }

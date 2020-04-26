@@ -101,6 +101,10 @@
                v => v.ToString(),
                v => (FullTimeExit)Enum.Parse(typeof(FullTimeExit), v));
 
+            builder.Entity<Prediction>()
+                .HasOne(x => x.User)
+                .WithMany(y => y.Predictions)
+                .HasForeignKey(x => x.UserId);
 
             builder.Entity<TeamLeagues>()
                 .HasKey(pk => new { pk.TeamId, pk.LeagueId });
@@ -119,12 +123,6 @@
                 .WithMany(f => f.Followers)
                 .HasForeignKey(f => f.UserToFollowId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Prediction>()
-                .HasOne(x => x.User)
-                .WithMany(y => y.Predictions)
-                .HasForeignKey(x => x.UserId);
-
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

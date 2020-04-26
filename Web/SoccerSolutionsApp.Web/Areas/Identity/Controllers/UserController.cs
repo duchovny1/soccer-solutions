@@ -1,5 +1,6 @@
 ﻿namespace SoccerSolutionsApp.Web.Areas.Identity.Controllers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Identity;
@@ -36,6 +37,12 @@
                 UserPredictions = await this.predictionsService.GetUserPredictions(user.Id),
             };
 
+            return this.View(viewModel);
+        }
+
+        public async Task<IActionResult> AllUsers()
+        {
+            var viewModel = await this.usersService.GetAllUsersAsync();
             return this.View(viewModel);
         }
 

@@ -32,7 +32,6 @@
 
         public async Task CreateAsync(CreatePredictionInputViewModel model, string userId)
         {
-
             Prediction prediction = new Prediction()
             {
                 FixtureId = model.FixtureId,
@@ -60,20 +59,20 @@
 
             var users = this.followingsRepository.All()
                 .Where(x => x.UserFollowingId == userId)
-                .Select(x => x.UserToFollowId);
+                .Select(x => x.UserToFollow);
 
             var allPredictions = new List<PredictionsListingViewModel>();
 
             foreach (var id in users)
             {
-                var predictionsForSingleUser = await this.predictionsRepository.All().Where(x => x.UserId == id)
+                var predictionsForSingleUser = await this.predictionsRepository.All()//.Where(x => x.UserId == id.Id)
                     .To<PredictionsListingViewModel>().ToListAsync();
 
-                 allPredictions.AddRange(predictionsForSingleUser);
+                allPredictions.AddRange(predictionsForSingleUser);
             }
 
-             return allPredictions.AsQueryable().OrderByDescending(x => x.FixtureKickOff).ToList();
+            return allPredictions.AsQueryable().OrderByDescending(x => x.FixtureKickOff).ToList();
         }
-       
+
     }
 }

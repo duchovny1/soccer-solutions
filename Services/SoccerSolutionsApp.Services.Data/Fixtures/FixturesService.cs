@@ -150,7 +150,7 @@
         // this method gets fixtures for next nth days from league
         // for example gets matches from league for next 7 days
         public IEnumerable<FixtureForLeagueDropDownModel> GetNextFixturesByLeagueIdAndDaysAsync(int leagueId, int days)
-         =>  this.fixturesRepository.All().Where(x => x.LeagueId == leagueId)
+         => this.fixturesRepository.All().Where(x => x.LeagueId == leagueId)
                 .Where(x => x.KickOff >= DateTime.UtcNow && x.KickOff <= DateTime.Today.AddDays(days))
                 .To<FixtureForLeagueDropDownModel>().ToList();
 

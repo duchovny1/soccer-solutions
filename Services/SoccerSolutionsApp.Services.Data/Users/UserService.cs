@@ -7,6 +7,8 @@
     using Microsoft.EntityFrameworkCore;
     using SoccerSolutionsApp.Data.Common.Repositories;
     using SoccerSolutionsApp.Data.Models;
+    using SoccerSolutionsApp.Services.Mapping;
+    using SoccerSolutionsApp.Web.ViewModels.User;
 
     public class UserService : IUsersService
     {
@@ -60,7 +62,8 @@
                 await this.followingsRepository.SaveChangesAsync();
             }
         }
-        public async Task<IEnumerable<string>> GetCurrentUserFollowings(string userId)
+
+        public async Task<IEnumerable<string>> GetCurrentUserFollowingsAsync(string userId)
         {
             // userId is a currentUser . getting people he follow
 
@@ -72,5 +75,8 @@
             return followings;
 
         }
+
+        public async Task<IEnumerable<UsersListingViewModel>> GetAllUsersAsync()
+         => await this.usersRepository.All().To<UsersListingViewModel>().ToListAsync();
     }
 }

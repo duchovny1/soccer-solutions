@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
 
     using SoccerSolutionsApp.Data.Models;
+    using SoccerSolutionsApp.Web.ViewModels.User;
 
     public interface IUsersService
     {
@@ -12,6 +13,8 @@
 
         Task UnfollowUserAsync(string userToFollow, string userFollowing);
 
-        Task<IEnumerable<string>> GetCurrentUserFollowings(string userId);
+        Task<IEnumerable<string>> GetCurrentUserFollowingsAsync(string userId);
+
+        Task<IEnumerable<UsersListingViewModel>> GetAllUsersAsync();
     }
 }

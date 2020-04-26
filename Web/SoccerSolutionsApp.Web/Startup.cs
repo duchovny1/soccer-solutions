@@ -16,6 +16,7 @@
     using SoccerSolutionsApp.Data.Repositories;
     using SoccerSolutionsApp.Data.Seeding;
     using SoccerSolutionsApp.Services.Data;
+    using SoccerSolutionsApp.Services.Data.Administrations;
     using SoccerSolutionsApp.Services.Data.Countries;
     using SoccerSolutionsApp.Services.Data.Data;
     using SoccerSolutionsApp.Services.Data.Fixtures;
@@ -75,6 +76,7 @@
             services.AddTransient<IPredictionsService, PredictionsService>();
             services.AddTransient<IFixturesService, FixturesService>();
             services.AddTransient<IUsersService, UserService>();
+            services.AddTransient<IAdminInfoService, AdminInfoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,11 +91,11 @@
 
                 if (env.IsDevelopment())
                 {
-                    //dbContext.Database.EnsureDeleted();
-                    //dbContext.Database.EnsureCreated();
+                    dbContext.Database.EnsureDeleted();
+                    dbContext.Database.EnsureCreated();
                 }
 
-               //new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+               new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }
 
             if (env.IsDevelopment())
@@ -119,7 +121,8 @@
             app.UseEndpoints(
                 endpoints =>
                     {
-                        endpoints.MapControllerRoute("Identity", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                        endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                        //endpoints.MapControllerRoute("Identity", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute(
                             "default",
                             "{controller=Home}/{action=Index}");

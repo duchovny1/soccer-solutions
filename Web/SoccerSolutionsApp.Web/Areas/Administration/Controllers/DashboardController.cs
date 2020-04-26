@@ -1,23 +1,37 @@
 ﻿namespace SoccerSolutionsApp.Web.Areas.Administration.Controllers
 {
-    using SoccerSolutionsApp.Services.Data;
-    using SoccerSolutionsApp.Web.ViewModels.Administration.Dashboard;
+    using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using SoccerSolutionsApp.Common;
+    using SoccerSolutionsApp.Services.Data;
+    using SoccerSolutionsApp.Services.Data.Administrations;
+    using SoccerSolutionsApp.Services.Data.Users;
+    using SoccerSolutionsApp.Web.Areas.Administration.ViewModels;
 
+    [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+    [Area("Administration")]
     public class DashboardController : AdministrationController
     {
         private readonly ISettingsService settingsService;
+        private readonly IAdminInfoService adminInfoService;
 
-        public DashboardController(ISettingsService settingsService)
+        public DashboardController(IAdminInfoService adminInfoService)
         {
-            this.settingsService = settingsService;
+            this.adminInfoService = adminInfoService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var viewModel = new IndexViewModel { SettingsCount = this.settingsService.GetCount(), };
+            var viewModel = new IndexViewModel()
+            {
+                UsersCount = await this.adminInfoService.CountUsersAsync(),
+                ActiveUsers = await this.adminInfoService.ActiveUsersAsync(),
+            };
+
             return this.View(viewModel);
         }
+      
     }
 }

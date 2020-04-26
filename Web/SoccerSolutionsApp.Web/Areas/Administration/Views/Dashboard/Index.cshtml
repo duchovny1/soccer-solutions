@@ -1,7 +1,17 @@
-﻿@model SoccerSolutionsApp.Web.ViewModels.Administration.Dashboard.IndexViewModel
+﻿@model SoccerSolutionsApp.Web.Areas.Administration.ViewModels.IndexViewModel
 @{
     this.ViewData["Title"] = "Admin dashboard";
 }
 
 <h1>@this.ViewData["Title"]</h1>
-Settings: @this.Model.SettingsCount
+
+
+<div class="row">
+    <div class="col">
+        <h2 class="form-check">Totally Users: @Model.UsersCount</h2>
+        <h2 class="form-check">ActiveUsers: @Model.ActiveUsers</h2>
+    </div>
+    <div class="col">
+        <h2 class="form-check">See All Users: <a asp-area="Identity" asp-controller="User" asp-action="AllUsers" class="btn btn-warning">Search</a></h2>
+    </div>
+</div>

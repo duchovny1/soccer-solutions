@@ -3,9 +3,12 @@
     using System;
     using System.Collections;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading.Tasks;
-
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using SoccerSolutionsApp.Data.Common.Repositories;
+    using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Data.Fixtures;
     using SoccerSolutionsApp.Services.Data.Leagues;
     using SoccerSolutionsApp.Web.ViewModels;
@@ -16,13 +19,19 @@
         private const int LeaguesPerPage = 25;
         private readonly ILeaguesService leaguesService;
         private readonly IFixturesService fixturesService;
+        private readonly IDeletableEntityRepository<ApplicationUser> repo;
+        private readonly UserManager<ApplicationUser> manager;
 
         public HomeController(
             ILeaguesService leaguesService,
-            IFixturesService fixturesService)
+            IFixturesService fixturesService,
+            IDeletableEntityRepository<ApplicationUser> _repo,
+            UserManager<ApplicationUser> manager)
         {
             this.leaguesService = leaguesService;
             this.fixturesService = fixturesService;
+            repo = _repo;
+            this.manager = manager;
         }
 
         public async Task<IActionResult> Index(int page = 1)
@@ -52,6 +61,19 @@
         {
             return this.View(
                 new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult Check()
+        {
+            var userId = this.manager.GetUserId(this.User);
+
+            var count = this.repo.All().
+                Where(x => x.Id == userId)
+                .Select(x => x.Predictions)
+                .ToList();
+                ;
+
+            return this.Json(count);
         }
     }
 }

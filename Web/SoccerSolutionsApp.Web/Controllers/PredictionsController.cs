@@ -85,7 +85,7 @@
             }
             else
             {
-                model.CurrentUserFollowings = await this.usersService.GetCurrentUserFollowings(userId);
+                model.CurrentUserFollowings = await this.usersService.GetCurrentUserFollowingsAsync(userId);
             }
 
             return this.View(model);
@@ -106,7 +106,7 @@
             }
             else
             {
-                model.CurrentUserFollowings = await this.usersService.GetCurrentUserFollowings(userId);
+                model.CurrentUserFollowings = await this.usersService.GetCurrentUserFollowingsAsync(userId);
             }
 
             return this.View("All", model);

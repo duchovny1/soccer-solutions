@@ -1,0 +1,62 @@
+﻿@model IEnumerable<SoccerSolutionsApp.Web.ViewModels.User.UsersListingViewModel>
+
+@{
+    ViewData["Title"] = "AllUsers";
+}
+
+<h1>AllUsers</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+
+<table class="table table-light table-bordered">
+    <thead class="table-danger">
+        <tr>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.RegisterOn)
+            </th>
+            <th scope="col">
+                Total Predictions
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.TruePredictions)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.SuccessRate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisterOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PredictionsCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TruePredictions)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SuccessRate)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

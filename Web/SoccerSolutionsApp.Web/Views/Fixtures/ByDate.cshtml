@@ -1,59 +1,79 @@
-﻿@model IEnumerable<SoccerSolutionsApp.Web.ViewModels.Fixtures.FixtureViewModel>
+﻿@model SoccerSolutionsApp.Web.ViewModels.Fixtures.FixturesByDateViewModel
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.KickOff)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HomeTeamName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AwayTeamName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StatusShort)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fulltime)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.KickOff)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HomeTeamName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AwayTeamName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StatusShort)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fulltime)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
+<div class="">
+    <div class="row">
+        <div class="col-md-8 ">
+            <nav>
+                @if (Model.CurrentDate > Model.MinDate)
+                {
+                    <a style="float:left; color:#000000; margin-top:5px;" asp-controller="Fixtures" asp-action="ByDate" asp-route-date="@(Model.CurrentDate.AddDays(-1))"><i class="fas fa-angle-double-left"></i> Previous</a>
+                }
+                @if (Model.CurrentDate < Model.MaxDate)
+                {
+                    <a style="float:right; color:#000000;" asp-controller="Fixtures" asp-action="ByDate" asp-route-page="@(Model.CurrentDate.AddDays(+1))">Next  <i class="fas fa-angle-double-right"></i></a>
+                }
+            </nav>
+            <table class="table">
+                @foreach (var league in Model.Leagues)
+                {
+                    @if (league.NextFixturesForLeague.Count() == 0)
+                    {
+                        continue;
+                    }
+
+                    <thead class="thead-dark" style="border-bottom-style: solid;">
+                        <tr class="leaguesmain" style="cursor:pointer;" asp-controller="Leagues" asp-action="ById" asp-route-id="@league.Id" onclick="showFixtures(@league.Id)">
+                            <th scope="row">
+                                <i class="@league.CountryName.ToLower() flag"></i>
+                                <span>@league.CountryName - @league.Name</span>
+                                <a asp-controller="Leagues" asp-action="ById"><i class="fas fa-arrow-alt-circle-right float-right" style="color:#ffffff"></i></a>
+                                @*
+                                *@
+                            </th>
+                        </tr>
+                    </thead>
+                    @if (league.NextFixturesForLeague != null)
+                    {
+                        <tbody>
+                            @foreach (var fixtures in league.NextFixturesForLeague)
+                            {
+                                <tr class=" @league.Id row-cols-1"
+                                    style="display:none; border-bottom-style:groove; border-bottom-color: #f03d3d;">
+                                    <th scope="col"></th>
+                                    <td class="middle1" style="width:40%; text-align:right;">
+                                        <a style="color: #212529;" asp-controller="Teams" asp-action="ById" asp-route-teamId="@fixtures.HomeTeamId">@fixtures.HomeTeamName</a>
+                                    </td>
+                                    <td class="middle" style="width:20%; text-align:center;">@fixtures.StatusShort.ToUpper()</td>
+                                    <td class="middle1" style="width:40%; text-align:left">
+                                        <a style="color: #212529;" asp-controller="Teams" asp-action="ById" asp-route-teamId="@fixtures.AwayTeamId">@fixtures.AwayTeamName</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+
+
+                }
+            </table>
+        </div>
+        <partial name="~/Views/Home/_CalendarDataPicker.cshtml" model="new SoccerSolutionsApp.Web.ViewModels.Fixtures.FixturesByDateInputModel()" />
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showFixtures(id) {
+            if ($('.' + id).css('display') === 'none') {
+
+                $('.' + id).show();
+                $('.' + id).css('display', 'block');
+
+            }
+            else {
+                $('.' + id).hide();
+                $('.' + id).css('display', 'none');
+            }
+
+        }
+    </script>
 }
-    </tbody>
-</table>

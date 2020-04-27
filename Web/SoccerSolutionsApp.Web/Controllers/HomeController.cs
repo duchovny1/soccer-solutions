@@ -63,17 +63,5 @@
                 new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
         }
 
-        public IActionResult Check()
-        {
-            var userId = this.manager.GetUserId(this.User);
-
-            var count = this.repo.All().
-                Where(x => x.Id == userId)
-                .Select(x => x.Predictions)
-                .ToList();
-                ;
-
-            return this.Json(count);
-        }
     }
 }

@@ -7,15 +7,22 @@
 
     using Microsoft.AspNetCore.Mvc;
     using SoccerSolutionsApp.Services.Data.Fixtures;
+    using SoccerSolutionsApp.Services.Data.Leagues;
     using SoccerSolutionsApp.Web.ViewModels.Fixtures;
+    using SoccerSolutionsApp.Web.ViewModels.Main;
 
     public class FixturesController : Controller
     {
+        private const int LeaguesPerPage = 25;
         private readonly IFixturesService fixturesService;
+        private readonly ILeaguesService leaguesService;
 
-        public FixturesController(IFixturesService fixturesService)
+        public FixturesController(
+            IFixturesService fixturesService,
+            ILeaguesService leaguesService)
         {
             this.fixturesService = fixturesService;
+            this.leaguesService = leaguesService;
         }
 
         public IActionResult Add()
@@ -23,12 +30,18 @@
             return View();
         }
 
-        [HttpPost]
-        public IActionResult FixturesByDate(FixturesByDateInputModel model)
+        public async Task<IActionResult> ByDate(FixturesByDateInputModel model)
         {
-            var fixtures = this.fixturesService.GetFixturesByDate(model);
+            var viewModel = new FixturesByDateViewModel();
+            viewModel.Leagues = this.leaguesService.GetAll<LeaguesListingViewModel>();
 
-            return this.RedirectToAction("ByDate", "Fixtures", fixtures);
+            foreach (var league in viewModel.Leagues)
+            {
+                league.NextFixturesForLeague = await this.fixturesService.GetFixtureForDate(league.Id, model.Date);
+            }
+
+            return this.View(viewModel);
         }
+
     }
 }

@@ -31,8 +31,10 @@
             this.teamLeaguesRepository = teamLeaguesRepository;
         }
 
-        public void CreateAsync(ImportTeamsApi models, int leagueId)
+        public int Create(ImportTeamsApi models, int leagueId)
         {
+            int totalTeams = 0;
+
             League league = this.leagueRepository.All().FirstOrDefault(x => x.Id == leagueId);
             Country country = this.countryRepository.All().FirstOrDefault(x => x.Name == models.Api.Teams[0].Country);
 
@@ -92,14 +94,18 @@
                             LeagueId = leagueId,
                         };
 
-                         this.teamRepository.Add(team);
-                         this.teamLeaguesRepository.Add(teamsLeague);
+                        this.teamRepository.Add(team);
+                        this.teamLeaguesRepository.Add(teamsLeague);
+                        totalTeams++;
                     }
                 }
 
-                 this.teamRepository.SaveChanges();
-                 this.teamLeaguesRepository.SaveChanges();
+                this.teamRepository.SaveChanges();
+                this.teamLeaguesRepository.SaveChanges();
+
             }
+
+            return totalTeams;
         }
 
         public IEnumerable<T> GetAll<T>()

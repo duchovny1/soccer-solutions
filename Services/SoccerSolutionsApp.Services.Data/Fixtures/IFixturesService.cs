@@ -1,5 +1,6 @@
 ﻿namespace SoccerSolutionsApp.Services.Data.Fixtures
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -9,9 +10,9 @@
 
     public interface IFixturesService
     {
-        void CreateAsync(ImportFixturesApi model);
+        int Create(ImportFixturesApi model);
 
-        IEnumerable<FixtureViewModel> GetFixturesByDate(FixturesByDateInputModel model);
+        Task<IEnumerable<FixtureViewModel>> GetFixturesByDate(FixturesByDateInputModel model);
 
         Task<IEnumerable<FixturesListingViewModel>> GetNextFixturesByLeagueIdAsync(int leagueId, int? take = null);
 
@@ -21,6 +22,7 @@
 
         Task<IEnumerable<PastFixturesViewModel>> GetPastFixturesForTeamByIdAsync(int teamId, int? take = null, int skip = 0);
 
+        Task<IEnumerable<FixturesListingViewModel>> GetFixtureForDate(int leagueId, DateTime date);
 
         Task<int> CountPastFixturesAsync(int teamId);
     }

@@ -7,6 +7,6 @@
     {
         public IEnumerable<T> GetAll<T>();
 
-        Task CreateAsync(ImportCountriesApi models);
+        int Create(ImportCountriesApi models);
     }
 }

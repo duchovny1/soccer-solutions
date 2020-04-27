@@ -16,19 +16,23 @@
         private readonly IDeletableEntityRepository<League> leagueRepo;
         private readonly IDeletableEntityRepository<Country> countryRepo;
         private readonly IDeletableEntityRepository<Season> seasonRepo;
+        private readonly IDeletableEntityRepository<Fixture> fixturesRepo;
 
         public LeaguesService(
             IDeletableEntityRepository<League> leagueRepo,
             IDeletableEntityRepository<Country> countryRepo,
-            IDeletableEntityRepository<Season> seasonRepo)
+            IDeletableEntityRepository<Season> seasonRepo,
+            IDeletableEntityRepository<Fixture> fixturesRepo)
         {
             this.leagueRepo = leagueRepo;
             this.countryRepo = countryRepo;
             this.seasonRepo = seasonRepo;
+            this.fixturesRepo = fixturesRepo;
         }
 
-        public async Task CreateAsync(ImportLeaguesApi models)
+        public int Create(ImportLeaguesApi models)
         {
+            int totalLeagues = 0;
             foreach (var model in models.Api.Leagues)
             {
                 if (model.Season != "2018" && model.Season != "2019")
@@ -36,10 +40,10 @@
                     continue;
                 }
 
-                bool isExist = await this.leagueRepo.All().AnyAsync(x => x.Name == model.Name
+                bool isExist = this.leagueRepo.All().Any(x => x.Name == model.Name
                                     && x.Season.StartYear == model.Season);
-                var country = await this.countryRepo.All().FirstOrDefaultAsync(x => x.Name.ToLower() == model.Country.ToLower());
-                var season = await this.seasonRepo.All().FirstOrDefaultAsync(x => x.StartYear == model.Season);
+                var country = this.countryRepo.All().FirstOrDefault(x => x.Name.ToLower() == model.Country.ToLower());
+                var season = this.seasonRepo.All().FirstOrDefault(x => x.StartYear == model.Season);
 
                 DateTime seasonStart;
                 DateTime seasonEnd;
@@ -59,20 +63,26 @@
                         Logo = model.Logo,
                     };
 
-                    await this.leagueRepo.AddAsync(league);
+                    this.leagueRepo.Add(league);
+                    totalLeagues++;
                 }
             }
 
-            await this.leagueRepo.SaveChangesAsync();
+            this.leagueRepo.SaveChanges();
+            return totalLeagues;
 
         }
 
-        public IEnumerable<T> GetAll<T>(int take, int skip = 0)
+        public IEnumerable<T> GetAll<T>(int? take = null, int skip = 0)
         {
             IQueryable<League> leagues = this.leagueRepo.All()
                          .Where(x => x.Season.StartYear == "2019")
-                         .Skip(skip)
-                         .Take(take);
+                         .Skip(skip);
+
+            if (take.HasValue)
+            {
+                leagues = leagues.Take((int)take);
+            }
 
             return leagues.To<T>().ToList();
         }
@@ -87,5 +97,6 @@
 
             return leaguesIds;
         }
+
     }
 }

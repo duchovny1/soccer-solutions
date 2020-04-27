@@ -91,11 +91,11 @@
 
                 if (env.IsDevelopment())
                 {
-                    dbContext.Database.EnsureDeleted();
-                    dbContext.Database.EnsureCreated();
+                    //dbContext.Database.EnsureDeleted();
+                    //dbContext.Database.EnsureCreated();
                 }
 
-               new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+               //new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }
 
             if (env.IsDevelopment())

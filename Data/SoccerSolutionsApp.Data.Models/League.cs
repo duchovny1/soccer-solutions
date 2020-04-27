@@ -12,6 +12,7 @@
         public League()
         {
             this.TeamLeagues = new HashSet<TeamLeagues>();
+            this.Fixtures = new HashSet<Fixture>();
         }
 
         [Required]
@@ -38,5 +39,7 @@
         public virtual Country Country { get; set; }
 
         public virtual ICollection<TeamLeagues> TeamLeagues { get; set; }
+
+        public virtual ICollection<Fixture> Fixtures { get; set; }
     }
 }

@@ -18,11 +18,13 @@
             this.countriesRepository = countriesRepository;
         }
 
-        public async Task CreateAsync(ImportCountriesApi models)
+        public int Create(ImportCountriesApi models)
         {
+            int totalCountriesAdd = 0;
+
             foreach (var model in models.Api.Countries)
             {
-                bool doesTheCountryExists = await this.countriesRepository.All().AnyAsync(x => x.Name == model.Country);
+                bool doesTheCountryExists = this.countriesRepository.All().Any(x => x.Name == model.Country);
 
                 if (!doesTheCountryExists && model.Code != null && model.Country != null)
                 {
@@ -33,11 +35,13 @@
                         Flag = model.Flag,
                     };
 
-                    await this.countriesRepository.AddAsync(country);
+                    this.countriesRepository.Add(country);
+                    totalCountriesAdd++;
                 }
             }
 
-            await this.countriesRepository.SaveChangesAsync();
+             this.countriesRepository.SaveChanges();
+            return totalCountriesAdd;
         }
 
         public IEnumerable<T> GetAll<T>()

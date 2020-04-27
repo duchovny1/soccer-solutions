@@ -90,21 +90,22 @@
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("postcountries")]
-        public async Task<IActionResult> Countries()
+        public IActionResult Countries()
         {
             var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/countries");
 
             var request = new RestRequest(Method.GET);
             request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
             request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
-            IRestResponse response = await client.ExecuteAsync(request);
+            IRestResponse response = client.Execute(request);
             string content = response.Content;
+
             if (response.IsSuccessful)
             {
                 var countries = JsonConvert.DeserializeObject<ImportCountriesApi>(content);
-                await this.countriesService.CreateAsync(countries);
+                int result = this.countriesService.Create(countries);
 
-                return this.Ok();
+                return this.Ok($"{result} countries added");
             }
 
             return this.BadRequest();
@@ -112,7 +113,7 @@
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("postseasons")]
-        public async Task<IActionResult> Seasons()
+        public IActionResult Seasons()
         {
             var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/seasons");
 
@@ -120,15 +121,15 @@
             request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
             request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
 
-            IRestResponse response = await client.ExecuteAsync(request);
+            IRestResponse response = client.Execute(request);
             string content = response.Content;
 
             if (response.IsSuccessful)
             {
                 var seasons = JsonConvert.DeserializeObject<ImportSeasonsApi>(content);
-                await this.seasonsService.CreateAsync(seasons);
+                int result =  this.seasonsService.Create(seasons);
 
-                return this.Ok();
+                return this.Ok($"{result} seasons added");
             }
 
             return this.BadRequest();
@@ -136,7 +137,7 @@
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("postleagues/{countryName}/{season}")]
-        public async Task<IActionResult> LeaguesByCountryAndYear(string countryName, int season)
+        public IActionResult LeaguesByCountryAndYear(string countryName, int season)
         {
             var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/leagues/country/{countryName}/{season}");
 
@@ -144,15 +145,15 @@
             request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
             request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
 
-            IRestResponse response = await client.ExecuteAsync(request);
+            IRestResponse response = client.Execute(request);
             string content = response.Content;
 
             if (response.IsSuccessful)
             {
                 var leagues = JsonConvert.DeserializeObject<ImportLeaguesApi>(content);
-                await this.leaguesService.CreateAsync(leagues);
+                int result = this.leaguesService.Create(leagues);
 
-                return this.Ok();
+                return this.Ok($"{result} leagues added");
             }
 
             return this.BadRequest();
@@ -174,13 +175,14 @@
             if (response.IsSuccessful)
             {
                 var teams = JsonConvert.DeserializeObject<ImportTeamsApi>(content);
-                this.teamsService.CreateAsync(teams, leagueId);
+                int result = this.teamsService.Create(teams, leagueId);
 
-                return this.Ok();
+                return this.Ok($"{result} teams added");
             }
 
             return this.BadRequest();
         }
+
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("postfixtures/{leagueId}")]
@@ -196,49 +198,19 @@
             if (response.IsSuccessful)
             {
                 var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
-                this.fixturesService.CreateAsync(fixtures);
+                int result = this.fixturesService.Create(fixtures);
 
-                return this.Ok();
+                return this.Ok($"{result} past fixtures added!");
             }
 
             return this.BadRequest();
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-        [HttpGet("postallfixtures")]
-        public async Task<IActionResult> GetAllFixtures()
-        {
-            var leagueIds = this.leaguesService.GetAllLeaguesId();
-
-            foreach (var leagueId in leagueIds)
-            {
-                var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{leagueId}");
-
-                var request = new RestRequest(Method.GET);
-                request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
-                request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
-
-                IRestResponse response = await client.ExecuteAsync(request);
-                string content = response.Content;
-                if (response.IsSuccessful)
-                {
-                    var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
-                    this.fixturesService.CreateAsync(fixtures);
-
-                    continue;
-                }
-
-                return this.BadRequest();
-            }
-
-            return this.Ok("everything went well!");
-        }
-
-        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("postnextfixtures/{leagueId}/{number:int=10}")]
         public IActionResult GetNextFixture(int leagueId, int number = 10)
         {
-            var client = new RestClient($" https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{leagueId}/next/{number}");
+            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{leagueId}/next/{number}");
 
             var request = new RestRequest(Method.GET);
             request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
@@ -248,9 +220,9 @@
             if (response.IsSuccessful)
             {
                 var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
-                this.fixturesService.CreateAsync(fixtures);
+                int result = this.fixturesService.Create(fixtures);
 
-                return this.Ok();
+                return this.Ok($"{result} next fixtures added!");
             }
 
             return this.BadRequest();
@@ -258,40 +230,26 @@
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("posth2h/{team1id}/{team2id}")]
-        public async Task<IActionResult> GetHeadToHead(int team1id, int team2id)
+        public IActionResult GetHeadToHead(int team1id, int team2id)
         {
             var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/fixtures/h2h/{team1id}/{team2id}");
 
             var request = new RestRequest(Method.GET);
             request.AddHeader(this.ApiHostHeader, this.ApiHostHeaderValue);
             request.AddHeader(this.ApiKeyHeader, this.ApiKeyHeaderValue);
-            IRestResponse response = await client.ExecuteAsync(request);
+            IRestResponse response = client.Execute(request);
 
             string content = response.Content;
             if (response.IsSuccessful)
             {
                 var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
-                 this.fixturesService.CreateAsync(fixtures);
+                int result = this.fixturesService.Create(fixtures);
 
-                return this.Ok();
+                return this.Ok($"{result} head to head fixtures added!");
             }
 
             return this.BadRequest();
         }
-
-        public async Task<IActionResult> ListingGamesById(int teamId, int page)
-        {
-            var teamViewModel = await this.teamsService.GetTeamByIdAsync<TeamInfoViewModel>(teamId);
-
-            int pages = await this.fixturesService.CountPastFixturesAsync(teamId);
-
-            teamViewModel.PagesCount = (int)Math.Ceiling((double)pages / FixturesPerPage);
-            teamViewModel.CurrentPage = page;
-
-            teamViewModel.PastFixtures = await this.fixturesService.GetPastFixturesForTeamByIdAsync(teamId, FixturesPerPage - NextFixturePerPage, (page - 1) * FixturesPerPage);
-            teamViewModel.NextFixtures = await this.fixturesService.GetNexTFixturesForTeamByIdAsync(teamId, NextFixturePerPage);
-
-            return this.Ok(teamViewModel);
-        }
+      
     }
 }

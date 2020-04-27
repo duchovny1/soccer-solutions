@@ -123,6 +123,12 @@
                 .WithMany(f => f.Followers)
                 .HasForeignKey(f => f.UserToFollowId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Fixture>()
+                .HasOne(f => f.League)
+                .WithMany(l => l.Fixtures)
+                .HasForeignKey(fk => fk.LeagueId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         private static void SetIsDeletedQueryFilter<T>(ModelBuilder builder)

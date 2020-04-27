@@ -11,7 +11,7 @@
     {
         public IEnumerable<T> GetAll<T>();
 
-        void CreateAsync(ImportTeamsApi models, int leagueId);
+        int Create(ImportTeamsApi models, int leagueId);
 
         Task<T> GetTeamByIdAsync<T>(int id);
 

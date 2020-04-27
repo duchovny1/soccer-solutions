@@ -15,8 +15,6 @@
 
     public class FixturesService : IFixturesService
     {
-        
-
         private readonly IDeletableEntityRepository<Fixture> fixturesRepository;
         private readonly IDeletableEntityRepository<League> leaguesRepository;
         private readonly IDeletableEntityRepository<Team> teamsRepository;
@@ -34,8 +32,10 @@
             this.teamLeaguesRepository = teamLeaguesRepository;
         }
 
-        public void CreateAsync(ImportFixturesApi model)
+        public int Create(ImportFixturesApi model)
         {
+            int totalFixtures = 0;
+
             foreach (var fixture in model.Api.Fixtures)
             {
                 var isExists = this.fixturesRepository.All().Any(x => x.Id == fixture.FixtureId);
@@ -110,17 +110,20 @@
                         fixtureForDatabase.FullTimeExit = fullTimeExit;
                     }
 
-                    this.fixturesRepository.AddAsync(fixtureForDatabase);
+                    this.fixturesRepository.Add(fixtureForDatabase);
                     this.fixturesRepository.SaveChanges();
+                    totalFixtures++;
                 }
             }
+
+            return totalFixtures;
         }
 
-        public IEnumerable<FixtureViewModel> GetFixturesByDate(FixturesByDateInputModel model)
+        public async Task<IEnumerable<FixtureViewModel>> GetFixturesByDate(FixturesByDateInputModel model)
         {
-            var fixtures = this.fixturesRepository.All().Where(x => x.KickOff == model.Date);
+            var fixtures = this.fixturesRepository.All().Where(x => x.KickOff.Date == model.Date);
 
-            return fixtures.To<FixtureViewModel>().ToList();
+            return await fixtures.To<FixtureViewModel>().ToListAsync();
         }
 
         public async Task<IEnumerable<FixturesListingViewModel>> GetNextFixturesByLeagueIdAsync(int leagueId, int? take = null)
@@ -194,6 +197,12 @@
             => await this.fixturesRepository.All()
                   .Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
                   .Where(x => x.Status == Status.MatchFinished).CountAsync();
+
+        public async Task<IEnumerable<FixturesListingViewModel>> GetFixtureForDate(int leagueId, DateTime date)
+            => await this.fixturesRepository.All()
+            .Where(x => x.LeagueId == leagueId && x.KickOff.Date == date.Date)
+            .To<FixturesListingViewModel>().ToListAsync();
+        
     }
 
 }

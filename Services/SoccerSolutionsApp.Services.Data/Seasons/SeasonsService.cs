@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SoccerSolutionsApp.Data.Common.Repositories;
 using SoccerSolutionsApp.Data.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SoccerSolutionsApp.Services.Data.Seasons
@@ -14,12 +15,15 @@ namespace SoccerSolutionsApp.Services.Data.Seasons
             this.seasonsRepo = seasonsRepo;
         }
 
-        public async Task CreateAsync(ImportSeasonsApi models)
+        public int Create(ImportSeasonsApi models)
         {
+
+            int totalSeasonsAdded = 0;
+
             foreach (var model in models.Api.Seasons)
             {
                 string year = model;
-                bool isExists = await this.seasonsRepo.All().AnyAsync(x => x.StartYear == year);
+                bool isExists = this.seasonsRepo.All().Any(x => x.StartYear == year);
 
                 if (!isExists)
                 {
@@ -28,11 +32,13 @@ namespace SoccerSolutionsApp.Services.Data.Seasons
                         StartYear = year,
                     };
 
-                    await this.seasonsRepo.AddAsync(season);
+                    this.seasonsRepo.Add(season);
+                    totalSeasonsAdded++;
                 }
             }
 
-            await this.seasonsRepo.SaveChangesAsync();
+            this.seasonsRepo.SaveChanges();
+            return totalSeasonsAdded;
         }
     }
 }

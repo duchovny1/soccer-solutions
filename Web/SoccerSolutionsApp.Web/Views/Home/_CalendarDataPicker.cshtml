@@ -2,7 +2,7 @@
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{ 
+@{
     ViewData["TodayDate"] = DateTime.UtcNow.ToString("dd-mm-yyyy");
 }
 
@@ -11,20 +11,30 @@
     <h3>
         Select date
     </h3>
-    <input asp-for="Date" value="@DateTime.Today.ToString("yyyy-MM-dd")" type="date" id="datepicker" placeholder="dd.mm.yyyy">
-    <hr>
-    <input type="submit" value="Search" class="btn btn-primary" asp-controller="Fixtures" asp-action="FixturesByDate" />
+    <form action="GET">
+        <input asp-for="Date" asp-controller="Fixtures" asp-action="ByName" value="@DateTime.Today.ToString("yyyy-MM-dd")" type="Date" id="datepicker"/>
+        <hr />
+        <input type="submit" value="Search" class="btn btn-primary" asp-controller="Fixtures" asp-action="ByDate" />
+    </form>
 }
 
 
-@section Scripts {
-    <script>
-        $(document).ready(
-            function () {
 
-                $("#datepicker").datepicker('option', {
-                    minDate: "08.08.2010", maxDate: "08.08.2022"
-                });
-            })
-    </script>
-}
+<script>
+   
+    $(document).ready(
+        $(function () {
+            var currentDate = new Date();
+
+            $('#datepicker1').datepicker({   
+                inline: true,
+                showOtherMonths: true,
+                dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                dateFormat: 'dd/mm/yy',
+                setDate: currentDate
+            });
+        }))
+
+    $.fn.datepicker.noConflict()
+</script>
+

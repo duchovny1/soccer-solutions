@@ -95,60 +95,39 @@
 
                     </tr>
                 }
-                @foreach (var item in Model.NextFixtures)
+                @if (Model.CurrentPage == Model.PagesCount)
                 {
-                    <tr class="d-sm-flex">
-                        <th scope="col"></th>
-                        <td class="col-1">@item.DayShort</td>
-                        <td class="col-1">@item.KickOff.ToString("dd/M/yy", System.Globalization.CultureInfo.InvariantCulture)</td>
-                        @if (item.LeagueLeagueShort != null)
-                        {
-                            <td class="col-1" style="float:right">@item.LeagueLeagueShort</td>
-                        }
-                        else
-                        {
-                            <td class="col-1"></td>
-                        }
-                        <td class="col-3" style="float:right">
-                            @item.HomeTeamName
-                        </td>
-                        <td class="col-2">
-                            @item.FullTimeForView
-                        </td>
-                        <td class="col-3" style="float:left">
-                            @item.AwayTeamName
-                        </td>
+                    @foreach (var item in Model.NextFixtures)
+                    {
+                        <tr class="d-sm-flex">
+                            <th scope="col"></th>
+                            <td class="col-1">@item.DayShort</td>
+                            <td class="col-1">@item.KickOff.ToString("dd/M/yy", System.Globalization.CultureInfo.InvariantCulture)</td>
+                            @if (item.LeagueLeagueShort != null)
+                            {
+                                <td class="col-1" style="float:right">@item.LeagueLeagueShort</td>
+                            }
+                            else
+                            {
+                                <td class="col-1"></td>
+                            }
+                            <td class="col-3" style="float:right">
+                                @item.HomeTeamName
+                            </td>
+                            <td class="col-2">
+                                @item.FullTimeForView
+                            </td>
+                            <td class="col-3" style="float:left">
+                                @item.AwayTeamName
+                            </td>
 
-                    </tr>
+                        </tr>
+                    }
                 }
+
 
             </tbody>
         </table>
     </div>
 </div>
 
-
-<script>
-    $().ready(function(){
-   $("a").click(function(){
-      $.ajax({
-         type: "get",
-          url: '@Url.Action("ListingGamesById", "Data")',
-          data: { teamId: @Model.Id, page: @(Model.CurrentPage - 1) },
-         contentType: "application/json",
-         dataType: "html",
-         success: function (response) {
-             $('.container row-8').html(response);
-         },
-         failure: function (response) {
-             alert(response.responseText);
-             console.log(response)
-         },
-         error: function (response) {
-           alert(response.responseText);
-          }
-        
-      });
-   });
-})
-</script>

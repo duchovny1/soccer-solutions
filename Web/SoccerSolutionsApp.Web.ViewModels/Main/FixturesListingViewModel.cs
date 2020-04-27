@@ -8,6 +8,8 @@
 
     public class FixturesListingViewModel : IMapFrom<Fixture>
     {
+        public int Id { get; set; }
+
         public DateTime KickOff { get; set; }
 
         public Status Status { get; set; }

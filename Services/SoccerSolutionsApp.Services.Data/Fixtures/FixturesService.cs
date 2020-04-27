@@ -202,7 +202,11 @@
             => await this.fixturesRepository.All()
             .Where(x => x.LeagueId == leagueId && x.KickOff.Date == date.Date)
             .To<FixturesListingViewModel>().ToListAsync();
-        
+
+        public async Task<FixtureDetailViewModel> GetSingleFixtureById(int fixtureId)
+         => await this.fixturesRepository.All().Where(x => x.Id == fixtureId).To<FixtureDetailViewModel>()
+              .FirstOrDefaultAsync();
+
     }
 
 }

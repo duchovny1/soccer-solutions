@@ -12,6 +12,8 @@
     {
         int Create(ImportFixturesApi model);
 
+        Task<int> CountPastFixturesAsync(int teamId);
+
         Task<IEnumerable<FixtureViewModel>> GetFixturesByDate(FixturesByDateInputModel model);
 
         Task<IEnumerable<FixturesListingViewModel>> GetNextFixturesByLeagueIdAsync(int leagueId, int? take = null);
@@ -24,6 +26,6 @@
 
         Task<IEnumerable<FixturesListingViewModel>> GetFixtureForDate(int leagueId, DateTime date);
 
-        Task<int> CountPastFixturesAsync(int teamId);
+        Task<FixtureDetailViewModel> GetSingleFixtureById(int fixtureId);
     }
 }

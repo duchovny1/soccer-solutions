@@ -43,5 +43,20 @@
             return this.View(viewModel);
         }
 
+        public async Task<IActionResult> ById(int fixtureId)
+        {
+            var viewModel = await this.fixturesService.GetSingleFixtureById(fixtureId);
+
+            if (viewModel == null)
+            {
+                return this.BadRequest();
+            }
+
+            viewModel.HomeTeamMatches = await this.fixturesService.GetPastFixturesForTeamByIdAsync(viewModel.HomeTeamId);
+            viewModel.AwayTeamMatches = await this.fixturesService.GetPastFixturesForTeamByIdAsync(viewModel.AwayTeamId);
+
+            return this.View(viewModel);
+        }
+
     }
 }

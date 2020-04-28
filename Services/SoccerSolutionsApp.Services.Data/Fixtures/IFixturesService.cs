@@ -26,6 +26,8 @@
 
         Task<IEnumerable<FixturesListingViewModel>> GetFixtureForDate(int leagueId, DateTime date);
 
+        Task<IEnumerable<FixtureDetailViewModel>> GetHead2Head(int hometeamId, int awayteamId);
+
         Task<FixtureDetailViewModel> GetSingleFixtureById(int fixtureId);
     }
 }

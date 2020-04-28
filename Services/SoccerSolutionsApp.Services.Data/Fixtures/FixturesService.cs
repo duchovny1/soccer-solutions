@@ -94,6 +94,7 @@
                     {
                         FullTimeExit fullTimeExit;
                         int? result = goalsHomeTeam - goalsAwayTeam;
+
                         if (result > 0)
                         {
                             fullTimeExit = FullTimeExit.HomeWin;
@@ -208,6 +209,12 @@
         public async Task<FixtureDetailViewModel> GetSingleFixtureById(int fixtureId)
          => await this.fixturesRepository.All().Where(x => x.Id == fixtureId).To<FixtureDetailViewModel>()
               .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<FixtureDetailViewModel>> GetHead2Head(int hometeamId, int awayteamId)
+         => await this.fixturesRepository.All()
+            .Where(x => x.HomeTeamId == hometeamId && x.AwayTeamId == awayteamId)
+            .To<FixtureDetailViewModel>().ToListAsync();
+
 
     }
 

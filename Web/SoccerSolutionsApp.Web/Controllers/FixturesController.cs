@@ -64,6 +64,9 @@
         }
 
 
-        
+        public async Task<IActionResult> Head2Head(int hometeamId, int awayTeamId)
+        {
+            return null;
+        }
     }
 }

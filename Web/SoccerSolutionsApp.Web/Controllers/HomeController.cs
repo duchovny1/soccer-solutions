@@ -19,21 +19,15 @@
         private const int LeaguesPerPage = 25;
         private readonly ILeaguesService leaguesService;
         private readonly IFixturesService fixturesService;
-        private readonly IDeletableEntityRepository<ApplicationUser> repo;
-        private readonly UserManager<ApplicationUser> manager;
+   
 
         public HomeController(
             ILeaguesService leaguesService,
-            IFixturesService fixturesService,
-            IDeletableEntityRepository<ApplicationUser> _repo,
-            UserManager<ApplicationUser> manager)
+            IFixturesService fixturesService)
         {
             this.leaguesService = leaguesService;
             this.fixturesService = fixturesService;
-            repo = _repo;
-            this.manager = manager;
         }
-
         public async Task<IActionResult> Index(int page = 1)
         {
             var viewModel = new MainPageLeaguesListingViewModel();

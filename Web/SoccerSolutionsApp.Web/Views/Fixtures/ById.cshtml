@@ -1,2 +1,218 @@
-﻿TO DO
-TO DO
+﻿@model SoccerSolutionsApp.Web.ViewModels.Fixtures.FixtureDetailViewModel
+
+
+<div class="container">
+    <h5 style="color:#f03d3d">INFO</h5>
+    <div class="d-block border-top border-dark" style="background-color:#ede9e9">
+        <div class="row clearfix">
+            <div class="col container float-left position-relative">
+                <h4><a asp-controller="Teams" asp-action="ById" asp-route-teamId="@Model.HomeTeamId">@Model.HomeTeamName</a></h4>
+            </div>
+            <div class="col container align-content-lg-center">
+                <h3 class="text-center">@Model.Status</h3>
+            </div>
+            <div class="col container float-right position-relative">
+                <h4><a class="float-right" asp-action="ById" asp-route-teamId="@Model.AwayTeamId">@Model.AwayTeamName</a></h4>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col container float-left">
+                <div>
+                    <img src="@Model.HomeTeamLogo" alt="..." class="img-thumbnail rounded border-success">
+                </div>
+            </div>
+            <div class="col container">
+                <div class="clearfix">
+                    <dl>
+
+                        <dt>Competition</dt>
+                        <dd>@Model.LeagueName</dd>
+                        <dt>Date</dt>
+                        <dd>@Model.KickOffForView</dd>
+                        <dt>Game Week</dt>
+                        <dd>@Model.RoundShort</dd>
+                        <dt>Kick-Off</dt>
+                        <dd>@Model.KickOff.ToString("HH:mm")</dd>
+                        <dt>Venue</dt>
+                        <dd>@Model.Venue</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="col container float-right">
+                <div>
+                    <img src="@Model.AwayTeamLogo" alt="..." class="img-thumbnail rounded border-success float-right">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* FOR HOME TEAM VIEW MATCHES BLA BLA BLA *@
+
+<h6 class="row-cols-3 mt-3">
+    <a asp-controller="Teams" asp-action="AllGames" asp-route-teamId="@Model.HomeTeamId" style="color:#f03d3d">
+        @Model.HomeTeamName MATCHES
+        <i class="fas fa-arrow-alt-circle-right"></i>
+    </a>
+
+    <a class="align-self-center" asp-controller="Fixtures" asp-action="Head2Head" asp-route-hometeamId="@Model.HomeTeamId" asp-route-awayteamId="@Model.AwayTeamId" style="color:#f03d3d">
+         SEE H2H
+        <i class="fas fa-arrow-alt-circle-right"></i>
+    </a>
+</h6>
+
+<div class="container row-8">
+    <div class="row" style="height:10%">
+        <table class="table table-striped">
+            <thead></thead>
+            <tbody>
+                @foreach (var item in Model.HomeTeamPastMatches)
+                {
+                    <tr class="d-sm-flex">
+                        <th scope="col"></th>
+                        <td class="col-1">@item.DayShort</td>
+                        <td class="col-1">@item.KickOff.ToString("dd/M/yy", System.Globalization.CultureInfo.InvariantCulture)</td>
+                        @if (item.LeagueLeagueShort != null)
+                        {
+                            <td class="col-1" style="float:right;">@item.LeagueLeagueShort</td>
+                        }
+                        else
+                        {
+                            <td class="col-1"></td>
+                        }
+
+                        <td class="col-3" style="float:right">
+                            @item.HomeTeamName
+                        </td>
+                        <td class="col-2">
+                            @if (item.FullTimeForView == null)
+                            {
+                                @item.StatusShort
+                            }
+                            else
+                            {
+                                @item.FullTimeForView
+                            }
+                        </td>
+                        <td class="col-3" style="float:left">
+                            @item.AwayTeamName
+                        </td>
+
+                    </tr>
+                }
+
+                @foreach (var item in Model.HomeTeamNextMatches)
+                {
+                    <tr class="d-sm-flex">
+                        <th scope="col"></th>
+                        <td class="col-1">@item.DayShort</td>
+                        <td class="col-1">@item.KickOff.ToString("dd/M/yy", System.Globalization.CultureInfo.InvariantCulture)</td>
+                        @if (item.LeagueLeagueShort != null)
+                        {
+                            <td class="col-1" style="float:right">@item.LeagueLeagueShort</td>
+                        }
+                        else
+                        {
+                            <td class="col-1"></td>
+                        }
+                        <td class="col-3" style="float:right">
+                            @item.HomeTeamName
+                        </td>
+                        <td class="col-2">
+                            @item.FullTimeForView
+                        </td>
+                        <td class="col-3" style="float:left">
+                            @item.AwayTeamName
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@* FOR AWAY TEAM VIEW MATCHES BLA BLA BLA *@
+
+<h6 class="row-cols-3 mt-3">
+    <a asp-controller="Teams" asp-action="AllGames" asp-route-teamId="@Model.HomeTeamId" style="color:#f03d3d">
+        @Model.AwayTeamName MATCHES
+        <i class="fas fa-arrow-alt-circle-right"></i>
+    </a>
+    <a class="align-self-center" asp-controller="Fixtures" asp-action="Head2Head" asp-route-hometeamId="@Model.HomeTeamId" asp-route-awayteamId="@Model.AwayTeamId" style="color:#f03d3d">
+        SEE H2H
+        <i class="fas fa-arrow-alt-circle-right"></i>
+    </a>
+</h6>
+
+<div class="container row-8">
+    <div class="row" style="height:10%">
+        <table class="table table-striped">
+            <thead></thead>
+            <tbody>
+                @foreach (var item in Model.HomeTeamPastMatches)
+                {
+                    <tr class="d-sm-flex">
+                        <th scope="col"></th>
+                        <td class="col-1">@item.DayShort</td>
+                        <td class="col-1">@item.KickOff.ToString("dd/M/yy", System.Globalization.CultureInfo.InvariantCulture)</td>
+                        @if (item.LeagueLeagueShort != null)
+                        {
+                            <td class="col-1" style="float:right;">@item.LeagueLeagueShort</td>
+                        }
+                        else
+                        {
+                            <td class="col-1"></td>
+                        }
+
+                        <td class="col-3" style="float:right">
+                            @item.HomeTeamName
+                        </td>
+                        <td class="col-2">
+                            @if (item.FullTimeForView == null)
+                            {
+                                @item.StatusShort
+                            }
+                            else
+                            {
+                                @item.FullTimeForView
+                            }
+                        </td>
+                        <td class="col-3" style="float:left">
+                            @item.AwayTeamName
+                        </td>
+
+                    </tr>
+                }
+
+                @foreach (var item in Model.HomeTeamNextMatches)
+                {
+                    <tr class="d-sm-flex">
+                        <th scope="col"></th>
+                        <td class="col-1">@item.DayShort</td>
+                        <td class="col-1">@item.KickOff.ToString("dd/M/yy", System.Globalization.CultureInfo.InvariantCulture)</td>
+                        @if (item.LeagueLeagueShort != null)
+                        {
+                            <td class="col-1" style="float:right">@item.LeagueLeagueShort</td>
+                        }
+                        else
+                        {
+                            <td class="col-1"></td>
+                        }
+                        <td class="col-3" style="float:right">
+                            @item.HomeTeamName
+                        </td>
+                        <td class="col-2">
+                            @item.FullTimeForView
+                        </td>
+                        <td class="col-3" style="float:left">
+                            @item.AwayTeamName
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

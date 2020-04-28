@@ -10,6 +10,7 @@
     using SoccerSolutionsApp.Services.Data.Leagues;
     using SoccerSolutionsApp.Web.ViewModels.Fixtures;
     using SoccerSolutionsApp.Web.ViewModels.Main;
+    using SoccerSolutionsApp.Web.ViewModels.Teams;
 
     public class FixturesController : Controller
     {
@@ -52,11 +53,17 @@
                 return this.BadRequest();
             }
 
-            viewModel.HomeTeamMatches = await this.fixturesService.GetPastFixturesForTeamByIdAsync(viewModel.HomeTeamId);
-            viewModel.AwayTeamMatches = await this.fixturesService.GetPastFixturesForTeamByIdAsync(viewModel.AwayTeamId);
+            //hardcode values -> im taking 8 past matches for each team plus 2 next matches for each team!
+
+            viewModel.HomeTeamPastMatches = await this.fixturesService.GetPastFixturesForTeamByIdAsync(viewModel.HomeTeamId, 8);
+            viewModel.HomeTeamNextMatches = await this.fixturesService.GetNexTFixturesForTeamByIdAsync(viewModel.HomeTeamId, 2);
+            viewModel.AwayTeamPastMatches = await this.fixturesService.GetPastFixturesForTeamByIdAsync(viewModel.AwayTeamId, 8);
+            viewModel.HomeTeamNextMatches = await this.fixturesService.GetNexTFixturesForTeamByIdAsync(viewModel.HomeTeamId, 2);
 
             return this.View(viewModel);
         }
 
+
+        
     }
 }

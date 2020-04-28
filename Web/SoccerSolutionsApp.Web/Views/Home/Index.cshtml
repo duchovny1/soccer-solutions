@@ -47,7 +47,7 @@
                                     </td>
                                     
                                     <td class="middle" style="width:20%; text-align:center;" >
-                                    <a style="color: #212529;" asp-controller="Fixture" asp-action="ById" asp-route-fixtureId="@fixtures.Id">@fixtures.StatusShort.ToUpper()</a>
+                                    <a style="color: #212529;" asp-controller="Fixtures" asp-action="ById" asp-route-fixtureId="@fixtures.Id">@fixtures.StatusShort.ToUpper()</a>
                                     </td>
                                     <td class="middle1" style="width:40%; text-align:left">
                                     <a style="color: #212529;" asp-controller="Teams" asp-action="ById" asp-route-teamId="@fixtures.AwayTeamId">@fixtures.AwayTeamName</a>

@@ -6,9 +6,6 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Rendering;
-    using SoccerSolutionsApp.Data;
-    using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Data.Countries;
     using SoccerSolutionsApp.Services.Data.Fixtures;
     using SoccerSolutionsApp.Services.Data.TeamsServices;
@@ -21,18 +18,16 @@
 
         private readonly ITeamsService teamsService;
         private readonly ICountriesService countriesService;
-        private readonly ApplicationDbContext dbContext;
         private readonly IFixturesService fixturesService;
 
         public TeamsController(
             ITeamsService teamsService,
             ICountriesService countriesService,
-            ApplicationDbContext dbContext,
             IFixturesService fixturesService)
         {
             this.teamsService = teamsService;
             this.countriesService = countriesService;
-            this.dbContext = dbContext;
+           
             this.fixturesService = fixturesService;
         }
 

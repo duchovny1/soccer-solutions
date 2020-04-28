@@ -159,8 +159,10 @@
 
         public async Task<IEnumerable<PastFixturesViewModel>> GetPastFixturesForTeamByIdAsync(int teamId, int? take = null, int skip = 0)
         {
-            var query = this.fixturesRepository.All().Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
-                .Where(x => x.Status == Status.MatchFinished)
+            var query = this.fixturesRepository.All()
+                .Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
+                .Where(x => x.Status != Status.MatchFinished)
+                .OrderByDescending(x => x.KickOff)
                 .Skip(skip);
 
             if (take.HasValue)
@@ -178,7 +180,7 @@
         {
             var fixtures = this.fixturesRepository.All()
                    .Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
-                   .Where(x => x.Status != Status.MatchFinished);
+                   .Where(x => x.Status != Status.MatchFinished & x.KickOff >= DateTime.Today);
 
             if (take.HasValue)
             {

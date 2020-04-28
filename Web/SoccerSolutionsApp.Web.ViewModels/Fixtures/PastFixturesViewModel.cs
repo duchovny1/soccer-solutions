@@ -21,7 +21,9 @@
 
         public string FullTime { get; set; }
 
-        public string FullTimeForView => string.Join(" ", this.FullTime.ToCharArray());
+        public string FullTimeForView => this.FullTime == null ? null : string.Join(" ", this.FullTime.ToCharArray());
+
+        public string StatusShort { get; set; }
 
         public string DayShort => this.KickOff.DayOfWeek.ToString().Substring(0, 3).ToUpper();
     }

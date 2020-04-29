@@ -7,8 +7,10 @@
 
     using Microsoft.AspNetCore.Mvc;
     using SoccerSolutionsApp.Services.Data.Fixtures;
+    using SoccerSolutionsApp.Services.Data.H2H;
     using SoccerSolutionsApp.Services.Data.Leagues;
     using SoccerSolutionsApp.Web.ViewModels.Fixtures;
+    using SoccerSolutionsApp.Web.ViewModels.H2H;
     using SoccerSolutionsApp.Web.ViewModels.Main;
     using SoccerSolutionsApp.Web.ViewModels.Teams;
 
@@ -17,13 +19,16 @@
         private const int LeaguesPerPage = 25;
         private readonly IFixturesService fixturesService;
         private readonly ILeaguesService leaguesService;
+        private readonly IH2HService h2HService;
 
         public FixturesController(
             IFixturesService fixturesService,
-            ILeaguesService leaguesService)
+            ILeaguesService leaguesService,
+            IH2HService h2HService)
         {
             this.fixturesService = fixturesService;
             this.leaguesService = leaguesService;
+            this.h2HService = h2HService;
         }
 
         public IActionResult Add()
@@ -64,9 +69,13 @@
         }
 
 
-        public async Task<IActionResult> Head2Head(int hometeamId, int awayTeamId)
+        public async Task<IActionResult> Head2Head(int fixtureId, int hometeamId, int awayTeamId)
         {
-            return null;
+            H2HViewModel viewModel = await this.h2HService.PrepareViewModel(hometeamId, awayTeamId);
+            viewModel.TeamsDetails = await this.fixturesService.GetH2HTeamsInfo(fixtureId);
+            viewModel.Fixtures = await this.fixturesService.GetHead2Head(hometeamId, awayTeamId);
+
+            return this.View(viewModel);
         }
     }
 }

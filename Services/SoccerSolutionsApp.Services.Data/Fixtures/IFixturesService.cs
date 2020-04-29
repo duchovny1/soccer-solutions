@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
 
     using SoccerSolutionsApp.Web.ViewModels.Fixtures;
+    using SoccerSolutionsApp.Web.ViewModels.H2H;
     using SoccerSolutionsApp.Web.ViewModels.Main;
     using SoccerSolutionsApp.Web.ViewModels.Predictions;
 
@@ -26,8 +27,10 @@
 
         Task<IEnumerable<FixturesListingViewModel>> GetFixtureForDate(int leagueId, DateTime date);
 
-        Task<IEnumerable<FixtureDetailViewModel>> GetHead2Head(int hometeamId, int awayteamId);
+        Task<IEnumerable<PastFixturesViewModel>> GetHead2Head(int hometeamId, int awayteamId);
 
         Task<FixtureDetailViewModel> GetSingleFixtureById(int fixtureId);
+
+        Task<H2HTeamsInfoViewModel> GetH2HTeamsInfo(int fixtureId);
     }
 }

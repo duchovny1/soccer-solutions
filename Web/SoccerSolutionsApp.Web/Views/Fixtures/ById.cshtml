@@ -54,7 +54,7 @@
         <i class="fas fa-arrow-alt-circle-right"></i>
     </a>
 
-    <a class="align-self-center" asp-controller="Fixtures" asp-action="Head2Head" asp-route-hometeamId="@Model.HomeTeamId" asp-route-awayteamId="@Model.AwayTeamId" style="color:#f03d3d">
+    <a class="align-self-center" asp-controller="Fixtures" asp-action="Head2Head" asp-route-fixtureId="@Model.Id" asp-route-hometeamId="@Model.HomeTeamId" asp-route-awayteamId="@Model.AwayTeamId" style="color:#f03d3d">
          SEE H2H
         <i class="fas fa-arrow-alt-circle-right"></i>
     </a>
@@ -139,7 +139,7 @@
         @Model.AwayTeamName MATCHES
         <i class="fas fa-arrow-alt-circle-right"></i>
     </a>
-    <a class="align-self-center" asp-controller="Fixtures" asp-action="Head2Head" asp-route-hometeamId="@Model.HomeTeamId" asp-route-awayteamId="@Model.AwayTeamId" style="color:#f03d3d">
+    <a class="align-self-center" asp-controller="Fixtures" asp-action="Head2Head" asp-route-fixtureId="@Model.Id" asp-route-hometeamId="@Model.HomeTeamId" asp-route-awayteamId="@Model.AwayTeamId" style="color:#f03d3d">
         SEE H2H
         <i class="fas fa-arrow-alt-circle-right"></i>
     </a>

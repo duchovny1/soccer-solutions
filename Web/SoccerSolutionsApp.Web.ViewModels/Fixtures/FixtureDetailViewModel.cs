@@ -8,6 +8,8 @@
 
     public class FixtureDetailViewModel : IMapFrom<Fixture>
     {
+        public int Id { get; set; }
+
         public DateTime KickOff { get; set; }
 
         public string KickOffForView => this.KickOff.ToString("dd") + " "

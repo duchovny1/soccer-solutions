@@ -20,6 +20,7 @@
     using SoccerSolutionsApp.Services.Data.Countries;
     using SoccerSolutionsApp.Services.Data.Data;
     using SoccerSolutionsApp.Services.Data.Fixtures;
+    using SoccerSolutionsApp.Services.Data.H2H;
     using SoccerSolutionsApp.Services.Data.Leagues;
     using SoccerSolutionsApp.Services.Data.Predictions;
     using SoccerSolutionsApp.Services.Data.Seasons;
@@ -76,6 +77,7 @@
             services.AddTransient<IPredictionsService, PredictionsService>();
             services.AddTransient<IFixturesService, FixturesService>();
             services.AddTransient<IUsersService, UserService>();
+            services.AddTransient<IH2HService, H2HService>();
             services.AddTransient<IAdminInfoService, AdminInfoService>();
         }
 

@@ -8,5 +8,7 @@
         public IEnumerable<T> GetAll<T>();
 
         int Create(ImportCountriesApi models);
+
+        Task<int> GetCountryIdByName(string coutryName);
     }
 }

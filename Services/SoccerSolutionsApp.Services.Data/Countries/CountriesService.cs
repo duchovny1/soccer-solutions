@@ -40,7 +40,7 @@
                 }
             }
 
-             this.countriesRepository.SaveChanges();
+            this.countriesRepository.SaveChanges();
             return totalCountriesAdd;
         }
 
@@ -50,5 +50,9 @@
 
             return countries.To<T>().ToList();
         }
+
+        public async Task<int> GetCountryIdByName(string countryName)
+          => await this.countriesRepository.All().Where(x => x.Name == countryName)
+            .Select(x => x.Id).FirstOrDefaultAsync();
     }
 }

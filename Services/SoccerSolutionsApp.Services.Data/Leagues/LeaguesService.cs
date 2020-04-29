@@ -9,6 +9,7 @@
     using SoccerSolutionsApp.Data.Common.Repositories;
     using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Mapping;
+    using SoccerSolutionsApp.Web.ViewModels.Leagues;
 
     public class LeaguesService : ILeaguesService
     {
@@ -98,5 +99,8 @@
             return leaguesIds;
         }
 
+        public async Task<IEnumerable<LeaguesListingViewModel>> GetLeaguesByCountryId(int countryId)
+           => await this.leagueRepo.All().Where(x => x.CountryId == countryId)
+                   .Where(x => x.SeasonId == 12).To<LeaguesListingViewModel>().ToListAsync();
     }
 }

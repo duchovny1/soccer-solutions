@@ -1,91 +1,138 @@
 ﻿@model SoccerSolutionsApp.Web.ViewModels.H2H.H2HViewModel
 
-<div class="container">
-    <h5 style="color:#f03d3d">INFO</h5>
-    <div class="d-block border-top border-dark" style="background-color:#ede9e9">
-        <div class="row clearfix">
-            <div class="col container float-left position-relative">
-                <h4><a asp-controller="Teams" asp-action="ById" asp-route-teamId="@Model.TeamsDetails.HomeTeamId">@Model.TeamsDetails.HomeTeamName</a></h4>
-            </div>
-            <div class="col container float-right position-relative">
-                <h4><a class="float-right" asp-action="ById" asp-route-teamId="@Model.TeamsDetails.AwayTeamId">@Model.TeamsDetails.AwayTeamName</a></h4>
-            </div>
-        </div>
-        <div class="row clearfix">
-            <div class="col container float-left">
-                <div>
-                    <img src="@Model.TeamsDetails.HomeTeamLogo" alt="..." class="img-thumbnail rounded border-success">
+    <div class="container">
+        <h5 style="color:#f03d3d">INFO</h5>
+        <div class="d-block border-top border-dark" style="background-color:#ede9e9">
+            <div class="row clearfix">
+                <div class="col container float-left position-relative">
+                    <h4><a asp-controller="Teams" asp-action="ById" asp-route-teamId="@Model.TeamsDetails.HomeTeamId">@Model.TeamsDetails.HomeTeamName</a></h4>
+                </div>
+                <div class="col container float-right position-relative">
+                    <h4><a class="float-right" asp-action="ById" asp-route-teamId="@Model.TeamsDetails.AwayTeamId">@Model.TeamsDetails.AwayTeamName</a></h4>
                 </div>
             </div>
-            <div class="col container">
-                <div class="">
+            <div class="row clearfix">
+                <div class="col container float-left">
+                    <div>
+                        <img src="@Model.TeamsDetails.HomeTeamLogo" alt="..." class="img-thumbnail rounded border-success">
+                    </div>
+                </div>
+                <div class="col container">
+                    <div class="">
+                        <table>
+                            <thead></thead>
+                            <tbody>
+                                <tr>
+                                    <td><p><strong>Total games between two teams:</strong> @Model.TotalGamesBetweenTwoTeams</p></td>
+                                </tr>
+                                <tr>
+                                    <td><p><strong>@Model.TeamsDetails.HomeTeamName Wins:</strong> @Model.HomeTeamWins Times</p></td>
+                                </tr>
+                                <tr>
+                                    <td><p><strong>@Model.TeamsDetails.AwayTeamName Wins:</strong> @Model.AwayTeamWins Times</p></td>
+                                </tr>
+                                <tr>
+                                    <td><p><strong>Games ended with draw:</strong> @Model.Draws Times</p></td>
+                                </tr>
+                                <tr>
+                                    <td><p><strong>Total goals scored:</strong> @Model.TotalGoalsScored in @Model.TotalGamesBetweenTwoTeams Games</p></td>
+                                </tr>
+
+                        </table>
+                    </div>
+                </div>
+                <div class="col container float-right">
+                    <div>
+                        <img src="@Model.TeamsDetails.AwayTeamLogo" alt="..." class="img-thumbnail rounded border-success float-right">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-block" style="background-color:#ede9e9">
+            <div class="row">
+                <div class="col">
                     <table>
                         <thead></thead>
                         <tbody>
                             <tr>
-                                <td><p><strong>Total games between two teams:</strong> @Model.TotalGamesBetweenTwoTeams</p></td>
+                                <td><p><strong>@Model.TeamsDetails.HomeTeamName had scored: </strong> @Model.TotalGoalsHomeTeamScored</p></td>
                             </tr>
                             <tr>
-                                <td><p><strong>@Model.TeamsDetails.HomeTeamName Wins:</strong> @Model.HomeTeamWins Times</p></td>
+                                <td><p style="word-wrap: break-word;">In last 20 @Model.TeamsDetails.HomeTeamName's games both teams had scored @Model.TotalBttsLast20GamesHomeTeam times</td>
                             </tr>
                             <tr>
-                                <td><p><strong>@Model.TeamsDetails.AwayTeamName Wins:</strong> @Model.AwayTeamWins Times</p></td>
+                                <td><p style="word-wrap: break-word;">In last 20 @Model.TeamsDetails.HomeTeamName's games @Model.TotalOver2point5GoalsInLast20GamesHomeTeam are over 2.5 goals </td>
                             </tr>
                             <tr>
-                                <td><p><strong>Games ended with draw:</strong> @Model.Draws Times</p></td>
+                                <td><p style="word-wrap: break-word;">@Model.TeamsDetails.HomeTeamName is winning @Model.HowOftenTeamWinsAsAHomeTeam% of their home games.</td>
+                            </tr>
+                    </table>
+                </div>
+                <div class="col">
+                    <table class="float-right">
+                        <thead></thead>
+                        <tbody>
+                            <tr>
+                                <td><p><strong>@Model.TeamsDetails.AwayTeamName had scored: </strong> @Model.TotalGoalsAwayTeamScored</p></td>
                             </tr>
                             <tr>
-                                <td><p><strong>Total goals scored:</strong> @Model.TotalGoalsScored in @Model.TotalGamesBetweenTwoTeams Games</p></td>
+                                <td><p style="word-wrap: break-word;">In last 20 @Model.TeamsDetails.AwayTeamName's games both teams had scored @Model.TotalBttsLast20GamesAwayTeam times</td>
                             </tr>
-
+                            <tr>
+                                <td><p style="word-wrap: break-word;">In last 20 @Model.TeamsDetails.AwayTeamName's games @Model.TotalOver2point5GoalsInLast20GamesAwayTeam are over 2.5 goals </td>
+                            </tr>
+                            <tr>
+                                <td><p style="word-wrap: break-word;">@Model.TeamsDetails.AwayTeamName is winning @Model.HowOftenTeamWinsAsAnAwayTeam% of their away games.</td>
+                            </tr>
                     </table>
                 </div>
             </div>
-            <div class="col container float-right">
-                <div>
-                    <img src="@Model.TeamsDetails.AwayTeamLogo" alt="..." class="img-thumbnail rounded border-success float-right">
-                </div>
+        </div>
+        <hr />
+        <div class="container row-8">
+            <div class="row" style="height:10%">
+                <table class="table table-striped">
+                    <thead></thead>
+                    <tbody>
+                        @foreach (var item in Model.Fixtures)
+                        {
+                            <tr class="d-sm-flex">
+                                <th scope="col"></th>
+                                <td class="col-1">@item.DayShort</td>
+                                <td class="col-1">@item.KickOff.ToString("dd/M/yy", System.Globalization.CultureInfo.InvariantCulture)</td>
+                                @if (item.LeagueLeagueShort != null)
+                                {
+                                    <td class="col-1" style="float:right;">@item.LeagueLeagueShort</td>
+                                }
+                                else
+                                {
+                                    <td class="col-1"></td>
+                                }
+
+                                <td class="col-3" style="float:right">
+                                    @item.HomeTeamName
+                                </td>
+                                <td class="col-2">
+                                    @if (item.FullTimeForView == null)
+                                    {
+                                        @item.StatusShort
+                                    }
+                                    else
+                                    {
+                                        @item.FullTimeForView
+                                    }
+                                </td>
+                                <td class="col-3" style="float:left">
+                                    @item.AwayTeamName
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    <div class="d-block" style="background-color:#ede9e9">
-        <div class="row">
-            <div class="col">
-                <table>
-                    <thead></thead>
-                    <tbody>
-                        <tr>
-                            <td><p><strong>@Model.TeamsDetails.HomeTeamName had scored: </strong> @Model.TotalGoalsHomeTeamScored</p></td>
-                        </tr>
-                        <tr>
-                            <td><p style="word-wrap: break-word;">In last 20 @Model.TeamsDetails.HomeTeamName's games both teams had scored @Model.TotalBttsLast20GamesHomeTeam times</td>
-                        </tr>
-                        <tr>
-                            <td><p style="word-wrap: break-word;">In last 20 @Model.TeamsDetails.HomeTeamName's games @Model.TotalOver2point5GoalsInLast20GamesHomeTeam are over 2.5 goals </td>
-                        </tr>
-                        <tr>
-                            <td><p style="word-wrap: break-word;">@Model.TeamsDetails.HomeTeamName is winning @Model.HowOftenTeamWinsAsAHomeTeam% of their home games.</td>
-                        </tr>
-                </table>
-            </div>
-            <div class="col">
-                <table class="float-right">
-                    <thead></thead>
-                    <tbody>
-                        <tr>
-                            <td><p><strong>@Model.TeamsDetails.AwayTeamName had scored: </strong> @Model.TotalGoalsAwayTeamScored</p></td>
-                        </tr>
-                        <tr>
-                            <td><p style="word-wrap: break-word;">In last 20 @Model.TeamsDetails.AwayTeamName's games both teams had scored @Model.TotalBttsLast20GamesAwayTeam times</td>
-                        </tr>
-                        <tr>
-                            <td><p style="word-wrap: break-word;">In last 20 @Model.TeamsDetails.AwayTeamName's games @Model.TotalOver2point5GoalsInLast20GamesAwayTeam are over 2.5 goals </td>
-                        </tr>
-                        <tr>
-                            <td><p style="word-wrap: break-word;">@Model.TeamsDetails.AwayTeamName is winning @Model.HowOftenTeamWinsAsAnAwayTeam% of their away games.</td>
-                        </tr>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+
+
+

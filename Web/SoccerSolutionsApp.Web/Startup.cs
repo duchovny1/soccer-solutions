@@ -18,12 +18,12 @@
     using SoccerSolutionsApp.Services.Data;
     using SoccerSolutionsApp.Services.Data.Administrations;
     using SoccerSolutionsApp.Services.Data.Countries;
-    using SoccerSolutionsApp.Services.Data.Data;
     using SoccerSolutionsApp.Services.Data.Fixtures;
     using SoccerSolutionsApp.Services.Data.H2H;
     using SoccerSolutionsApp.Services.Data.Leagues;
     using SoccerSolutionsApp.Services.Data.Predictions;
     using SoccerSolutionsApp.Services.Data.Seasons;
+    using SoccerSolutionsApp.Services.Data.Standings;
     using SoccerSolutionsApp.Services.Data.TeamsServices;
     using SoccerSolutionsApp.Services.Data.Users;
     using SoccerSolutionsApp.Services.Mapping;
@@ -71,13 +71,13 @@
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ITeamsService, TeamsService>();
             services.AddTransient<ICountriesService, CountriesService>();
-            services.AddTransient<IDataService, DataService>();
             services.AddTransient<ISeasonsService, SeasonsService>();
             services.AddTransient<ILeaguesService, LeaguesService>();
             services.AddTransient<IPredictionsService, PredictionsService>();
             services.AddTransient<IFixturesService, FixturesService>();
             services.AddTransient<IUsersService, UserService>();
             services.AddTransient<IH2HService, H2HService>();
+            services.AddTransient<IStandingsService, StandingsService>();
             services.AddTransient<IAdminInfoService, AdminInfoService>();
         }
 
@@ -93,8 +93,7 @@
 
                 if (env.IsDevelopment())
                 {
-                    //dbContext.Database.EnsureDeleted();
-                    //dbContext.Database.EnsureCreated();
+                    dbContext.Database.Migrate();
                 }
 
                //new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();

@@ -1,0 +1,86 @@
+﻿@model SoccerSolutionsApp.Web.ViewModels.Leagues.LeaguesByCountryNameViewModel
+
+
+<div class="d-block container">
+    <div class="row">
+        <div class="col-3 d-block container">
+            <h4 style="color:#f03d3d"><i class="@Model.CountryName.ToLower() flag"></i> @Model.CountryName</h4>
+            <hr />
+
+            <table>
+                <thead></thead>
+                <tbody>
+                    @foreach (var item in Model.Leagues)
+                    {
+                        <tr class="d-sm-flex">
+                            <td>
+                                @if (item.Id == Model.CurrentLeagueId)
+                                {
+                                    <a style="color:#171616" asp-controller="Leagues" asp-action="ById" asp-route-countryName="@Model.CountryName" asp-route-leagueId="@item.Id"><strong>@item.Name</strong></a>
+
+                                }
+                                else
+                                {
+                                    <a style="color:#171616" asp-controller="Leagues" asp-action="ById" asp-route-countryName="@Model.CountryName" asp-route-leagueId="@item.Id">@item.Name</a>
+
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col d-block container">
+            <h4 style="color:#f03d3d">@Model.CurrentLeagueName</h4>
+            <hr />
+
+            <table class="table-sm">
+                <thead></thead>
+                <tbody>
+                    @foreach (var item in Model.Fixtures)
+                    {
+                    <tr class="d-sm-flex">
+                        <th scope="col"></th>
+                        <td class="col-1">@item.DayShort</td>
+                        <td class="col-1">@item.KickOff.ToString("dd/M/yy", System.Globalization.CultureInfo.InvariantCulture)</td>
+                        @if (item.LeagueLeagueShort != null)
+                        {
+                            <td class="col-1" style="float:right;">@item.LeagueLeagueShort</td>
+                        }
+                        else
+                        {
+                            <td class="col-1"></td>
+                        }
+                        <td class="col-3" style="float:right">
+                            @item.HomeTeamName
+                        </td>
+                        @if (item.StatusShort == "NS")
+                        {
+                            <td class="col-2">
+                                <p> - </p>
+                            </td>
+                        }
+                        else if (item.StatusShort == "PST")
+                        {
+                            <td class="col-2">
+                                PSTP
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="col-2">
+                                @item.FullTimeForView
+                            </td>
+                        }
+
+                        <td class="col-3" style="float:left">
+                            @item.AwayTeamName
+                        </td>
+
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -28,7 +28,7 @@
                             <th scope="row">
                                 <i class="@league.CountryName.ToLower() flag"></i>
                                 <span>@league.CountryName - @league.Name</span>
-                                <a asp-controller="Leagues" asp-action="ById"><i class="fas fa-arrow-alt-circle-right float-right" style="color:#ffffff"></i></a>
+                                <a asp-controller="Leagues" asp-action="ById" asp-route-countryName="@league.CountryName" asp-route-leagueId="@league.Id" asp-route-leagueName="@league.Name"><i class="fas fa-arrow-alt-circle-right float-right" style="color:#ffffff"></i></a>
                                 @*
                                 *@
                             </th>

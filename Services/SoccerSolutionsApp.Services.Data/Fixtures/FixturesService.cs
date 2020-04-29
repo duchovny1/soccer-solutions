@@ -224,6 +224,13 @@
             .Where(x => x.Id == fixtureId)
             .To<H2HTeamsInfoViewModel>()
             .FirstOrDefaultAsync();
+
+        public async Task<IEnumerable<PastFixturesViewModel>> GetFixturesForLeagueId(int leagueId)
+            =>await this.fixturesRepository.All()
+                    .Where(x => x.LeagueId == leagueId)
+                    .OrderByDescending(x => x.KickOff)
+                    .To<PastFixturesViewModel>()
+                    .ToListAsync();
     }
 
 }

@@ -91,6 +91,7 @@
             return this.View(model);
         }
 
+        [Authorize]
         public async Task<IActionResult> GetFollowingsPredictions()
         {
             var userId = this.userManager.GetUserId(this.User);

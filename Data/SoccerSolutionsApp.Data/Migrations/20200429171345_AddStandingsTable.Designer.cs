@@ -10,8 +10,8 @@ using SoccerSolutionsApp.Data;
 namespace SoccerSolutionsApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200427145341_AddFixturesAndLeaguesRelations")]
-    partial class AddFixturesAndLeaguesRelations
+    [Migration("20200429171345_AddStandingsTable")]
+    partial class AddStandingsTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -594,6 +594,79 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.ToTable("Settings");
                 });
 
+            modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Standing", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Draw")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Forme")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("GoalsAgainst")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GoalsDiff")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GoalsFor")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Group")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LeagueId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Lose")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MatchPlayed")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Points")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rank")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Win")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("LeagueId");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("Standings");
+                });
+
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Team", b =>
                 {
                     b.Property<int>("Id")
@@ -820,6 +893,21 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.HasOne("SoccerSolutionsApp.Data.Models.ApplicationUser", "User")
                         .WithMany("Predictions")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Standing", b =>
+                {
+                    b.HasOne("SoccerSolutionsApp.Data.Models.League", "League")
+                        .WithMany()
+                        .HasForeignKey("LeagueId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SoccerSolutionsApp.Data.Models.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

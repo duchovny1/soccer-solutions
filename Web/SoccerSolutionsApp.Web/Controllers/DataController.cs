@@ -14,10 +14,10 @@
     using SoccerSolutionsApp.Common;
     using SoccerSolutionsApp.Data;
     using SoccerSolutionsApp.Services.Data.Countries;
-    using SoccerSolutionsApp.Services.Data.Data;
     using SoccerSolutionsApp.Services.Data.Fixtures;
     using SoccerSolutionsApp.Services.Data.Leagues;
     using SoccerSolutionsApp.Services.Data.Seasons;
+    using SoccerSolutionsApp.Services.Data.Standings;
     using SoccerSolutionsApp.Services.Data.Teams;
     using SoccerSolutionsApp.Services.Data.TeamsServices;
     using SoccerSolutionsApp.Web.ViewModels.Teams;
@@ -37,6 +37,7 @@
         private readonly ITeamsService teamsService;
         private readonly IConfiguration configuration;
         private readonly IFixturesService fixturesService;
+        private readonly IStandingsService standingsService;
 
         public DataController(
             ApplicationDbContext db,
@@ -45,7 +46,8 @@
             ILeaguesService leaguesService,
             ITeamsService teamsService,
             IConfiguration configuration,
-            IFixturesService fixturesService)
+            IFixturesService fixturesService,
+            IStandingsService standingsService)
         {
             this.db = db;
             this.countriesService = countriesService;
@@ -54,6 +56,7 @@
             this.teamsService = teamsService;
             this.configuration = configuration;
             this.fixturesService = fixturesService;
+            this.standingsService = standingsService;
         }
 
         public string ApiHostHeader => this.configuration.GetValue<string>("x-rapidapi:Host");
@@ -244,6 +247,29 @@
             {
                 var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
                 int result = this.fixturesService.Create(fixtures);
+
+                return this.Ok($"{result} head to head fixtures added!");
+            }
+
+            return this.BadRequest();
+        }
+
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [HttpGet("getstandings/{leagueId}/")]
+        public IActionResult GetStandings(int leagueId)
+        {
+            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/leagueTable/{leagueId}");
+
+            var request = new RestRequest(Method.GET);
+            request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
+            request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
+            IRestResponse response = client.Execute(request);
+
+            string content = response.Content;
+            if (response.IsSuccessful)
+            {
+                var fixtures = JsonConvert.DeserializeObject<ImportStandingsApi>(content);
+                int result = this.standingsService.Create(fixtures);
 
                 return this.Ok($"{result} head to head fixtures added!");
             }

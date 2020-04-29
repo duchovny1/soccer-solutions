@@ -29,6 +29,8 @@
 
         Task<IEnumerable<PastFixturesViewModel>> GetHead2Head(int hometeamId, int awayteamId);
 
+        Task<IEnumerable<PastFixturesViewModel>> GetFixturesForLeagueId(int leagueId);
+
         Task<FixtureDetailViewModel> GetSingleFixtureById(int fixtureId);
 
         Task<H2HTeamsInfoViewModel> GetH2HTeamsInfo(int fixtureId);

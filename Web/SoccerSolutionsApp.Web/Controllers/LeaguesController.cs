@@ -1,11 +1,13 @@
 ﻿namespace SoccerSolutionsApp.Web.Controllers
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
     using SoccerSolutionsApp.Services.Data.Countries;
     using SoccerSolutionsApp.Services.Data.Fixtures;
     using SoccerSolutionsApp.Services.Data.Leagues;
+    using SoccerSolutionsApp.Web.ViewModels.Competitions;
     using SoccerSolutionsApp.Web.ViewModels.Leagues;
 
     public class LeaguesController : Controller
@@ -22,6 +24,20 @@
             this.leaguesService = leaguesService;
             this.countriesService = countriesService;
             this.fixturesService = fixturesService;
+        }
+
+
+        public async Task<IActionResult> All()
+        {
+            var viewModel = new CountriesAndLeaguesListingViewModel();
+            viewModel.Countries = this.countriesService.GetCountriesWithLeagues();
+          
+            foreach (var country in viewModel.Countries)
+            {
+                country.Leagues = await this.leaguesService.GetLeaguesByCountryId(country.Id);
+            }
+
+            return this.View(viewModel);
         }
 
         public async Task<IActionResult> ById(string countryName, int leagueId, string leagueName)

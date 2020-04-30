@@ -18,5 +18,7 @@
 
         Task<IEnumerable<LeaguesListingViewModel>> GetLeaguesByCountryId(int countryId);
 
+        Task<IEnumerable<LeaguesListingViewModel>> GetLeaguesForTeam(int teamId);
+
     }
 }

@@ -5,6 +5,7 @@
     using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Mapping;
     using SoccerSolutionsApp.Web.ViewModels.Fixtures;
+    using SoccerSolutionsApp.Web.ViewModels.Leagues;
 
     public class TeamInfoViewModel : IMapFrom<Team>
     {
@@ -24,6 +25,7 @@
 
         public IEnumerable<NextFixturesViewModel> NextFixtures { get; set; }
 
+        public IEnumerable<LeaguesListingViewModel> Leagues { get; set; }
         public int CurrentPage { get; set; }
 
         public int PagesCount { get; set; }

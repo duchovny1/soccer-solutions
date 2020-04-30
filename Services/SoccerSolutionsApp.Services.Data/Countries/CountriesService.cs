@@ -8,14 +8,19 @@
     using SoccerSolutionsApp.Data.Common.Repositories;
     using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Mapping;
+    using SoccerSolutionsApp.Web.ViewModels.Competitions;
 
     public class CountriesService : ICountriesService
     {
         private readonly IDeletableEntityRepository<Country> countriesRepository;
+        private readonly IDeletableEntityRepository<League> leaguesRepository;
 
-        public CountriesService(IDeletableEntityRepository<Country> countriesRepository)
+        public CountriesService(
+            IDeletableEntityRepository<Country> countriesRepository,
+            IDeletableEntityRepository<League> leaguesRepository)
         {
             this.countriesRepository = countriesRepository;
+            this.leaguesRepository = leaguesRepository;
         }
 
         public int Create(ImportCountriesApi models)
@@ -50,6 +55,12 @@
 
             return countries.To<T>().ToList();
         }
+
+        
+        public IEnumerable<CountriesListingViewModel> GetCountriesWithLeagues()
+         => this.countriesRepository.All()
+            .To<CountriesListingViewModel>()
+            .ToList();
 
         public async Task<int> GetCountryIdByName(string countryName)
           => await this.countriesRepository.All().Where(x => x.Name == countryName)

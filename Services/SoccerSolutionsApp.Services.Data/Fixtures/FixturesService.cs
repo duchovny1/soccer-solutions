@@ -13,6 +13,7 @@
     using SoccerSolutionsApp.Web.ViewModels.H2H;
     using SoccerSolutionsApp.Web.ViewModels.Main;
     using SoccerSolutionsApp.Web.ViewModels.Predictions;
+    using SoccerSolutionsApp.Web.ViewModels.Teams;
 
     public class FixturesService : IFixturesService
     {
@@ -200,7 +201,7 @@
         public async Task<int> CountPastFixturesAsync(int teamId)
             => await this.fixturesRepository.All()
                   .Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
-                  .Where(x => x.Status == Status.MatchFinished).CountAsync();
+                  .CountAsync();
 
         public async Task<IEnumerable<FixturesListingViewModel>> GetFixtureForDate(int leagueId, DateTime date)
             => await this.fixturesRepository.All()
@@ -226,11 +227,58 @@
             .FirstOrDefaultAsync();
 
         public async Task<IEnumerable<PastFixturesViewModel>> GetFixturesForLeagueId(int leagueId)
-            =>await this.fixturesRepository.All()
+            => await this.fixturesRepository.All()
                     .Where(x => x.LeagueId == leagueId)
                     .OrderByDescending(x => x.KickOff)
                     .To<PastFixturesViewModel>()
                     .ToListAsync();
+
+        public async Task<IEnumerable<PastFixturesViewModel>> GetAllPastFixturesByTeamId(int teamId, int? take = null, int skip = 0)
+        {
+            var query = this.fixturesRepository.All()
+               .Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
+               .Where(x => x.KickOff < DateTime.Today)
+               .OrderByDescending(x => x.KickOff)
+               .Skip(skip);
+
+            if (take.HasValue)
+            {
+                query = query.Take((int)take);
+            }
+
+            return await query
+                 .OrderBy(x => x.KickOff)
+                 .To<PastFixturesViewModel>()
+                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<NextFixturesViewModel>> GetAllNextFixtures(int teamId)
+        {
+           return await this.fixturesRepository.All().Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
+                .Where(x => x.KickOff >= DateTime.UtcNow)
+                .To<NextFixturesViewModel>().ToListAsync();
+        }
+
+        public async Task<IEnumerable<PastFixturesViewModel>> GetAllPastWhereTeamIsHome(int teamId)
+        => await this.fixturesRepository.All().Where(x => x.HomeTeamId == teamId)
+            .Where(x => x.KickOff < DateTime.Today)
+            .OrderBy(x => x.KickOff)
+            .To<PastFixturesViewModel>()
+            .ToListAsync();
+
+        public async Task<IEnumerable<PastFixturesViewModel>> GetAllPastWhereTeamIsAway(int teamId)
+        => await this.fixturesRepository.All().Where(x => x.AwayTeamId == teamId)
+            .Where(x => x.KickOff < DateTime.Today)
+            .OrderBy(x => x.KickOff)
+            .To<PastFixturesViewModel>()
+            .ToListAsync();
+
+        public async Task<IEnumerable<PastFixturesViewModel>> GetAllPastForTeamAndLeague(int teamId, int leagueId)
+        => await this.fixturesRepository.All().Where(x => x.LeagueId == leagueId)
+            .Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
+            .OrderBy(x => x.KickOff)
+            .To<PastFixturesViewModel>()
+            .ToListAsync();
     }
 
 }

@@ -8,6 +8,7 @@
     using SoccerSolutionsApp.Web.ViewModels.H2H;
     using SoccerSolutionsApp.Web.ViewModels.Main;
     using SoccerSolutionsApp.Web.ViewModels.Predictions;
+    using SoccerSolutionsApp.Web.ViewModels.Teams;
 
     public interface IFixturesService
     {
@@ -34,5 +35,17 @@
         Task<FixtureDetailViewModel> GetSingleFixtureById(int fixtureId);
 
         Task<H2HTeamsInfoViewModel> GetH2HTeamsInfo(int fixtureId);
+
+        Task<IEnumerable<PastFixturesViewModel>> GetAllPastFixturesByTeamId(int teamId, int? take = null, int skip = 0);
+
+        Task<IEnumerable<NextFixturesViewModel>> GetAllNextFixtures(int teamId);
+
+        Task<IEnumerable<PastFixturesViewModel>> GetAllPastWhereTeamIsHome(int teamId);
+
+        Task<IEnumerable<PastFixturesViewModel>> GetAllPastWhereTeamIsAway(int teamId);
+
+        Task<IEnumerable<PastFixturesViewModel>> GetAllPastForTeamAndLeague(int teamId, int leagueId);
+
+
     }
 }

@@ -15,5 +15,7 @@
         Task<IEnumerable<UserPredictionsViewModel>> GetUserPredictions(string userId);
 
         Task<IEnumerable<PredictionsListingViewModel>> GetFollowingsPredictions(string userId);
+
+        Task<PredictionsListingViewModel> GetPredictionById(int id);
     }
 }

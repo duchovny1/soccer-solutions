@@ -2,6 +2,6 @@
 {
     public class ImportStandingsApi
     {
-        public ImportStandingsApiModel Api {get; set; }
+        public ImportStandingsApiModel Api { get; set; }
     }
 }

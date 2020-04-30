@@ -112,5 +112,11 @@
 
             return this.View("All", model);
         }
+
+        public async Task<IActionResult> ById(int id)
+        {
+            var viewModel = await this.predictionsService.GetPredictionById(id);
+            return this.View(viewModel);
+        }
     }
 }

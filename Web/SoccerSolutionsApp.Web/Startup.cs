@@ -5,6 +5,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -56,6 +57,9 @@
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
 
+            services.AddMvc(options =>
+                               options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -96,7 +100,7 @@
                     dbContext.Database.Migrate();
                 }
 
-               //new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
+                //new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }
 
             if (env.IsDevelopment())

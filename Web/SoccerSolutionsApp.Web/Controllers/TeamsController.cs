@@ -4,10 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using SoccerSolutionsApp.Services.Data.Countries;
     using SoccerSolutionsApp.Services.Data.Fixtures;
+    using SoccerSolutionsApp.Services.Data.Leagues;
     using SoccerSolutionsApp.Services.Data.TeamsServices;
     using SoccerSolutionsApp.Web.ViewModels.Teams;
 
@@ -19,32 +20,24 @@
         private readonly ITeamsService teamsService;
         private readonly ICountriesService countriesService;
         private readonly IFixturesService fixturesService;
+        private readonly ILeaguesService leaguesService;
 
         public TeamsController(
             ITeamsService teamsService,
             ICountriesService countriesService,
-            IFixturesService fixturesService)
+            IFixturesService fixturesService,
+            ILeaguesService leaguesService)
         {
             this.teamsService = teamsService;
             this.countriesService = countriesService;
-           
+
             this.fixturesService = fixturesService;
+            this.leaguesService = leaguesService;
         }
 
         public IActionResult All()
         {
             var viewModel = this.teamsService.GetAll<TeamListingViewModel>();
-            return this.View(viewModel);
-        }
-
-        public IActionResult Create()
-        {
-            var countries = this.countriesService.GetAll<CountriesDropDownViewModel>();
-            var viewModel = new CreateTeamViewModel()
-            {
-                Countries = countries,
-            };
-
             return this.View(viewModel);
         }
 
@@ -77,14 +70,48 @@
 
             return this.View("ById", teamViewModel);
         }
-        public async Task<IActionResult> AllGames(int teamId)
+
+        public async Task<IActionResult> AllGames(int teamId, int page = 1)
         {
-            var viewModel = new TeamFixturesViewModel();
+            var viewModel = await this.teamsService.GetTeamByIdAsync<TeamInfoViewModel>(teamId);
 
-            viewModel.PastFixtures = await this.fixturesService.GetPastFixturesForTeamByIdAsync(teamId);
-            viewModel.NextFixtures = await this.fixturesService.GetNexTFixturesForTeamByIdAsync(teamId);
+            int pages = await this.fixturesService.CountPastFixturesAsync(teamId);
 
-            return this.View();
+            viewModel.PagesCount = (int)Math.Ceiling((double)pages / 40);
+            viewModel.CurrentPage = page;
+
+            viewModel.PastFixtures = await this.fixturesService.GetAllPastFixturesByTeamId(teamId, 40 - 10, (page - 1) * FixturesPerPage);
+            viewModel.NextFixtures = await this.fixturesService.GetAllNextFixtures(teamId);
+            viewModel.Leagues = await this.leaguesService.GetLeaguesForTeam(teamId);
+
+            return this.View(viewModel);
+        }
+
+        public async Task<IActionResult> HomeGames(int teamId)
+        {
+            var viewModel = await this.teamsService.GetTeamByIdAsync<TeamInfoViewModel>(teamId);
+            viewModel.PastFixtures = await this.fixturesService.GetAllPastWhereTeamIsHome(teamId);
+            viewModel.Leagues = await this.leaguesService.GetLeaguesForTeam(teamId);
+
+            return this.View("AllGames", viewModel);
+        }
+
+        public async Task<IActionResult> AwayGames(int teamId)
+        {
+            var viewModel = await this.teamsService.GetTeamByIdAsync<TeamInfoViewModel>(teamId);
+            viewModel.PastFixtures = await this.fixturesService.GetAllPastWhereTeamIsAway(teamId);
+            viewModel.Leagues = await this.leaguesService.GetLeaguesForTeam(teamId);
+
+            return this.View("AllGames", viewModel);
+        }
+
+        public async Task<IActionResult> ByLeague(int teamId, int leagueId)
+        {
+            var viewModel = await this.teamsService.GetTeamByIdAsync<TeamInfoViewModel>(teamId);
+            viewModel.PastFixtures = await this.fixturesService.GetAllPastForTeamAndLeague(teamId, leagueId);
+            viewModel.Leagues = await this.leaguesService.GetLeaguesForTeam(teamId);
+
+            return this.View("AllGames", viewModel);
         }
     }
 

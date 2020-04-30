@@ -5,7 +5,7 @@
 
     public class LeaguesByCountryNameViewModel
     {
-        public int CurrentLeagueId  { get; set; }
+        public int CurrentLeagueId { get; set; }
 
         public string CurrentLeagueName { get; set; }
 

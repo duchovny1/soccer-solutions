@@ -8,6 +8,7 @@
 
     public class PredictionsListingViewModel : IMapFrom<Prediction>
     {
+        public int Id { get; set; }
         public string UserId { get; set; }
 
         public string UserUsername { get; set; }

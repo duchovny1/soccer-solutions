@@ -1,0 +1,45 @@
+﻿@model SoccerSolutionsApp.Web.ViewModels.Predictions.PredictionsListingViewModel
+
+
+<div class="container">
+    <div>
+        <h5 style="color:#f03d3d">Prediction 
+        <a class="float-right" asp-area="Identity" asp-controller="User" asp-action="ById" asp-route-userName="@Model.UserUsername"><strong>by @Model.UserUsername</strong></a></h5>
+        
+    </div>
+    <div class="d-block border-top border-dark" style="background-color:#ede9e9">
+        <div class="row clearfix">
+            <div class="col container float-left position-relative">
+                <h4>@Model.FixtureHomeTeamName</h4>
+            </div>
+            <div class="col container float-right position-relative">
+                <h4><a class="float-right"> @Model.FixtureAwayTeamName</a></h4>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col container float-left">
+                <div>
+                    <img src="@Model.FixtureHomeTeamLogo" alt="..." class="img-thumbnail rounded border-success">
+                </div>
+            </div>
+            <div class="col container">
+                <div class="">
+                    <table>
+                        <thead></thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @Html.Raw(Model.Content)
+                                <td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col container float-right">
+                <div>
+                    <img src="@Model.FixtureAwayTeamLogo" alt="..." class="img-thumbnail rounded border-success float-right">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

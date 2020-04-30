@@ -48,7 +48,7 @@
                     <figcaption class="figure-caption text-center" style="color:black">@item.FixtureAwayTeamName</figcaption>
                 </figure>
                 <div class="media-body text-break">
-                    @item.ShortContent <a href="#" class="btn btn-warning">Read More</a>
+                    @Html.Raw(item.ShortContent) <a asp-action="ById" asp-route-id="@item.Id" class="btn btn-warning">Read More</a>
                 </div>
                 <div class="media-body">
                     <p style="margin-bottom:0; float:right;">Prediction:</p>
@@ -75,7 +75,7 @@
 
             success: function () {
 
-                let line = "<i onclick=\"unfollowUser('@@item.UserId')\" class=\"fas fa-check-double\" \"style=color:#0026ff>unfollow</i>\";
+                let line = "<i onclick=\"unfollowUser('@@item.UserId')\" class=\"fas fa-check-double\" \"style=color:#0026ff>unfollow</i>\";"
                 $("#follow").html(line);
                 $("#follow").attr("id", "unfollow");
             }
@@ -83,24 +83,5 @@
         });
     }
 
-    //function unfollowUser(userToUnfollowId) {
-
-    //    $.ajax({
-    //        url: `/Followings/UnfollowUser/`,
-    //        type: "POST",
-    //        data: {
-    //            'userToFollowId': `${userToUnfollowId}`
-    //        },
-
-
-    //        success: function () {
-    //            console.log(5)
-    //            let line = "<i onclick=\"\"followUser('@@item.UserId');\"\"class=\"\"fas fa-user-check\"\"style=\"\"color:#0026ff>follow</i>\"";
-    //            $("#unfollow").html(line);
-    //            $("#unfollow").attr("id", "follow");
-
-    //        }
-
-        //});
-    //}
+   
 </script>

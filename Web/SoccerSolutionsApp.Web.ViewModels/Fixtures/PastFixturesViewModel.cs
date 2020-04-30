@@ -21,7 +21,7 @@
 
         public string FullTime { get; set; }
 
-        public string FullTimeForView => this.FullTime == null ? null : string.Join(" ", this.FullTime.ToCharArray());
+        public string FullTimeForView => this.FullTime == null ? "PSTP" : string.Join(" ", this.FullTime.ToCharArray());
 
         public string StatusShort { get; set; }
 

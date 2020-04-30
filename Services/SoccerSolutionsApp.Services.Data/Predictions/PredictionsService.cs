@@ -74,5 +74,8 @@
             return allPredictions.AsQueryable().OrderByDescending(x => x.FixtureKickOff).ToList();
         }
 
+        public async Task<PredictionsListingViewModel> GetPredictionById(int id)
+            => await this.predictionsRepository.All()
+            .Where(x => x.Id == id).To<PredictionsListingViewModel>().FirstOrDefaultAsync();
     }
 }

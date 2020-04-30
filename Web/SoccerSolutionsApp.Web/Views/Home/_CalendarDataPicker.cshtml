@@ -6,27 +6,28 @@
     ViewData["TodayDate"] = DateTime.UtcNow.ToString("dd-mm-yyyy");
 }
 
-@using (Html.BeginForm())
-{
-    <h3>
-        Select date
-    </h3>
-    <form action="GET">
-        <input asp-for="Date" asp-controller="Fixtures" asp-action="ByName" value="@DateTime.Today.ToString("yyyy-MM-dd")" type="Date" id="datepicker"/>
-        <hr />
-        <input type="submit" value="Search" class="btn btn-primary" asp-controller="Fixtures" asp-action="ByDate" />
-    </form>
-}
+
+
+<h3>
+    Select date
+</h3>
+<br />
+<form action="GET">
+    <input asp-for="Date" asp-controller="Fixtures" asp-action="ByName" value="@DateTime.Today.ToString("yyyy-MM-dd")" type="Date" id="datepicker" />
+    <hr />
+    <input type="submit" value="Search" class="btn btn-primary" asp-controller="Fixtures" asp-action="ByDate" />
+</form>
+
 
 
 
 <script>
-   
+
     $(document).ready(
         $(function () {
             var currentDate = new Date();
 
-            $('#datepicker1').datepicker({   
+            $('#datepicker1').datepicker({
                 inline: true,
                 showOtherMonths: true,
                 dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],

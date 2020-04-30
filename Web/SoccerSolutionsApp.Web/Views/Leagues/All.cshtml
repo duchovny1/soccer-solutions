@@ -1,0 +1,33 @@
+﻿@model SoccerSolutionsApp.Web.ViewModels.Competitions.CountriesAndLeaguesListingViewModel
+
+
+<div class="container">
+    <table class="table table-sm">
+        @foreach (var country in Model.Countries)
+        {
+            @if (country.Leagues.Count() > 0)
+            {
+            <thead>
+                <tr>
+                    <th>
+                            <i class="@country.Name.ToLower() flag"></i>@country.Name
+                       
+                    </th>
+                </tr>
+            </thead>
+                <tbody>
+                    @foreach (var league in country.Leagues)
+                    {
+                        <tr>
+                            <td>
+                                <a style="color:#000000" asp-controller="Leagues" asp-action="ById" asp-route-countryName="@country.Name" asp-route-leagueId="@league.Id" asp-route-leagueName="@league.Name">@league.Name</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            }
+        }
+    </table>
+</div>
+

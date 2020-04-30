@@ -3,11 +3,50 @@
     ViewData["Title"] = "View";
 }
 
-<h1>View</h1>
+<div class="container">
 
-<h1>@Model.UserUsername</h1>>
+    <h2>
+        @Model.UserUsername profile
+    </h2>
 
-@foreach (var item in Model.UserPredictions)
-{
-    <h4>@item.Title - @item.GamePrediction</h4>
-}
+
+    <h3>Total Predictions: </h3>
+    <h4>Predictions that are true: @Model.HowManyPredictsAreTrue</h4>
+    <h4>Predictions that are false: @Model.HowManyPredictsAreFalse</h4>
+    <h4>@Model.UserUsername has a @Model.SuccessRate% success rate</h4>
+
+    <div class="container">
+        <table class="table table-bordered">
+            @if (Model.UserPredictions != null)
+            {
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Game</th>
+
+
+                        <th scope="col">Prediction</th>
+
+
+                        <th scope="col">Is game finished?</th>
+
+
+                        <th scope="col">Is prediction true</th>
+                    </tr>
+                </thead>
+            }
+            @foreach (var item in Model.UserPredictions)
+            {
+                <tbody>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>@item.Title</td>
+                        <td>@item.GamePrediction</td>
+                        <th>Game's Postponed</th>
+                        <th>Game's Postponed</th>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+</div>

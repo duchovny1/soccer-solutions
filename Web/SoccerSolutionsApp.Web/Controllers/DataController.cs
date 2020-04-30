@@ -78,7 +78,6 @@
             return leagues;
         }
 
-        
         [HttpGet("getfixtures")]
         public ActionResult<SelectList> GetFixtures(int leagueId)
         {
@@ -255,7 +254,7 @@
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-        [HttpGet("getstandings/{leagueId}/")]
+        [HttpGet("poststandings/{leagueId}/")]
         public IActionResult GetStandings(int leagueId)
         {
             var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/leagueTable/{leagueId}");

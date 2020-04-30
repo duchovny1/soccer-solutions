@@ -18,17 +18,20 @@
         private readonly IDeletableEntityRepository<Country> countryRepo;
         private readonly IDeletableEntityRepository<Season> seasonRepo;
         private readonly IDeletableEntityRepository<Fixture> fixturesRepo;
+        private readonly IDeletableEntityRepository<TeamLeagues> teamLeaguesRepo;
 
         public LeaguesService(
             IDeletableEntityRepository<League> leagueRepo,
             IDeletableEntityRepository<Country> countryRepo,
             IDeletableEntityRepository<Season> seasonRepo,
-            IDeletableEntityRepository<Fixture> fixturesRepo)
+            IDeletableEntityRepository<Fixture> fixturesRepo,
+            IDeletableEntityRepository<TeamLeagues> teamLeaguesRepo)
         {
             this.leagueRepo = leagueRepo;
             this.countryRepo = countryRepo;
             this.seasonRepo = seasonRepo;
             this.fixturesRepo = fixturesRepo;
+            this.teamLeaguesRepo = teamLeaguesRepo;
         }
 
         public int Create(ImportLeaguesApi models)
@@ -102,5 +105,16 @@
         public async Task<IEnumerable<LeaguesListingViewModel>> GetLeaguesByCountryId(int countryId)
            => await this.leagueRepo.All().Where(x => x.CountryId == countryId)
                    .Where(x => x.SeasonId == 12).To<LeaguesListingViewModel>().ToListAsync();
+
+        public async Task<IEnumerable<LeaguesListingViewModel>> GetLeaguesForTeam(int teamId)
+           => await this.teamLeaguesRepo.All().Where(x => x.TeamId == teamId)
+                                       .Where(x => x.League.Season.StartYear == "2019")
+                                       .Select(x => new LeaguesListingViewModel
+                                       {
+                                           Id = x.LeagueId,
+                                           Name = x.League.Name,
+                                       })
+                                       .ToListAsync();
+
     }
 }

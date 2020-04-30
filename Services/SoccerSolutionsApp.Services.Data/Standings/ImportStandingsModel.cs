@@ -2,6 +2,7 @@
 {
     using Newtonsoft.Json;
 
+    [JsonArrayAttribute]
     public class ImportStandingsModel
     {
         public int Rank { get; set; }

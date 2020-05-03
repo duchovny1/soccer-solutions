@@ -67,7 +67,6 @@
 
         public string ApiKeyHeaderValue => this.configuration.GetValue<string>("x-rapidapi:KeyHeaderValue");
 
-        
         [HttpGet("getleagues")]
         // it may need to be with attribute allow anonymous
         public ActionResult<SelectList> GetLeagues(int countryId)
@@ -86,7 +85,6 @@
 
             return fixtures;
         }
-
 
         // getting data from external Api
 
@@ -185,7 +183,6 @@
             return this.BadRequest();
         }
 
-
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
         [HttpGet("postfixtures/{leagueId}")]
         public IActionResult GetFixture(int leagueId)
@@ -275,6 +272,5 @@
 
             return this.BadRequest();
         }
-      
     }
 }

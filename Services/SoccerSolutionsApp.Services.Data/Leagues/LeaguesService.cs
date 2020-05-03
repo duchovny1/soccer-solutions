@@ -46,13 +46,16 @@
 
                 bool isExist = this.leagueRepo.All().Any(x => x.Name == model.Name
                                     && x.Season.StartYear == model.Season);
+
                 var country = this.countryRepo.All().FirstOrDefault(x => x.Name.ToLower() == model.Country.ToLower());
+                
                 var season = this.seasonRepo.All().FirstOrDefault(x => x.StartYear == model.Season);
 
                 DateTime seasonStart;
                 DateTime seasonEnd;
 
                 bool seasonStartParse = DateTime.TryParse(model.SeasonStart, out seasonStart);
+
                 if (!isExist && country != null && season != null)
                 {
                     League league = new League()
@@ -73,6 +76,7 @@
             }
 
             this.leagueRepo.SaveChanges();
+
             return totalLeagues;
 
         }

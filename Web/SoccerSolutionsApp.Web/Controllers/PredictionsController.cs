@@ -30,8 +30,7 @@
             ICountriesService countriesService,
             ILeaguesService leaguesService,
             IFixturesService fixturesService,
-            IUsersService usersService
-            )
+            IUsersService usersService)
         {
             this.predictionsService = predictionsService;
             this.countriesService = countriesService;
@@ -42,6 +41,7 @@
         }
 
         [Authorize]
+        [HttpGet]
         public IActionResult Create()
         {
             var countries = this.countriesService.GetAll<CountriesDropDownViewModel>();
@@ -54,8 +54,8 @@
             return this.View(viewModel);
         }
 
-        [Authorize]
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(CreatePredictionInputViewModel model)
         {
             if (!this.ModelState.IsValid)
@@ -116,6 +116,11 @@
         public async Task<IActionResult> ById(int id)
         {
             var viewModel = await this.predictionsService.GetPredictionById(id);
+            
+            if (viewModel == null)
+            {
+                return this.NotFound();
+            }
             return this.View(viewModel);
         }
     }

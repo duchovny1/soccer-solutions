@@ -1,15 +1,15 @@
-﻿using MyTested.AspNetCore.Mvc;
-using SoccerSolutionsApp.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SoccerSolutionsApp.Services.Data.Tests.Data
+﻿namespace SoccerSolutionsApp.Services.Data.Tests.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using MyTested.AspNetCore.Mvc;
+    using SoccerSolutionsApp.Data.Models;
+    using SoccerSolutionsApp.Web.ViewModels.Predictions;
+
     public static class PredictionTestData
     {
-        public static List<Prediction> GetPredictions(int count, bool isPublic = true, bool sameUser = true)
+        public static IEnumerable<PredictionsListingViewModel> GetPredictions(int count, bool isPublic = true, bool sameUser = true)
         {
 
             ApplicationUser user = new ApplicationUser
@@ -29,12 +29,13 @@ namespace SoccerSolutionsApp.Services.Data.Tests.Data
 
             var predictions = Enumerable
                 .Range(1, count)
-                .Select(i => new Prediction
+                .Select(i => new PredictionsListingViewModel
                 {
                     Id = i,
                     Content = $"Prediction {i}",
-                    FixtureId = fixture.Id,
                     GamePrediction = "1",
+                    FixtureHomeTeamName = "Man City",
+                    FixtureAwayTeamName = "Liverpool",
                     UserId = user.Id,
                 })
                 .ToList();

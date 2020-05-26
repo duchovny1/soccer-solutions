@@ -18,7 +18,8 @@
 
         public string Content { get; set; }
 
-        public string ShortContent => this.Content.Substring(0, 200) + "...";
+        public string ShortContent => this.Content.Length > 200 ? this.Content.Substring(0, 200) + "..."
+            : this.Content;
 
         public string GamePrediction { get; set; }
 

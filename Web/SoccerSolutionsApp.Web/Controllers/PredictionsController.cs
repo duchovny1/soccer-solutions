@@ -76,7 +76,7 @@
 
             var model = new PredictionsListingAndFollowingsViewModel()
             {
-                Predictions = await this.predictionsService.GetAll<PredictionsListingViewModel>(),
+                Predictions =  await this.predictionsService.GetAll<PredictionsListingViewModel>(),
             };
 
             if (userId == null)
@@ -98,7 +98,7 @@
 
             var model = new PredictionsListingAndFollowingsViewModel()
             {
-                Predictions = await this.predictionsService.GetFollowingsPredictions(userId),
+                Predictions = this.predictionsService.GetFollowingsPredictions(userId),
             };
 
             if (userId == null)
@@ -121,6 +121,7 @@
             {
                 return this.NotFound();
             }
+
             return this.View(viewModel);
         }
     }

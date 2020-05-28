@@ -28,6 +28,8 @@
             this.leaguesService = leaguesService;
             this.fixturesService = fixturesService;
         }
+
+
         public async Task<IActionResult> Index(int page = 1)
         {
             var viewModel = new MainPageLeaguesListingViewModel();

@@ -92,13 +92,9 @@
 
         private void SeedCountriesData()
         {
-            var countries = SeedDataTests.GetCountriesData();
-
-            foreach (var country in countries)
-            {
-                this.countryRepository.Add(country);
-
-            }
+            var country = SeedDataTests.GetCountriesData();
+            
+            this.countryRepository.Add(country);
 
             this.countryRepository.SaveChanges();
         }

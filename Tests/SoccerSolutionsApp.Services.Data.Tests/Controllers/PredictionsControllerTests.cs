@@ -4,13 +4,21 @@
     using MyTested.AspNetCore.Mvc;
     using SoccerSolutionsApp.Services.Data.Predictions;
     using SoccerSolutionsApp.Services.Data.Tests.Data;
+    using SoccerSolutionsApp.Services.Mapping;
     using SoccerSolutionsApp.Web.Controllers;
     using SoccerSolutionsApp.Web.ViewModels.Predictions;
+    using System;
+    using System.Reflection;
     using System.Threading.Tasks;
     using Xunit;
 
     public class PredictionsControllerTests
     {
+        public PredictionsControllerTests()
+        {
+            this.InitializerMapper();
+        }
+
         [Fact]
         public void CreateGETPredictionMustBeOnlyForAuthorizedUsers()
         =>
@@ -39,36 +47,46 @@
             .ShouldReturn()
             .NotFound();
 
+
         [Fact]
         public void PredictionsByIdShouldReturnCorrectModel()
         {
             MyController<PredictionsController>
                .Instance(instance => instance
-               .WithData(PredictionTestData.GetPredictions(1)))
+                      .WithUser("Author 1")
+                      .WithData(PredictionTestData.GetPredictions(2)))
             .Calling(c => c.ById(1))
             .ShouldReturn()
             .View(view => view
-            .WithModelOfType<PredictionsListingViewModel>()
-            .Passing(prediction => prediction.Id == 1));
-
+            .WithModelOfType<PredictionsListingViewModel>());
         }
-
 
         [Fact]
         public void PredictionsAllShouldReturnViewWithPredictions()
         {
-            var repo = new Mock<IPredictionsService>();
-            repo.Setup(r => r.GetAll<PredictionsListingViewModel>())
-                .Returns(Task.FromResult(PredictionTestData.GetPredictions(1)));
-
             MyController<PredictionsController>
                 .Instance()
-                .WithDependencies(x => x.
-                     With<IPredictionsService>(repo.Object))
                 .Calling(x => x.All())
                 .ShouldReturn()
-                .View();
+                .View(view =>
+                      view.WithModelOfType<PredictionsListingAndFollowingsViewModel>());
         }
+
+        [Fact]
+        public void CreateGetShouldReturnCorrectViewModel()
+        {
+            MyController<PredictionsController>
+                 .Instance(x => x.WithUser("1", "admin@abv.bg"))
+                 .Calling(x => x.Create())
+                 .ShouldHave()
+                 .ValidModelState()
+                 .AndAlso()
+                 .ShouldReturn()
+                 .View(x => x.WithModelOfType<CreatePredictionInputViewModel>());
+        }
+
+        private void InitializerMapper() => AutoMapperConfig.
+        RegisterMappings(Assembly.Load("SoccerSolutionsApp.Web.ViewModels"));
 
     }
 }

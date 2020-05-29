@@ -29,6 +29,7 @@
     using SoccerSolutionsApp.Services.Data.Users;
     using SoccerSolutionsApp.Services.Mapping;
     using SoccerSolutionsApp.Services.Messaging;
+    using SoccerSolutionsApp.Web.HostedServices;
     using SoccerSolutionsApp.Web.ViewModels;
 
     public class Startup
@@ -71,6 +72,8 @@
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
+            services.AddHostedService<DataProviderHostedService>();
+
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ITeamsService, TeamsService>();

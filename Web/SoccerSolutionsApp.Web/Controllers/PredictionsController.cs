@@ -76,7 +76,7 @@
 
             var model = new PredictionsListingAndFollowingsViewModel()
             {
-                Predictions =  await this.predictionsService.GetAll<PredictionsListingViewModel>(),
+                Predictions = await this.predictionsService.GetAll<PredictionsListingViewModel>(),
             };
 
             if (userId == null)

@@ -38,6 +38,8 @@ namespace SoccerSolutionsApp.Services.Data.Tests.Mocks
                 Mock.Of<IServiceProvider>(),
                 null);
 
+
+
             return userManagerMock.Object;
         }
     }

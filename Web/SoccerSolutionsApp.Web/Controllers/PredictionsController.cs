@@ -63,9 +63,9 @@
                 return this.RedirectToAction(nameof(this.All));
             }
 
-            var user = await this.userManager.GetUserAsync(this.User);
+            var userId = this.userManager.GetUserId(this.User);
 
-            await this.predictionsService.CreateAsync(model, user.Id);
+            await this.predictionsService.CreateAsync(model, userId);
 
             return this.RedirectToAction(nameof(this.All));
         }

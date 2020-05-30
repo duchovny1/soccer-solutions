@@ -5,13 +5,15 @@
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
-
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Moq;
     using MyTested.AspNetCore.Mvc;
+    using SoccerSolutionsApp.Data;
     using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Data.Predictions;
     using SoccerSolutionsApp.Services.Data.Tests.Data;
+    using SoccerSolutionsApp.Services.Data.Tests.Mocks;
     using SoccerSolutionsApp.Services.Mapping;
     using SoccerSolutionsApp.Web.Controllers;
     using SoccerSolutionsApp.Web.ViewModels.Predictions;
@@ -23,6 +25,7 @@
         public PredictionsControllerTests()
         {
             this.InitializerMapper();
+          
         }
 
         [Fact]
@@ -54,6 +57,35 @@
                       Assert.Equal(3, x.Countries.Count());
                       Assert.IsType<List<CountriesDropDownViewModel>>(x.Countries);
                   }));
+
+        [Fact]
+        public void CreatePostShouldCreateThePredictionAndRedirect()
+        {
+            var model = new CreatePredictionInputViewModel
+            {
+               Prediction = "X",
+               Content = "the game should ends 1:1",
+               FixtureId = 1,
+               CountryId = 1,
+               LeagueId = 1,
+            };
+
+            MyController<PredictionsController>
+                .Instance()
+                .WithUser()
+                .Calling(c => c.Create(model))
+                .ShouldHave()
+                .ValidModelState()
+                .AndAlso()
+                .ShouldHave()
+                .Data(data => data
+                    .WithSet<Prediction>(predictions => predictions
+                        .Any(pr => pr.Content == model.Content)))
+                .AndAlso()
+                .ShouldReturn()
+                .Redirect(result => result
+                    .ToAction(nameof(PredictionsController.All)));
+        }
 
         [Fact]
         public void CreatePostShouldRedirectWithInvalidModelState()

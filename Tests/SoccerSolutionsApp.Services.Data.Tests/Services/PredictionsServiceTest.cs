@@ -79,7 +79,7 @@
         {
             var userOne = await this.usersRepository.All().FirstOrDefaultAsync(x => x.UserName == "testuser@abv.bg");
             var userTwo = await this.usersRepository.All().FirstOrDefaultAsync(x => x.UserName == "anothertestuser@abv.bg");
-          
+
             var user = new ApplicationUser()
             {
                 UserName = "userFollowing@abv.bg",

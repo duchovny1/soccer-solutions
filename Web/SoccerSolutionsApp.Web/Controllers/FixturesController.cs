@@ -39,7 +39,10 @@
         public async Task<IActionResult> ByDate(FixturesByDateInputModel model)
         {
             var viewModel = new FixturesByDateViewModel();
+
             viewModel.Leagues = this.leaguesService.GetAll<LeaguesListingViewModel>();
+
+           
 
             foreach (var league in viewModel.Leagues)
             {

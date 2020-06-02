@@ -35,9 +35,6 @@
         {
             this.ConfigureServices(services);
 
-            services.AddDbContext<ApplicationDbContext>(
-                options => options.UseInMemoryDatabase("testdb"));
-
             services.ReplaceSingleton<UserManager<ApplicationUser>>(sp =>
                   MockProvider.UserManager());
 

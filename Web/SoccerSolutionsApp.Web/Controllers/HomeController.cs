@@ -14,12 +14,11 @@
     using SoccerSolutionsApp.Web.ViewModels;
     using SoccerSolutionsApp.Web.ViewModels.Main;
 
-    public class HomeController : BaseController
+    public class HomeController : Controller
     {
         private const int LeaguesPerPage = 25;
         private readonly ILeaguesService leaguesService;
         private readonly IFixturesService fixturesService;
-   
 
         public HomeController(
             ILeaguesService leaguesService,
@@ -28,7 +27,6 @@
             this.leaguesService = leaguesService;
             this.fixturesService = fixturesService;
         }
-
 
         public async Task<IActionResult> Index(int page = 1)
         {

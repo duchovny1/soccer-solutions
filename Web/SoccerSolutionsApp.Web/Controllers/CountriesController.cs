@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace SoccerSolutionsApp.Web.Controllers
 {
-    public class ContriesController : Controller
+    public class CountriesController : Controller
     {
         private readonly ICountriesService countriesService;
 
-        public ContriesController(ICountriesService countriesService)
+        public CountriesController(ICountriesService countriesService)
         {
             this.countriesService = countriesService;
         }

@@ -20,6 +20,7 @@
     using SoccerSolutionsApp.Services.Data.Standings;
     using SoccerSolutionsApp.Services.Data.Teams;
     using SoccerSolutionsApp.Services.Data.TeamsServices;
+    using SoccerSolutionsApp.Web.Infrastructure;
     using SoccerSolutionsApp.Web.ViewModels.Teams;
 
     [ApiController]
@@ -29,6 +30,11 @@
     {
         private const int FixturesPerPage = 20;
         private const int NextFixturePerPage = 4;
+
+        private const string ApiHost = "x-rapidapi-host";
+        private const string ApiHostValue = "api-football-v1.p.rapidapi.com";
+        private const string ApiHeader = "x-rapidapi-key";
+        private const string ApiHeaderValue = "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da";
 
         private readonly ApplicationDbContext db;
         private readonly ICountriesService countriesService;
@@ -59,14 +65,6 @@
             this.standingsService = standingsService;
         }
 
-        public string ApiHostHeader => this.configuration.GetValue<string>("x-rapidapi:Host");
-
-        public string ApiHostHeaderValue => this.configuration.GetValue<string>("x-rapidapi:HostValue");
-
-        public string ApiKeyHeader => this.configuration.GetValue<string>("x-rapidapi:KeyHeader");
-
-        public string ApiKeyHeaderValue => this.configuration.GetValue<string>("x-rapidapi:KeyHeaderValue");
-
         [HttpGet("getleagues")]
         // it may need to be with attribute allow anonymous
         public ActionResult<SelectList> GetLeagues(int countryId)
@@ -92,11 +90,10 @@
         [HttpGet("postcountries")]
         public IActionResult Countries()
         {
-            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/countries");
+            var client = new RestClient(DataProvider.GetCountriesUrl);
 
             var request = new RestRequest(Method.GET);
-            request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
-            request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
+            request = this.AddHeaders(request);
             IRestResponse response = client.Execute(request);
             string content = response.Content;
 
@@ -118,8 +115,7 @@
             var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/seasons");
 
             var request = new RestRequest(Method.GET);
-            request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
-            request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
+            request = this.AddHeaders(request);
 
             IRestResponse response = client.Execute(request);
             string content = response.Content;
@@ -139,11 +135,10 @@
         [HttpGet("postleagues/{countryName}/{season}")]
         public IActionResult LeaguesByCountryAndYear(string countryName, int season)
         {
-            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/leagues/country/{countryName}/{season}");
+            var client = new RestClient(string.Format(DataProvider.GetLeaguesByCountryUrl, countryName, season));
 
             var request = new RestRequest(Method.GET);
-            request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
-            request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
+            request = this.AddHeaders(request);
 
             IRestResponse response = client.Execute(request);
             string content = response.Content;
@@ -163,11 +158,10 @@
         [HttpGet("postteams/{leagueId}")]
         public IActionResult GetTeams(int leagueId)
         {
-            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/teams/league/{leagueId}");
+            var client = new RestClient(string.Format(DataProvider.GetTeamsByIdUrl, leagueId));
 
             var request = new RestRequest(Method.GET);
-            request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
-            request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
+            request = this.AddHeaders(request);
 
             IRestResponse response = client.Execute(request);
             string content = response.Content;
@@ -187,11 +181,9 @@
         [HttpGet("postfixtures/{leagueId}")]
         public IActionResult GetFixture(int leagueId)
         {
-            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{leagueId}");
-
+            var client = new RestClient(string.Format(DataProvider.GetFixturesByIdUrl, leagueId));
             var request = new RestRequest(Method.GET);
-            request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
-            request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
+            request = this.AddHeaders(request);
             IRestResponse response = client.Execute(request);
             string content = response.Content;
             if (response.IsSuccessful)
@@ -209,11 +201,9 @@
         [HttpGet("postnextfixtures/{leagueId}/{number:int=10}")]
         public IActionResult GetNextFixture(int leagueId, int number = 10)
         {
-            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{leagueId}/next/{number}");
-
+            var client = new RestClient(string.Format(DataProvider.GetNexturesByLeagueIdUrl, leagueId, number));
             var request = new RestRequest(Method.GET);
-            request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
-            request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
+            request = this.AddHeaders(request);
             IRestResponse response = client.Execute(request);
             string content = response.Content;
             if (response.IsSuccessful)
@@ -231,11 +221,10 @@
         [HttpGet("posth2h/{team1id}/{team2id}")]
         public IActionResult GetHeadToHead(int team1id, int team2id)
         {
-            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/fixtures/h2h/{team1id}/{team2id}");
+            var client = new RestClient(string.Format(DataProvider.GetHeadToHeadUrl, team1id, team2id));
 
             var request = new RestRequest(Method.GET);
-            request.AddHeader(this.ApiHostHeader, this.ApiHostHeaderValue);
-            request.AddHeader(this.ApiKeyHeader, this.ApiKeyHeaderValue);
+            request = this.AddHeaders(request);
             IRestResponse response = client.Execute(request);
 
             string content = response.Content;
@@ -254,11 +243,9 @@
         [HttpGet("poststandings/{leagueId}/")]
         public IActionResult GetStandings(int leagueId)
         {
-            var client = new RestClient($"https://api-football-v1.p.rapidapi.com/v2/leagueTable/{leagueId}");
-
+            var client = new RestClient(string.Format(DataProvider.GetStandingsUrl, leagueId));
             var request = new RestRequest(Method.GET);
-            request.AddHeader("x-rapidapi-host", "api-football-v1.p.rapidapi.com");
-            request.AddHeader("x-rapidapi-key", "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da");
+            request = this.AddHeaders(request);
             IRestResponse response = client.Execute(request);
 
             string content = response.Content;
@@ -271,6 +258,14 @@
             }
 
             return this.BadRequest();
+        }
+
+        private RestRequest AddHeaders(RestRequest request)
+        {
+            request.AddHeader(DataProvider.ApiHost, DataProvider.ApiHostValue);
+            request.AddHeader(DataProvider.ApiKey, DataProvider.ApiKeyValue);
+
+            return request;
         }
     }
 }

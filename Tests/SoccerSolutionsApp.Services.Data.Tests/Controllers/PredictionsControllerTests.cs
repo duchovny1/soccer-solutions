@@ -25,7 +25,6 @@
         public PredictionsControllerTests()
         {
             this.InitializerMapper();
-          
         }
 
         [Fact]

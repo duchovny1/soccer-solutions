@@ -14,7 +14,6 @@
     [Area("Administration")]
     public class DashboardController : AdministrationController
     {
-        private readonly ISettingsService settingsService;
         private readonly IAdminInfoService adminInfoService;
 
         public DashboardController(IAdminInfoService adminInfoService)

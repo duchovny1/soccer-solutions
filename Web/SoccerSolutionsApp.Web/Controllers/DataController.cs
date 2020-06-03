@@ -28,14 +28,6 @@
     [Authorize]
     public class DataController : ControllerBase
     {
-        private const int FixturesPerPage = 20;
-        private const int NextFixturePerPage = 4;
-
-        private const string ApiHost = "x-rapidapi-host";
-        private const string ApiHostValue = "api-football-v1.p.rapidapi.com";
-        private const string ApiHeader = "x-rapidapi-key";
-        private const string ApiHeaderValue = "4647dae471mshba2a7fa64dde9abp117a98jsnf184cf64a1da";
-
         private readonly ApplicationDbContext db;
         private readonly ICountriesService countriesService;
         private readonly ISeasonsService seasonsService;

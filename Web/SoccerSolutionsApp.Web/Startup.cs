@@ -15,8 +15,6 @@
     using SoccerSolutionsApp.Data.Common.Repositories;
     using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Data.Repositories;
-    using SoccerSolutionsApp.Data.Seeding;
-    using SoccerSolutionsApp.Services.Data;
     using SoccerSolutionsApp.Services.Data.Administrations;
     using SoccerSolutionsApp.Services.Data.Countries;
     using SoccerSolutionsApp.Services.Data.Fixtures;
@@ -75,7 +73,6 @@
             services.AddHostedService<DataProviderHostedService>();
 
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ITeamsService, TeamsService>();
             services.AddTransient<ICountriesService, CountriesService>();
             services.AddTransient<ISeasonsService, SeasonsService>();

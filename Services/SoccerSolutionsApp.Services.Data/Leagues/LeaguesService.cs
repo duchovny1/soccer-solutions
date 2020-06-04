@@ -48,7 +48,7 @@
                                     && x.Season.StartYear == model.Season);
 
                 var country = this.countryRepo.All().FirstOrDefault(x => x.Name.ToLower() == model.Country.ToLower());
-                
+
                 var season = this.seasonRepo.All().FirstOrDefault(x => x.StartYear == model.Season);
 
                 DateTime seasonStart;
@@ -106,6 +106,7 @@
             return leaguesIds;
         }
 
+        // Season with id 12 is current season 2019/2020
         public async Task<IEnumerable<LeaguesListingViewModel>> GetLeaguesByCountryId(int countryId)
            => await this.leagueRepo.All().Where(x => x.CountryId == countryId)
                    .Where(x => x.SeasonId == 12).To<LeaguesListingViewModel>().ToListAsync();

@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SoccerSolutionsApp.Data.Common.Repositories;
-using SoccerSolutionsApp.Data.Models;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace SoccerSolutionsApp.Services.Data.Administrations
+﻿namespace SoccerSolutionsApp.Services.Data.Administrations
 {
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using Microsoft.EntityFrameworkCore;
+    using SoccerSolutionsApp.Data.Common.Repositories;
+    using SoccerSolutionsApp.Data.Models;
+
     public class AdminInfoService : IAdminInfoService
     {
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;

@@ -8,13 +8,19 @@
 
     public static class SeedDataTests
     {
-        public static Season GetSeasonData()
+        public static List<Season> GetSeasonData() => new List<Season>()
         {
-            return new Season()
+            new Season()
             {
-                Id = 1,
-                StartYear = "2019",            };
-        }
+                Id = 12,
+                StartYear = "2019",
+            },
+            new Season()
+            {
+                Id = 11,
+                StartYear = "2018",
+            },
+        };
 
         public static Country GetCountriesData()
         {
@@ -26,17 +32,25 @@
             };
         }
 
-        public static League GetLeaguesData()
+        public static List<League> GetLeaguesData() => new List<League>
         {
-            return new League()
+             new League()
             {
                 Id = 1,
                 Name = "Premier League",
                 Type = "League",
-                SeasonId = 1,
+                SeasonId = 12,
                 CountryId = 1,
-            };
-        }
+            },
+             new League
+            {
+                Id = 2,
+                Name = "Championship",
+                Type = "League",
+                SeasonId = 12,
+                CountryId = 1,
+            },
+        };
 
         public static List<Team> GetTeamsData()
         {
@@ -54,6 +68,23 @@
                  Name = "Arsenal",
                  CountryId = 1,
              },
+            };
+        }
+
+        public static List<TeamLeagues> GetTeamLeaguesData()
+        {
+            return new List<TeamLeagues>()
+            {
+                new TeamLeagues()
+                {
+                    TeamId = 1,
+                    LeagueId = 1,
+                },
+                new TeamLeagues()
+                {
+                    TeamId = 2,
+                    LeagueId = 1,
+                },
             };
         }
 

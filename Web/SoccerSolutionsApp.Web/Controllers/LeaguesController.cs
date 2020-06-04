@@ -31,7 +31,7 @@
         {
             var viewModel = new CountriesAndLeaguesListingViewModel();
             viewModel.Countries = this.countriesService.GetCountriesWithLeagues();
-          
+
             foreach (var country in viewModel.Countries)
             {
                 country.Leagues = await this.leaguesService.GetLeaguesByCountryId(country.Id);

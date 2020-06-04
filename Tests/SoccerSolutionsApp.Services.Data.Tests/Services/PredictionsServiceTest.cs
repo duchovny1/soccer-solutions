@@ -148,14 +148,14 @@
 
         private void SeedDatabase()
         {
-            var season = SeedDataTests.GetSeasonData();
-            this.dbContext.Seasons.Add(season);
+            var seasons = SeedDataTests.GetSeasonData();
+            this.dbContext.Seasons.AddRange(seasons);
 
             var country = SeedDataTests.GetCountriesData();
             this.dbContext.Countries.Add(country);
 
             var league = SeedDataTests.GetLeaguesData();
-            this.dbContext.Leagues.Add(league);
+            this.dbContext.Leagues.AddRange(league);
 
             var teams = SeedDataTests.GetTeamsData();
             this.dbContext.Teams.AddRange(teams);

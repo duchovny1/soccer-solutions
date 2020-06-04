@@ -35,9 +35,9 @@
             this.leaguesService = leaguesService;
         }
 
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            var viewModel = this.teamsService.GetAll<TeamListingViewModel>();
+            var viewModel = await this.teamsService.GetAll<TeamListingViewModel>();
             return this.View(viewModel);
         }
 

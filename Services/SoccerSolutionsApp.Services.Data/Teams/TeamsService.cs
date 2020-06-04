@@ -108,14 +108,8 @@
             return totalTeams;
         }
 
-        public IEnumerable<T> GetAll<T>()
-        {
-            IQueryable<Team> query = this.teamRepository.All();
-
-            return query.To<T>()
-                .ToList();
-
-        }
+        public async Task<IEnumerable<T>> GetAll<T>()
+         => await this.teamRepository.All().To<T>().ToListAsync();
 
         public async Task<T> GetTeamByIdAsync<T>(int id)
               => await this.teamRepository.All().Where(x => x.Id == id)

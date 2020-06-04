@@ -22,6 +22,12 @@
 
         public ApplicationDbContext DbContext { get; private set; }
 
+        public void Dispose()
+        {
+            this.connection.Close();
+            this.connection.Dispose();
+        }
+
         private void InitiliazeDb()
         {
             this.connection.Open();
@@ -35,10 +41,5 @@
             AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
         }
 
-        public void Dispose()
-        {
-            this.connection.Close();
-            this.connection.Dispose();
-        }
     }
 }

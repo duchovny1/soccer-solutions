@@ -9,7 +9,7 @@
 
     public interface ITeamsService
     {
-        public IEnumerable<T> GetAll<T>();
+        public Task<IEnumerable<T>> GetAll<T>();
 
         int Create(ImportTeamsApi models, int leagueId);
 

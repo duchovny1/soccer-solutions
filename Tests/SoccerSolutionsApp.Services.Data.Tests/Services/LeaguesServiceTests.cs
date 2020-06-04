@@ -65,7 +65,6 @@
             //"flag":"https://media.api-football.com/flags/gb.svg"
         }
 
-
         [Fact]
         public async Task ShouldNotCreateALeagueWithIncorectSeason()
         {
@@ -87,7 +86,9 @@
                     };
 
             this.leaguesService.Create(this.ApiModel);
-            Assert.Equal(2, this.seasonRepository.All().Count());
+            var seasonsCount = await this.seasonRepository.All().CountAsync();
+
+            Assert.Equal(2, seasonsCount);
             Assert.Empty(this.leaguesRepository.All());
         }
 
@@ -235,8 +236,9 @@
             }
 
             this.teamRepository.SaveChanges();
-           
+
         }
+
         private void SeedTeamsLeaguesData()
         {
             var teamLeagues = SeedDataTests.GetTeamLeaguesData();

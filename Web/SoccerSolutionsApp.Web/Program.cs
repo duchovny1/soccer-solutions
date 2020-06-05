@@ -1,7 +1,9 @@
 ﻿namespace SoccerSolutionsApp.Web
 {
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using SoccerSolutionsApp.Web.HostedServices;
 
     public static class Program
     {

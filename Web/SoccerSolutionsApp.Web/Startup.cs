@@ -61,17 +61,16 @@
 
             services.AddControllersWithViews();
             services.AddRazorPages();
-
             services.AddSingleton(this.configuration);
+
 
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
+            services.AddScoped<IDataProcessingService, DataProcessingService>();
 
             // Application services
-            services.AddHostedService<DataProviderHostedService>();
-
             services.AddTransient<IEmailSender, NullMessageSender>();
             services.AddTransient<ITeamsService, TeamsService>();
             services.AddTransient<ICountriesService, CountriesService>();
@@ -83,6 +82,9 @@
             services.AddTransient<IH2HService, H2HService>();
             services.AddTransient<IStandingsService, StandingsService>();
             services.AddTransient<IAdminInfoService, AdminInfoService>();
+
+            services.AddHostedService<ConsumeDataProcessingService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

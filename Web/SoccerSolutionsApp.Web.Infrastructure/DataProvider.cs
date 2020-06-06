@@ -31,7 +31,7 @@
         private const string TeamsByIdUrl = "https://api-football-v1.p.rapidapi.com/v2/teams/league/{leagueId}";
 
         // api get fixtures by league id url
-        private const string FixturesByLeagueIdUrl = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{leagueId}";
+        private const string FixturesByLeagueIdUrl = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{0}";
 
         // api get next fixture by league id url. there is a number of fixtures which is optional
         private const string NextFixturesByLeagueIdUrl = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{leagueId}/next/{number}";

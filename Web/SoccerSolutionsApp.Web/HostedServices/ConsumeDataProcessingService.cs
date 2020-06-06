@@ -44,13 +44,13 @@
                 await dataProcessingService.DoWork(cancellationToken);
             }
         }
-
         public override async Task StopAsync(CancellationToken stoppingToken)
         {
-            logger.LogInformation(
+            this.logger.LogInformation(
                 "Consume Scoped Service Hosted Service is stopping.");
 
             await Task.CompletedTask;
         }
     }
 }
+ 

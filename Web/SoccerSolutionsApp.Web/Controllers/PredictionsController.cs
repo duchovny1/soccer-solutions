@@ -116,7 +116,7 @@
         public async Task<IActionResult> ById(int id)
         {
             var viewModel = await this.predictionsService.GetPredictionById(id);
-            
+
             if (viewModel == null)
             {
                 return this.NotFound();

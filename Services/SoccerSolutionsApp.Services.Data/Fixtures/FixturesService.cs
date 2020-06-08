@@ -2,9 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Newtonsoft.Json;
     using SoccerSolutionsApp.Data.Common.Repositories;
     using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Data.Models.Enums;
@@ -34,14 +37,15 @@
             this.teamLeaguesRepository = teamLeaguesRepository;
         }
 
+        public string FilePath { get; } = Path.Combine(Environment.CurrentDirectory + "\\" + "fixturesExceptions.txt");
+
         public int Create(ImportFixturesApi model)
         {
             int totalFixtures = 0;
 
-
-            try
+            foreach (var fixture in model.Api.Fixtures)
             {
-                foreach (var fixture in model.Api.Fixtures)
+                try
                 {
                     var isExists = this.fixturesRepository.All().Any(x => x.Id == fixture.FixtureId);
 
@@ -69,7 +73,8 @@
                         "Match Finished" => Status.MatchFinished,
                         "Not Started" => Status.NotStarted,
                         "Match Postponed" => Status.Postponed,
-                        _ => throw new System.NotImplementedException(),
+                        "Match Cancelled" => Status.Cancelled,
+                        _ => throw new InvalidCastException(),
                     };
 
                     if (league != null && homeTeam != null && awayTeam != null)
@@ -121,15 +126,34 @@
                         totalFixtures++;
                     }
                 }
-            }
-            catch (Exception exception)
-            {
-                throw new Exception(exception.Message);
+                catch (Exception ex)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    using StreamWriter sw = new StreamWriter(this.FilePath, true);
+
+                    sb.AppendLine($"An exception occured at {DateTime.UtcNow}");
+                    sb.AppendLine($"There is some problem with deserializating fixture from json");
+                    sb.AppendLine($"Original exception message: ");
+                    sb.AppendLine(ex.Message);
+
+                    if (ex.InnerException != null)
+                    {
+                        sb.AppendLine(ex.InnerException.ToString());
+                    }
+
+                    sb.AppendLine();
+                    sb.AppendLine("Fixture Object");
+                    sb.AppendLine(fixture.ToString());
+                    sb.AppendLine("End of exception here.");
+                    sb.AppendLine("--------------");
+                    sb.AppendLine("---------------");
+                    sw.Write(sb.ToString());
+                    sw.Close();
+                }
             }
 
             return totalFixtures;
         }
-
         public async Task<IEnumerable<FixtureViewModel>> GetFixturesByDate(FixturesByDateInputModel model)
         {
             var fixtures = this.fixturesRepository.All().Where(x => x.KickOff.Date == model.Date);
@@ -164,7 +188,7 @@
         // this method gets fixtures for next nth days from league
         // for example gets matches from league for next 7 days
         public IEnumerable<FixtureForLeagueDropDownModel> GetNextFixturesByLeagueIdAndDaysAsync(int leagueId, int days)
-         =>  this.fixturesRepository.All().Where(x => x.LeagueId == leagueId)
+         => this.fixturesRepository.All().Where(x => x.LeagueId == leagueId)
                 .Where(x => x.KickOff >= DateTime.UtcNow && x.KickOff <= DateTime.Today.AddDays(days))
                 .To<FixtureForLeagueDropDownModel>().ToList();
 
@@ -262,9 +286,9 @@
 
         public async Task<IEnumerable<NextFixturesViewModel>> GetAllNextFixtures(int teamId)
         {
-           return await this.fixturesRepository.All().Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
-                .Where(x => x.KickOff >= DateTime.UtcNow)
-                .To<NextFixturesViewModel>().ToListAsync();
+            return await this.fixturesRepository.All().Where(x => x.HomeTeamId == teamId || x.AwayTeamId == teamId)
+                 .Where(x => x.KickOff >= DateTime.UtcNow)
+                 .To<NextFixturesViewModel>().ToListAsync();
         }
 
         public async Task<IEnumerable<PastFixturesViewModel>> GetAllPastWhereTeamIsHome(int teamId)
@@ -287,6 +311,8 @@
             .OrderBy(x => x.KickOff)
             .To<PastFixturesViewModel>()
             .ToListAsync();
+
+      
     }
 
 }

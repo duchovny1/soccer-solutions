@@ -1,19 +1,23 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using RestSharp;
-using SoccerSolutionsApp.Services.Data.Fixtures;
-using SoccerSolutionsApp.Services.Data.Leagues;
-using SoccerSolutionsApp.Web.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace SoccerSolutionsApp.Web.HostedServices
+﻿namespace SoccerSolutionsApp.Web.HostedServices
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
+    using RestSharp;
+    using SoccerSolutionsApp.Services.Data.Fixtures;
+    using SoccerSolutionsApp.Services.Data.Leagues;
+    using SoccerSolutionsApp.Web.Infrastructure;
+
     public class DataProcessingService : IDataProcessingService, IDisposable
     {
+        private const string LoggingMessage = "{0} newly added fixtures for league {1} at {2}";
+
         private readonly ILogger logger;
         private readonly CancellationTokenSource cancellationToken =
                                                     new CancellationTokenSource();
@@ -34,6 +38,8 @@ namespace SoccerSolutionsApp.Web.HostedServices
 
         public IServiceProvider Services { get; set; }
 
+        public string FilePath { get; } = Path.Combine(Environment.CurrentDirectory + "\\" + "fixturesinfo.txt");
+
         public void Dispose()
         {
             this.cancellationToken.Cancel();
@@ -41,27 +47,28 @@ namespace SoccerSolutionsApp.Web.HostedServices
 
         public async Task DoWork(CancellationToken cancellationToken)
         {
+            using var sw = new StreamWriter(this.FilePath, true);
+
             while (!cancellationToken.IsCancellationRequested)
             {
                 foreach (var id in this.leaguesIds)
                 {
-
                     // getting for now only fixures for popular leagues
                     // leagues with id more than 150 are non-popular
                     // and there's some bug with deserializing Json file
                     // BUG will be fixed ASAP
-                    if (id > 150)
-                    {
-                        break;
-                    }
 
                     int result = this.GetFixtures(id);
+                    string message = string.Format(LoggingMessage, result, id, DateTime.UtcNow);
                     this.logger.LogInformation(
-                             $"{result} newly added fixtures for league {id}");
+                             message);
+                    sw.WriteLine(message);
                 }
 
                 await Task.Delay(new TimeSpan(12, 00, 00));
             }
+
+            sw.Close();
         }
 
         private int GetFixtures(int leagueId)

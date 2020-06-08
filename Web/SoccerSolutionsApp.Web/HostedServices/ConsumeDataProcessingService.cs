@@ -44,6 +44,7 @@
                 await dataProcessingService.DoWork(cancellationToken);
             }
         }
+
         public override async Task StopAsync(CancellationToken stoppingToken)
         {
             this.logger.LogInformation(

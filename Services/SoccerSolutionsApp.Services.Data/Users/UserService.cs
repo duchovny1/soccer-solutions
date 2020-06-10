@@ -65,7 +65,7 @@
 
         public async Task<IEnumerable<string>> GetCurrentUserFollowingsAsync(string userId)
         {
-            // userId is a currentUser . getting people he follow
+            // userId is a currentUser . getting people he follows
 
             var followings = await this.followingsRepository.All()
                 .Where(x => x.UserFollowingId == userId)

@@ -1,7 +1,10 @@
 ﻿namespace SoccerSolutionsApp.Services.Data.TeamsServices
 {
+    using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using SoccerSolutionsApp.Data.Common.Repositories;
@@ -31,6 +34,9 @@
             this.teamLeaguesRepository = teamLeaguesRepository;
         }
 
+
+        public string FilePath { get; } = Path.Combine(Environment.CurrentDirectory + "\\" + "TeamsExceptions.txt");
+
         public int Create(ImportTeamsApi models, int leagueId)
         {
             int totalTeams = 0;
@@ -43,66 +49,92 @@
             {
                 foreach (var model in models.Api.Teams)
                 {
-                    Team teamToCheck = this.teamRepository.All().FirstOrDefault(x => x.Id == model.TeamId);
-
-                    // if the teams already exists
-                    if (teamToCheck != null)
+                    try
                     {
-                        int teamId = teamToCheck.Id;
+                        Team teamToCheck = this.teamRepository.All().FirstOrDefault(x => x.Id == model.TeamId);
 
-                        // checking if the current team is being add in the mapping table
-                        TeamLeagues teamLeague = this.teamLeaguesRepository
-                             .All().FirstOrDefault(x => x.TeamId == teamId && x.LeagueId == leagueId);
-
-                        // if its being added, doin nothing
-                        if (teamLeague != null)
+                        // if the team already exists
+                        if (teamToCheck != null)
                         {
-                            continue;
+                            int teamId = teamToCheck.Id;
+
+                            // checking if the current team is being add in the mapping table
+                            TeamLeagues teamLeague = this.teamLeaguesRepository
+                                 .All().FirstOrDefault(x => x.TeamId == teamId && x.LeagueId == leagueId);
+
+                            // if its being added, doin nothing
+                            if (teamLeague != null)
+                            {
+                                continue;
+                            }
+
+                            // if its not, create new mapping table
+                            else
+                            {
+                                TeamLeagues teamsLeague = new TeamLeagues
+                                {
+                                    TeamId = teamId,
+                                    LeagueId = leagueId,
+                                };
+
+                                this.teamLeaguesRepository.Add(teamsLeague);
+                            }
                         }
 
-                        // if its not, create new mapping table
+                        // if the team does not exists
                         else
                         {
+                            Team team = new Team()
+                            {
+                                Id = model.TeamId,
+                                Name = model.Name,
+                                Code = model.Code,
+                                Logo = model.Logo,
+                                IsNational = model.IsNational,
+                                Founded = model.Founded,
+                                VenueName = model.VenueName,
+                                VenueCapacity = model.VenueCapacity,
+                                CountryId = country.Id,
+                            };
+
                             TeamLeagues teamsLeague = new TeamLeagues
                             {
-                                TeamId = teamId,
+                                TeamId = team.Id,
                                 LeagueId = leagueId,
                             };
 
+                            this.teamRepository.Add(team);
                             this.teamLeaguesRepository.Add(teamsLeague);
+                            totalTeams++;
                         }
                     }
-                    // if the team does not exists
-                    else
+                    catch (Exception ex)
                     {
-                        Team team = new Team()
-                        {
-                            Id = model.TeamId,
-                            Name = model.Name,
-                            Code = model.Code,
-                            Logo = model.Logo,
-                            IsNational = model.IsNational,
-                            Founded = model.Founded,
-                            VenueName = model.VenueName,
-                            VenueCapacity = model.VenueCapacity,
-                            CountryId = country.Id,
-                        };
+                        StringBuilder sb = new StringBuilder();
+                        using StreamWriter sw = new StreamWriter(this.FilePath, true);
 
-                        TeamLeagues teamsLeague = new TeamLeagues
-                        {
-                            TeamId = team.Id,
-                            LeagueId = leagueId,
-                        };
+                        sb.AppendLine($"An exception occured at {DateTime.UtcNow}");
+                        sb.AppendLine($"There is some problem with deserializating teams from json");
+                        sb.AppendLine($"Original exception message: ");
+                        sb.AppendLine(ex.Message);
 
-                        this.teamRepository.Add(team);
-                        this.teamLeaguesRepository.Add(teamsLeague);
-                        totalTeams++;
+                        if (ex.InnerException != null)
+                        {
+                            sb.AppendLine(ex.InnerException.ToString());
+                        }
+
+                        sb.AppendLine("Team Object: ");
+                        sb.AppendLine(model.ToString());
+                        sb.AppendLine("End of exception here.");
+                        sb.AppendLine("--------------");
+                        sb.AppendLine("---------------");
+                        sw.Write(sb.ToString());
+                        sw.Close();
                     }
                 }
 
                 this.teamRepository.SaveChanges();
                 this.teamLeaguesRepository.SaveChanges();
-
             }
 
             return totalTeams;

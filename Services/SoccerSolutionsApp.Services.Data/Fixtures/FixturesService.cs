@@ -37,7 +37,7 @@
             this.teamLeaguesRepository = teamLeaguesRepository;
         }
 
-        public string FilePath { get; } = Path.Combine(Environment.CurrentDirectory + "\\" + "fixturesExceptions.txt");
+        public string FilePath { get; } = Path.Combine(Environment.CurrentDirectory + "\\" + "FixturesExceptions.txt");
 
         public int Create(ImportFixturesApi model)
         {
@@ -141,8 +141,7 @@
                         sb.AppendLine(ex.InnerException.ToString());
                     }
 
-                    sb.AppendLine();
-                    sb.AppendLine("Fixture Object");
+                    sb.AppendLine("Fixture Object: ");
                     sb.AppendLine(fixture.ToString());
                     sb.AppendLine("End of exception here.");
                     sb.AppendLine("--------------");

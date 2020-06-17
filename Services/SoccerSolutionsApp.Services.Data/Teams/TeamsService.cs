@@ -14,7 +14,7 @@
     using SoccerSolutionsApp.Web.ViewModels.Fixtures;
     using SoccerSolutionsApp.Web.ViewModels.Teams;
 
-    public class TeamsService : ITeamsService
+    public class TeamsService : ITeamsService, ITeamsStatisticsService
     {
         private readonly IDeletableEntityRepository<Team> teamRepository;
         private readonly IDeletableEntityRepository<League> leagueRepository;
@@ -36,6 +36,11 @@
 
 
         public string FilePath { get; } = Path.Combine(Environment.CurrentDirectory + "\\" + "TeamsExceptions.txt");
+
+        public void AddStatistics()
+        {
+            throw new NotImplementedException();
+        }
 
         public int Create(ImportTeamsApi models, int leagueId)
         {

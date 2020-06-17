@@ -23,6 +23,7 @@
     using SoccerSolutionsApp.Services.Data.Predictions;
     using SoccerSolutionsApp.Services.Data.Seasons;
     using SoccerSolutionsApp.Services.Data.Standings;
+    using SoccerSolutionsApp.Services.Data.Teams;
     using SoccerSolutionsApp.Services.Data.TeamsServices;
     using SoccerSolutionsApp.Services.Data.Users;
     using SoccerSolutionsApp.Services.Mapping;
@@ -68,13 +69,15 @@
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
             services.AddScoped<IDataProcessingService, DataProcessingService>();
 
-            services.AddHostedService<ConsumeDataProcessingService>();
             // Application services
+            services.AddHostedService<ConsumeDataProcessingService>();
+
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ITeamsService, TeamsService>();
             services.AddTransient<ICountriesService, CountriesService>();
             services.AddTransient<ISeasonsService, SeasonsService>();
             services.AddTransient<ILeaguesService, LeaguesService>();
+            services.AddTransient<ITeamsService, TeamsService>();
+            services.AddTransient<ITeamsStatisticsService, TeamsService>();
             services.AddTransient<IPredictionsService, PredictionsService>();
             services.AddTransient<IFixturesService, FixturesService>();
             services.AddTransient<IUsersService, UserService>();

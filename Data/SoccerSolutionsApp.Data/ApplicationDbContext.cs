@@ -48,6 +48,8 @@
 
         public DbSet<Standing> Standings { get; set; }
 
+        public DbSet<Statistics> Statistics { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)

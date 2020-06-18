@@ -14,13 +14,16 @@
     using RestSharp.Authenticators;
     using SoccerSolutionsApp.Common;
     using SoccerSolutionsApp.Data;
+    using SoccerSolutionsApp.Data.Models;
     using SoccerSolutionsApp.Services.Data.Countries;
     using SoccerSolutionsApp.Services.Data.Fixtures;
     using SoccerSolutionsApp.Services.Data.Leagues;
     using SoccerSolutionsApp.Services.Data.Seasons;
     using SoccerSolutionsApp.Services.Data.Standings;
     using SoccerSolutionsApp.Services.Data.Teams;
+    using SoccerSolutionsApp.Services.Data.Teams.ImportStatistics;
     using SoccerSolutionsApp.Services.Data.TeamsServices;
+    using SoccerSolutionsApp.Services.Data.TeamStatistics;
     using SoccerSolutionsApp.Web.Infrastructure;
     using SoccerSolutionsApp.Web.ViewModels.Teams;
 
@@ -37,6 +40,7 @@
         private readonly IConfiguration configuration;
         private readonly IFixturesService fixturesService;
         private readonly IStandingsService standingsService;
+        private readonly ITeamStatisticsService teamStatisticsService;
 
         public DataController(
             ApplicationDbContext db,
@@ -46,7 +50,8 @@
             ITeamsService teamsService,
             IConfiguration configuration,
             IFixturesService fixturesService,
-            IStandingsService standingsService)
+            IStandingsService standingsService,
+            ITeamStatisticsService teamStatisticsService)
         {
             this.db = db;
             this.countriesService = countriesService;
@@ -56,6 +61,7 @@
             this.configuration = configuration;
             this.fixturesService = fixturesService;
             this.standingsService = standingsService;
+            this.teamStatisticsService = teamStatisticsService;
         }
 
         [HttpGet("getleagues")]
@@ -116,7 +122,7 @@
             if (response.IsSuccessful)
             {
                 var seasons = JsonConvert.DeserializeObject<ImportSeasonsApi>(content);
-                int result =  this.seasonsService.Create(seasons);
+                int result = this.seasonsService.Create(seasons);
 
                 return this.Ok($"{result} seasons added");
             }
@@ -181,7 +187,7 @@
             string content = response.Content;
             if (response.IsSuccessful)
             {
-                var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
+                var fixtures = JsonConvert.DeserializeObject<ImportApi>(content);
                 int result = this.fixturesService.Create(fixtures);
 
                 return this.Ok($"{result} past fixtures added!");
@@ -201,7 +207,7 @@
             string content = response.Content;
             if (response.IsSuccessful)
             {
-                var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
+                var fixtures = JsonConvert.DeserializeObject<ImportApi>(content);
                 int result = this.fixturesService.Create(fixtures);
 
                 return this.Ok($"{result} next fixtures added!");
@@ -223,7 +229,7 @@
             string content = response.Content;
             if (response.IsSuccessful)
             {
-                var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
+                var fixtures = JsonConvert.DeserializeObject<ImportApi>(content);
                 int result = this.fixturesService.Create(fixtures);
 
                 return this.Ok($"{result} head to head fixtures added!");
@@ -253,6 +259,31 @@
             return this.BadRequest();
         }
 
+        [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
+        [HttpGet("poststandings/{leagueId}/")]
+        public IActionResult GetStatisticsForTeam(int leagueId, int teamId)
+        {
+            var client = new RestClient(string.Format(DataProvider.GetTeamStatisticsUrl, leagueId, teamId));
+            var request = new RestRequest(Method.GET);
+            request = this.AddHeaders(request);
+            IRestResponse response = client.Execute(request);
+
+            string content = response.Content;
+
+            if (response.IsSuccessful)
+            {
+                var statistics = JsonConvert.DeserializeObject<ImportStatisticsApi>(content);
+                bool result = this.teamStatisticsService.AddStatistics(statistics, teamId, leagueId);
+
+                if (result)
+                {
+                    return this.Ok($"Added statistics for team {teamId} for league {leagueId}");
+                }
+            }
+
+            return this.BadRequest();
+        }
+
         private RestRequest AddHeaders(RestRequest request)
         {
             request.AddHeader(DataProvider.ApiHost, DataProvider.ApiHostValue);
@@ -260,5 +291,7 @@
 
             return request;
         }
+
+
     }
 }

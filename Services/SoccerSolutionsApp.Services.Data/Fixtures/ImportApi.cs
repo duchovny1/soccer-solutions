@@ -1,6 +1,6 @@
 ﻿namespace SoccerSolutionsApp.Services.Data.Fixtures
 {
-    public class ImportFixturesApi
+    public class ImportApi
     {
         public ImportApiModel Api { get; set; }
     }

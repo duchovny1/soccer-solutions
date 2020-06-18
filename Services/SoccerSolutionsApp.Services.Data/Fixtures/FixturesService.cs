@@ -39,7 +39,7 @@
 
         public string FilePath { get; } = Path.Combine(Environment.CurrentDirectory + "\\" + "FixturesExceptions.txt");
 
-        public int Create(ImportFixturesApi model)
+        public int Create(ImportApi model)
         {
             int totalFixtures = 0;
 

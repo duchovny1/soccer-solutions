@@ -5,7 +5,5 @@
         public ImportGoalsFor GoalsFor { get; set; }
 
         public ImportGoalsAgainst GoalsAgainst { get; set; }
-
-
     }
 }

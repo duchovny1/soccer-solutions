@@ -12,7 +12,7 @@
 
     public interface IFixturesService
     {
-        int Create(ImportFixturesApi model);
+        int Create(ImportApi model);
 
         Task<int> CountPastFixturesAsync(int teamId);
 

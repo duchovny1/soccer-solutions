@@ -1,9 +1,11 @@
 ﻿namespace SoccerSolutionsApp.Data.Models
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
-    public class Statistics
+    using SoccerSolutionsApp.Data.Common.Models;
+
+    public class Statistics : IDeletableEntity
     {
         public int Id { get; set; }
 
@@ -11,6 +13,12 @@
 
         [Required]
         public int TeamId { get; set; }
+
+
+        public League League { get; set; }
+
+        [Required]
+        public int LeagueId { get; set; }
 
         public int MatchPlayedAsHomeTeam { get; set; }
 
@@ -44,8 +52,24 @@
 
         public int GoalsAgainstAsHome { get; set; }
 
-        public int GoasAgainstAsAway { get; set; }
+        public int GoalsAgainstAsAway { get; set; }
 
         public int GoalsAgainstTotal { get; set; }
+
+        public double GoalsForAvgAsHome { get; set; }
+
+        public double GoalsForAvgAsAway { get; set; }
+
+        public double GoalsForAvgTotal { get; set; }
+
+        public double GoalsAgainstAvgAsHome { get; set; }
+
+        public double GoalsAgainstAvgAsAway { get; set; }
+
+        public double GoalsAgainstAvgTotal { get; set; }
+
+        public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedOn { get; set; }
     }
 }

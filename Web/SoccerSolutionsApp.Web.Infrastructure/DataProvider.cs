@@ -42,6 +42,9 @@
         // api get standings by league id url
         private const string StandingsUrl = "https://api-football-v1.p.rapidapi.com/v2/leagueTable/{leagueId}";
 
+        // api get team statistics for league id
+        private const string TeamStatistics = "https://api-football-v1.p.rapidapi.com/v2/statistics/{leagueId}/{teamId}";
+
         public static string ApiHost { get; } = Host;
 
         public static string ApiHostValue { get; } = HostValue;
@@ -65,5 +68,7 @@
         public static string GetHeadToHeadUrl { get; } = HeadToHeadUrl;
 
         public static string GetStandingsUrl { get; } = StandingsUrl;
+
+        public static string GetTeamStatisticsUrl { get; } = TeamStatistics;
     }
 }

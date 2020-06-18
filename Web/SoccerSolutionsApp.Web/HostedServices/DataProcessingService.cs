@@ -82,7 +82,7 @@
             string content = response.Content;
             if (response.IsSuccessful)
             {
-                var fixtures = JsonConvert.DeserializeObject<ImportFixturesApi>(content);
+                var fixtures = JsonConvert.DeserializeObject<ImportApi>(content);
                 int result = this.fixturesService.Create(fixtures);
 
                 return result;

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SoccerSolutionsApp.Data;
 
 namespace SoccerSolutionsApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200617152222_AddTeamsStatisticsTable")]
+    partial class AddTeamsStatisticsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -562,6 +564,36 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.ToTable("Seasons");
                 });
 
+            modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Setting", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Settings");
+                });
+
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Standing", b =>
                 {
                     b.Property<int>("Id")
@@ -642,23 +674,8 @@ namespace SoccerSolutionsApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("GoalsAgainstAsAway")
-                        .HasColumnType("int");
-
                     b.Property<int>("GoalsAgainstAsHome")
                         .HasColumnType("int");
-
-                    b.Property<double>("GoalsAgainstAvgAsAway")
-                        .HasColumnType("float");
-
-                    b.Property<double>("GoalsAgainstAvgAsHome")
-                        .HasColumnType("float");
-
-                    b.Property<double>("GoalsAgainstAvgTotal")
-                        .HasColumnType("float");
 
                     b.Property<int>("GoalsAgainstTotal")
                         .HasColumnType("int");
@@ -669,22 +686,10 @@ namespace SoccerSolutionsApp.Data.Migrations
                     b.Property<int>("GoalsForAsHome")
                         .HasColumnType("int");
 
-                    b.Property<double>("GoalsForAvgAsAway")
-                        .HasColumnType("float");
-
-                    b.Property<double>("GoalsForAvgAsHome")
-                        .HasColumnType("float");
-
-                    b.Property<double>("GoalsForAvgTotal")
-                        .HasColumnType("float");
-
                     b.Property<int>("GoalsForTotal")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LeagueId")
+                    b.Property<int>("GoasAgainstAsAway")
                         .HasColumnType("int");
 
                     b.Property<int>("MatchPlayedAsAwayTeam")
@@ -727,10 +732,6 @@ namespace SoccerSolutionsApp.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("LeagueId");
 
                     b.HasIndex("TeamId");
 
@@ -984,12 +985,6 @@ namespace SoccerSolutionsApp.Data.Migrations
 
             modelBuilder.Entity("SoccerSolutionsApp.Data.Models.Statistics", b =>
                 {
-                    b.HasOne("SoccerSolutionsApp.Data.Models.League", "League")
-                        .WithMany()
-                        .HasForeignKey("LeagueId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("SoccerSolutionsApp.Data.Models.Team", "Team")
                         .WithMany()
                         .HasForeignKey("TeamId")

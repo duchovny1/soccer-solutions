@@ -1,6 +1,6 @@
 ﻿namespace SoccerSolutionsApp.Services.Data.Teams.ImportStatistics
 {
-    public class ImportApi
+    public class ImportStatisticsApi
     {
         public int Results { get; set; }
 

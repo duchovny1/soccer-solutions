@@ -260,7 +260,7 @@
         }
 
         [Authorize(Roles = GlobalConstants.AdministratorRoleName)]
-        [HttpGet("poststandings/{leagueId}/")]
+        [HttpGet("poststatistics/{leagueId}/{teamId}")]
         public IActionResult GetStatisticsForTeam(int leagueId, int teamId)
         {
             var client = new RestClient(string.Format(DataProvider.GetTeamStatisticsUrl, leagueId, teamId));

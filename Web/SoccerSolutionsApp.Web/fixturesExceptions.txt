@@ -9362,3 +9362,103 @@ halftime - null
 End of exception here.
 --------------
 ---------------
+An exception occured at 21.6.2020 г. 15:24:35
+There is some problem with deserializating fixture from json
+Original exception message: 
+Specified cast is not valid.
+Fixture Object: 
+fixture id = 208867
+league id = 753
+event date = 21.6.2020 г. 18:00:00
+round: Regular Season - 34
+status: First Half
+status short: First Half
+Elapsed: 25
+venue: GGZ Arena
+referre: Franz Bokop, Germany
+home team id: 1315
+away team id: 184
+goals home team: 0
+goals away team: 0
+halftime - 0-0
+halftime - null
+halftime - null
+halftime - null
+End of exception here.
+--------------
+---------------
+An exception occured at 21.6.2020 г. 15:24:38
+There is some problem with deserializating fixture from json
+Original exception message: 
+Specified cast is not valid.
+Fixture Object: 
+fixture id = 209516
+league id = 755
+event date = 21.6.2020 г. 16:30:00
+round: Regular Season - 33
+status: Second Half
+status short: Second Half
+Elapsed: 90
+venue: Wildparkstadion
+referre: Benjamin Brand, Germany
+home team id: 785
+away team id: 188
+goals home team: 3
+goals away team: 3
+halftime - 1-3
+halftime - null
+halftime - null
+halftime - null
+End of exception here.
+--------------
+---------------
+An exception occured at 21.6.2020 г. 17:29:16
+There is some problem with deserializating fixture from json
+Original exception message: 
+Specified cast is not valid.
+Fixture Object: 
+fixture id = 244965
+league id = 973
+event date = 13.11.2019 г. 2:00:00
+round: Preliminary Round
+status: Time to be defined
+status short: Time to be defined
+Elapsed: 0
+venue: null
+referre: null
+home team id: 7522
+away team id: 7525
+goals home team: null
+goals away team: null
+halftime - null
+halftime - null
+halftime - null
+halftime - null
+End of exception here.
+--------------
+---------------
+An exception occured at 21.6.2020 г. 17:29:16
+There is some problem with deserializating fixture from json
+Original exception message: 
+Specified cast is not valid.
+Fixture Object: 
+fixture id = 244966
+league id = 973
+event date = 13.11.2019 г. 2:00:00
+round: Preliminary Round
+status: Time to be defined
+status short: Time to be defined
+Elapsed: 0
+venue: null
+referre: null
+home team id: 7523
+away team id: 7524
+goals home team: null
+goals away team: null
+halftime - null
+halftime - null
+halftime - null
+halftime - null
+End of exception here.
+--------------
+---------------

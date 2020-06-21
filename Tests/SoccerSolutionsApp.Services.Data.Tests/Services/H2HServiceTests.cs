@@ -123,7 +123,6 @@
             Assert.Equal(3, teamTwoGoalsAsHomeTeam);
         }
 
-
         private void InitializeDatabaseAndRepositories()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -134,7 +133,6 @@
             this.fixturesRepository = new EfDeletableEntityRepository<Fixture>(context);
             this.teamsRepository = new EfDeletableEntityRepository<Team>(context);
         }
-
 
         private void SeedTestData()
         {

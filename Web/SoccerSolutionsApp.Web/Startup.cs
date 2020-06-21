@@ -44,7 +44,7 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(
-                options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
+                    options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
                 .AddRoles<ApplicationRole>()
@@ -89,6 +89,7 @@
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
 
             // Seed data on application startup
@@ -98,7 +99,10 @@
 
                 if (env.IsDevelopment())
                 {
-                    dbContext.Database.Migrate();
+                    if (dbContext.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+                    {
+                        dbContext.Database.Migrate();
+                    }
                 }
 
                 //new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();

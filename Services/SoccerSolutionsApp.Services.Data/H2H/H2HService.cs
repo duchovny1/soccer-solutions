@@ -21,7 +21,6 @@
 
         public async Task<int> HomeTeamWins(int hometeamId, int awayTeamId)
         {
-
             // taking Home Team in H2H Statistic
             // First taking all wins home team has as a home team
             // second taking all wins home team has as a away team
@@ -245,6 +244,5 @@
 
             return viewModel;
         }
-
     }
 }

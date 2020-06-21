@@ -1,14 +1,15 @@
-﻿using MyTested.AspNetCore.Mvc;
-using SoccerSolutionsApp.Data.Models;
-using SoccerSolutionsApp.Services.Mapping;
-using SoccerSolutionsApp.Web.Controllers;
-using SoccerSolutionsApp.Web.ViewModels.Fixtures;
-using System;
-using System.Reflection;
-using Xunit;
-
-namespace SoccerSolutionsApp.Services.Data.Tests.Controllers
+﻿namespace SoccerSolutionsApp.Services.Data.Tests.Controllers
 {
+    using System;
+    using System.Reflection;
+
+    using MyTested.AspNetCore.Mvc;
+    using SoccerSolutionsApp.Data.Models;
+    using SoccerSolutionsApp.Services.Mapping;
+    using SoccerSolutionsApp.Web.Controllers;
+    using SoccerSolutionsApp.Web.ViewModels.Fixtures;
+    using Xunit;
+
     public class FixturesControllerTests
     {
         public FixturesControllerTests()

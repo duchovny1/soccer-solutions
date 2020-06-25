@@ -37,7 +37,6 @@
             return this.Json(userToFollowId);
         }
 
-
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> UnfollowUser(string userToFollowId)
@@ -53,7 +52,6 @@
 
             return this.Json(userToFollowId);
         }
-
 
     }
 }

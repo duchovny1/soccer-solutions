@@ -29,7 +29,7 @@
 
                 services.AddDbContext<ApplicationDbContext>(options =>
                 {
-                    options.UseInMemoryDatabase("InMemoryDbForTesting");
+                    options.UseInMemoryDatabase("testdb");
                 });
 
                 var sp = services.BuildServiceProvider();
